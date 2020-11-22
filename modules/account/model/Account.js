@@ -6,7 +6,7 @@ const AccountSchema = new Schema({
     firstname: {type: String, required: true},
     lastname: {type: String, required: true},
     email: {type: String, required: true},
-    position: {type: String, enum: ["admin","regular"]},
+    position: {type: String, enum: ["teacher","student"]},
     password: {type: String, required: true},
     createdAt: {type: Date, default: new Date()},
     deletedAt: {type: Date, defalut: null},
