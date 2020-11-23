@@ -21,9 +21,13 @@ app.use('/static', express.static(path.join(__dirname,'public')))
 const connect = require('./utils/Database');
 connect();
 
+/**
+ * Direct routes is just for 
+ * testing porpuses only
+ */
 //use direct route
 const DirectRoute = require('./routes/DirectRoute');
-app.use('/',DirectRoute);
+app.use('/test',DirectRoute);
 
 
 
