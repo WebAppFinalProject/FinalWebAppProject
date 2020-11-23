@@ -1,9 +1,33 @@
 body {
     padding: 0px;
-    margin: 0px;
+    margin: 0px; 
 }
 
 .fixed-nav {
     position: fixed;
     z-index: 1;
 }
+
+/* Landing Page Carousel*/
+.carousel-item,
+.carousel-inner,
+.carousel-inner img {
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
+.carousel-item {
+  text-align: center;
+}
+.carousel {
+    height: 500px;
+}
+
+/* Landing Page Cards*/
+.cards {
+    margin: 2%;
+}
+
+
+
