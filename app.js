@@ -27,7 +27,6 @@ app.use('/',DirectRoute);
 
 
 
-
 //handles 404 urls
 app.use((req, res)=>{
     res.send("Page not found!");
