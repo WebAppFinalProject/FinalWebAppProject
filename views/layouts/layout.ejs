@@ -7,22 +7,21 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <title><%=title %> </title>
-    <style>
-        body {
-            padding: 0px;
-            margin: 0px;
-        }
-    </style>
+    <link rel="shortcut icon" href="static/img/partLog.ico" type="image/x-icon">
+    <link rel="stylesheet" href="http://localhost:3000/static/css/style.css">
 </head>
 
 <body>
     <!-- header part -->
-    <nav class="navbar ml-auto navbar-expand-sm bg-dark">
-        <a href="#" class="nav-item navbar-brand"><img src="static/img/mainLogo.png" width="105" height="100"
-                alt="Quiz Zone Logo" srcset=""></a>
-        <a href="#" class="nav-item nav-link ">Sign in |</a>
-        <a href="#" class="nav-item nav-link ">Sign up</a>
-    </nav>
+    <div class="border-bottom container-fluid navbar navbar-expand-sm bg-dark">
+        <a href="#" class="nav-item navbar-brand"><img src="static/img/partLog.png" width="60" height="55"
+                alt="Quiz Zone Logo" srcset=""><span class="font-weight-bold display-2></h1>">Quiz Zone</span></a>
+        <div class="navbar-nav ml-auto">
+            <a href="#" class="nav-item nav-link ">Sign in</a>
+            <a href="#" class="nav-item nav-link ">Sign up</a>
+        </div>
+    </div>
+
 
     <!-- this is the body part -->
     <%- body %>
