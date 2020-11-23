@@ -23,10 +23,37 @@ body {
 .carousel {
     height: 500px;
 }
+.carousel-indicators li {
+    width: 10px;
+    height: 10px;
+    border-radius: 100%;
+}
+
+
 
 /* Landing Page Cards*/
-.cards {
-    margin: 2%;
+.card-deck {
+    margin: 5px;
+}
+.card-img-top {
+    height: 250px;
+}
+.card-text {
+    color: white;
+}
+
+.btn-primary {
+    border-color:transparent !important;
+    color: #fff !important;
+    border-radius: 50px;
+    padding: 10px 25px !important;
+    width: 200px;
+    text-align: center;
+    margin:10px 15px;
+}
+
+.btn-primary:hover {
+    background: #731397;
 }
 
 
