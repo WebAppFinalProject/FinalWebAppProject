@@ -1,58 +1,93 @@
-$(document).ready(()=>{
+$(document).ready(() => {
     let startingPoint = 1;
     let clickCounter = 0;
     showSlide(startingPoint);
-    $('#next').click(()=>{
+    $('#next').click(() => {
         startingPoint = incrementIndex(1, startingPoint);
-        if(startingPoint > 1){
-            $("#prev").css("display","block");
+        showSlide(startingPoint);
+        if (startingPoint > 1) {
+            $("#prev").css("display", "block");
         }
-        if(startingPoint == 3){
-            $("#next").text("submit");
-            $("#next").attr("id","submit");
+        if (startingPoint == 3) {
+            $("#next").text("register");
+            $("#next").attr("id", "register");
             clickCounter = 1;
         }
-        if(startingPoint >3 ){
+        if (startingPoint > 3) {
             startingPoint = 3;
-        }else{
-            showSlide(startingPoint);
-            $("#next").text("next");
-            $("#next").attr("id","next");
         }
     });
 
-    $('#prev').click(()=>{
+    $('#prev').click(() => {
         startingPoint = incrementIndex(-1, startingPoint);
         showSlide(startingPoint);
-        if(startingPoint <= 1){
-            $("#prev").css("display","none");
+        if (startingPoint <= 1) {
+            $("#prev").css("display", "none");
+        }
+        if (startingPoint < 3) {
+            $("#register").text("next");
+            $("#register").attr("id", "next");
         }
     });
 
-
-    $(".sub").on('click',"#submit",()=>{
-        //temporary
-        if(clickCounter > 1){
+    //this will register the user
+    $(".sub").on('click', "#register", () => {
+        if (clickCounter > 1) {
             console.log("The form was submitted!");
-        }else{
+            let data = {
+                firstname: $("#firstname").val(),
+                lastname: $("#lastname").val(),
+                email: $("#email").val(),
+                password: $("#password").val(),
+                position: $("#position").val()
+            };
+            apiRequest("/signup", "post", data)
+                .then((res) => {
+
+                    window.location.href = res.url;
+                    console.log(res);
+                })
+                .catch((error) => {
+                    console.log(error);
+                })
+            startingPoint = 3;
+            clickCounter = 0;
+        } else {
             clickCounter++;
         }
     })
+    
+    // this will signin the user
+    $("#signin").click(() => {
+        let data = {
+            email: $("#emailSignin").val(),
+            password: $("#passwordSignin").val()
+        };
+        apiRequest("/signin", "post", data)
+            .then((res) => {
+                console.log(res);
+                localStorage.setItem("token", res.token);
+                window.location.href = res.url;
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+    });
 
 });
 
-function incrementIndex(n, startingPoint){
+function incrementIndex(n, startingPoint) {
     return startingPoint + n;
 }
 
-function showSlide(n){
+function showSlide(n) {
     let slides = $(".slides");
     let counter = 1;
-    console.log(n);
-    for(slide of slides){
-        if(counter == n){
+
+    for (slide of slides) {
+        if (counter == n) {
             slide.style = "display: block";
-        }else{
+        } else {
             slide.style = "display: none";
         }
         counter++;

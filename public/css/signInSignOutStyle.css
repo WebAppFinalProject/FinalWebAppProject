@@ -1,4 +1,5 @@
 .customBody{
+    position: fixed;
     background-image: url("/static/img/loginbg.jpg");
     background-size: cover;
     background-repeat: no-repeat;
@@ -8,6 +9,7 @@
     
 }
 .customBody1{
+    position: fixed;
     background-image: url("/static/img/signupbg.jpg");
     background-size: cover;
     background-repeat: no-repeat;
