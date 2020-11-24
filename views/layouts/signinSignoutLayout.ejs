@@ -10,10 +10,9 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
         integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
 
-    <title><%=title %> </title>
     <link rel="shortcut icon" href="/static/img/partLog.ico" type="image/x-icon">
-    <link rel="stylesheet" href="/static/css/style.css">
-
+    <link rel="stylesheet" href="/static/css/signInSignOutStyle.css">
+    <title><%= title %> </title>
 </head>
 
 <body>
@@ -21,49 +20,18 @@
     <div class="border-bottom container-fluid navbar navbar-expand-sm bg-dark">
         <a href="#" class="nav-item navbar-brand"><img src="/static/img/partLog.png" width="60" height="55"
                 alt="Quiz Zone Logo" srcset=""><span class="font-weight-bold display-2></h1>">Quiz Zone</span></a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse">
-            <span class="navbar-toggler-icon"><i class="fa fa-bars"></i></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-            <div class="navbar-nav ml-auto">
-                <a href="#" class="nav-item nav-link ">Sign in</a>
-                <a href="#" class="nav-item nav-link ">Sign up</a>
-            </div>
-        </div>
     </div>
-
-
-    <!-- this is the body part -->
     <%- body %>
-
-    <!-- create footer here -->
-    <div class="container-fluid bg-dark">
-        <div class="row">
-            <div class="col-md-6">
-                Ask as some questions and suggestions
-            </div>
-            <div class="col-md-6">
-                Stay connected!
-                <form class="form-group">
-                    <input type="text" class="form-control">
-                </form>
-            </div>
-        </div>
-    </div>
-
     <!-- this is the script part -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-        crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"
+        integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
         integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
         crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="/static/js/signinSignup.js"></script>
 </body>
 
 </html>

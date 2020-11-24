@@ -13,6 +13,5 @@ const AccountSchema = new Schema({
     updatedAt: {type: Date, defalut: null}
 });
 
-const AccountModel = mongoose.model('user',AccountSchema);
-
+const AccountModel = mongoose.model('User',AccountSchema);
 module.exports = AccountModel;
