@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 const AccountSchema = new Schema({
     firstname: {type: String, required: true},
     lastname: {type: String, required: true},
-    email: {type: String, required: true},
+    email: {type: String, required: true, unique: true},
     position: {type: String, enum: ["teacher","student"]},
     password: {type: String, required: true},
     createdAt: {type: Date, default: new Date()},
