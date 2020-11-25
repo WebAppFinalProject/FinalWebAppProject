@@ -4,6 +4,9 @@ $(document).ready(()=>{
         $('#modalExamForm').toggle();
     })
 
+    $('#closeModal').click(()=>{
+        $('#modalExamForm').toggle();
+    });
     //this method will toggle the 
     //side bar of the dashboard
     $('#showMenu').click(()=>{

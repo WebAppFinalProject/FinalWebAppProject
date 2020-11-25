@@ -1,10 +1,20 @@
 <div style="z-index: 0;">
     <!-- this is the exam form -->
-    <div class="modal bg-light" id="modalExamForm">
-        <h3 class="text-center">Create Exam</h3>
-        <form>
-            <input type="text" id="title"  class="form-control" placeholder="Exam Title ...">
-        </form>
+    <div class="modal" id="modalExamForm">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <h3 class="text-center">Create Exam</h3>
+                    <button type="button" class="close" id="closeModal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <input type="text" id="title"  class="form-control" placeholder="Exam Title ...">
+                    </form>
+                </div>
+            </div>
+        </div>
+        
     </div>
 
     <div class="navbar navbar-expand-md navbar-light bg-light border-bottom position-relative">
