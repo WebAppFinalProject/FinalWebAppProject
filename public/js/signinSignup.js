@@ -34,6 +34,8 @@ $(document).ready(() => {
     $(".sub").on('click', "#register", () => {
         if (clickCounter > 1) {
             console.log("The form was submitted!");
+            validateForm( $("#firstname").val(),  $("#lastname").val(), $("#email").val(), $("#password").val());
+            ValidateEmail($("#email").val());
             let data = {
                 firstname: $("#firstname").val(),
                 lastname: $("#lastname").val(),
@@ -73,7 +75,6 @@ $(document).ready(() => {
                 console.log(error);
             })
     });
-
 });
 
 function incrementIndex(n, startingPoint) {
