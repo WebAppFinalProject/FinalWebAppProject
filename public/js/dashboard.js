@@ -1,11 +1,11 @@
 $(document).ready(()=>{
     //this function will show the form create exam
     $('.createExam').click(()=>{
-        $('#modalExamForm').toggle();
+        $('#createExamForm').show();
     })
 
     $('#closeModal').click(()=>{
-        $('#modalExamForm').toggle();
+        $('#createExamForm').hide();
     });
     //this method will toggle the 
     //side bar of the dashboard

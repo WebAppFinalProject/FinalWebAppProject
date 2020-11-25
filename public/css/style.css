@@ -106,6 +106,20 @@ body {
     to {left: 0px;}
 }
 
+@keyframes examFormMove {
+    from {top: -200px;}
+    to {top: 0px;}
+}
+
+#createExamForm {
+    display: none;
+    position: relative;
+    z-index: 1;
+    width: 60%;
+    margin-left: 20%;
+    animation: examFormMove 1s 1;
+}
+
 .dashMenu:hover {
     background-color: rgb(163, 168, 172);
 }
@@ -116,4 +130,5 @@ body {
 .dashMenuActive {
     background-color: rgb(163, 168, 172);
 }
+
 
