@@ -16,37 +16,75 @@
     </div>
 
     <!-- this is the exam form -->
-    <div class="row mt-5 border bg-light" id="createExamForm">
-        <div class="col-md-5 ">
-            <h3 class="text-center">Create Exam</h3>
-            <form>
-                <label for="title" class="font-weight-bold">Title:</label>
-                <input type="text" id="title" class="form-control" placeholder="Exam Title ...">
+    <div id=createExamForm>
+        <div class="row mt-5 border bg-light">
+            <div class="col-md-12">
+                <h3 class="text-center pt-3">Create Exam</h3>
+                <form class="p-2">
+                    <label for="title" class="font-weight-bold">Title:</label>
+                    <input type="text" id="title" class="form-control" placeholder="Exam Title ...">
+                    <br>
+                    <label for="expireDate" class="font-weight-bold">Expiration Date and Time:</label>
+                    <input type="datetime-local" id="expireDate" class="form-control " placeholder="">
+                    <br>
+                    <label for="timeLimit" class="font-weight-bold">Time Limit(minutes):</label>
+                    <input type="number" id="timeLimit" class="form-control " placeholder="Enter number of minutes">
+                    
+                </form>
                 <br>
-                <label for="expireDate" class="font-weight-bold">Expiration Date and Time:</label>
-                <input type="datetime-local" id="expireDate" class="form-control " placeholder="">
-                <br>
-                <label for="timeLimit" class="font-weight-bold">Time Limit(minutes):</label>
-                <input type="number" id="timeLimit" class="form-control " placeholder="Enter number of minutes">
-            </form>
-        </div>
-        <div class="col-md-5 ">
-            <h3 class="text-center">Add Questions</h3>
-            <form>
-                <label for="title" class="font-weight-bold">Title:</label>
-                <input type="text" id="title" class="form-control" placeholder="Exam Title ...">
-                <br>
-                <label for="expireDate" class="font-weight-bold">Expiration Date and Time:</label>
-                <input type="datetime-local" id="expireDate" class="form-control " placeholder="">
-                <br>
-                <label for="timeLimit" class="font-weight-bold">Time Limit(minutes):</label>
-                <input type="number" id="timeLimit" class="form-control " placeholder="Enter number of minutes">
-            </form>
+                <a href="#" id="addQuestion" class="mb-3">Add questions&nbsp;&nbsp;<i class="fas fa-plus"></i></a>
+            </div>
+            <div class="col-md-12 collapse" id="formQuestion">
+                <form class="p-2">
+                    <label for="selectType">Select Question type:</label>
+                    <select name="type" class="form-control" id="questionType">
+                        <option value=""></option>
+                        <option value="multiple choice">Multiple Choice</option>
+                        <option value="true or false">True or False</option>
+                        <option value="identification">Identification</option>
+                    </select>
+                    <div id="multiple choice" class="types">
+                        <label for="title" class="font-weight-bold">Question:</label>
+                        <input type="text" id="question" class="form-control" placeholder="Enter the question ...">
+                        <br>
+                        <label for="expireDate" class="font-weight-bold">Expiration Date and Time:</label>
+                        <input type="datetime-local" id="expireDate" class="form-control " placeholder="">
+                        <br>
+                        <label for="timeLimit" class="font-weight-bold">Time Limit(minutes):</label>
+                        <input type="number" id="timeLimit" class="form-control " placeholder="Enter number of minutes">
+                    </div>
+
+                    <div id="true or false" class="types">
+                        <label for="title" class="font-weight-bold">Question:</label>
+                        <input type="text" id="question" class="form-control" placeholder="Enter the question ...">
+                        <br>
+                        <label for="expireDate" class="font-weight-bold">Expiration Date and Time:</label>
+                        <input type="datetime-local" id="expireDate" class="form-control " placeholder="">
+                        <br>
+                        <label for="timeLimit" class="font-weight-bold">Time Limit(minutes):</label>
+                        <input type="number" id="timeLimit" class="form-control " placeholder="Enter number of minutes">
+                    </div>
+
+                    <div id="identification" class="types">
+                        <label for="title" class="font-weight-bold">Question:</label>
+                        <input type="text" id="question" class="form-control" placeholder="Enter the question ...">
+                        <br>
+                        <label for="expireDate" class="font-weight-bold">Expiration Date and Time:</label>
+                        <input type="datetime-local" id="expireDate" class="form-control " placeholder="">
+                        <br>
+                        <label for="timeLimit" class="font-weight-bold">Time Limit(minutes):</label>
+                        <input type="number" id="timeLimit" class="form-control " placeholder="Enter number of minutes">
+                    </div>
+                </form>
+                <button class="btn btn-primary float-right" id="submitCreateExam">Create</button>
+            </div>
+           
         </div>
     </div>
+   
 
     <!-- display if no exam created yet -->
-    <div class="container text-center h-100 w-100 m-center m-center">
+    <div class="container text-center h-100 w-100 m-center m-center" id="noExam">
         <span class="align-middle">
             <h3 class="text text-secondary">Theres no Exams created yet!</h3>
         </span>

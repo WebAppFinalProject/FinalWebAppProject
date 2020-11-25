@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const QuestionSchema = new Schema({
     question: {type: String, required: true},
-    type: {type: String, enum: ["multiple choice","true or false","enumeration"], required: true},
+    type: {type: String, enum: ["multiple choice","true or false","identification"], required: true},
     answerKey: [{type: String, required: true}],
     choices: [{type: String}],
     createdAt: {type: Date, default: new Date()},

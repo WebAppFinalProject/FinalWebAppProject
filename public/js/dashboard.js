@@ -38,13 +38,34 @@ $(document).ready(() => {
         
     })
 
-    //this function will show the form create exam
-    $('.createExam').click(()=>{
-        $('#createExamForm').show();
+    //change the view when the user changes the type of question
+    $('#questionType').on('change',()=>{
+        let renderedType = $('#questionType').val(); 
+        let questionTypes = ["multiple choice","identification","true or false"];
+        questionTypes.forEach(type => {
+            if(type == renderedType){
+                $(`#${renderedType}`).show();
+                console.log("sdfgsdf");
+            }else{
+                $(`#${type}`).hide();
+            }
+        })
     })
 
+    //this will show the question form
+    $('#addQuestion').click(()=>{
+        $('#formQuestion').toggle();
+    })
+
+    //this function will show the form create exam
+    $('.createExam').click(()=>{
+        $('#createExamForm').toggle();
+        $("#noExam").toggle();
+    })
+
+    //this function will close the modal
     $('#closeModal').click(()=>{
-        $('#createExamForm').hide();
+        $('#createExamForm').toggle();
     });
     //this method will toggle the 
     //side bar of the dashboard
