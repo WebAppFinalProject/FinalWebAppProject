@@ -1,28 +1,12 @@
 <div style="z-index: 0;">
-    <!-- this is the exam form -->
-    <div class="modal" id="modalExamForm">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header text-center">
-                    <h3 class="text-center">Create Exam</h3>
-                    <button type="button" class="close" id="closeModal">&times;</button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <input type="text" id="title"  class="form-control" placeholder="Exam Title ...">
-                    </form>
-                </div>
-            </div>
-        </div>
-        
-    </div>
-
     <div class="navbar navbar-expand-md navbar-light bg-light border-bottom position-relative">
         <a class="ml-2 btn" id="showMenu"><i class="fa fa-bars"></i></a>
         <div class="navbar-nav ml-auto">
-            <span class="mr-2 btn btn-white createExam"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;Create Exam</span>
+            <span class="mr-2 btn btn-white createExam"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;Create
+                Exam</span>
         </div>
     </div>
+    <!-- side bar -->
     <div class="collapse border-right position-fixed h-100 w" id="sideb">
         <p class="text-left  p-4 dashMenu dashMenuActive"><a href="#" class="text-white">Exams</a></p>
         <p class="text-left  p-4 dashMenu"><a href="#">Schedules</a></p>
@@ -30,11 +14,45 @@
         <p class="text-left  p-4 dashMenu"><a href="#">Expired Exams</a></p>
         <p class="text-left  p-4 dashMenu"><a href="#">Settings</a></p>
     </div>
-    <div class="row h-100" id="content">
-        <div class="container text-center h-100 w-100 m-center m-center" id="noExam">
-            <span class="align-middle"><h3 class="text text-secondary">Theres no Exams created yet!</h3></span>
-            <span class="align-middle createExam"><h5><a href="#" class="btn btn-primary">Create Exam</a></h5></span>
-        
+
+    <!-- this is the exam form -->
+    <div class="row mt-5 border bg-light" id="createExamForm">
+        <div class="col-md-5 ">
+            <h3 class="text-center">Create Exam</h3>
+            <form>
+                <label for="title" class="font-weight-bold">Title:</label>
+                <input type="text" id="title" class="form-control" placeholder="Exam Title ...">
+                <br>
+                <label for="expireDate" class="font-weight-bold">Expiration Date and Time:</label>
+                <input type="datetime-local" id="expireDate" class="form-control " placeholder="">
+                <br>
+                <label for="timeLimit" class="font-weight-bold">Time Limit(minutes):</label>
+                <input type="number" id="timeLimit" class="form-control " placeholder="Enter number of minutes">
+            </form>
+        </div>
+        <div class="col-md-5 ">
+            <h3 class="text-center">Add Questions</h3>
+            <form>
+                <label for="title" class="font-weight-bold">Title:</label>
+                <input type="text" id="title" class="form-control" placeholder="Exam Title ...">
+                <br>
+                <label for="expireDate" class="font-weight-bold">Expiration Date and Time:</label>
+                <input type="datetime-local" id="expireDate" class="form-control " placeholder="">
+                <br>
+                <label for="timeLimit" class="font-weight-bold">Time Limit(minutes):</label>
+                <input type="number" id="timeLimit" class="form-control " placeholder="Enter number of minutes">
+            </form>
         </div>
     </div>
+
+    <!-- display if no exam created yet -->
+    <div class="container text-center h-100 w-100 m-center m-center">
+        <span class="align-middle">
+            <h3 class="text text-secondary">Theres no Exams created yet!</h3>
+        </span>
+        <span class="align-middle createExam">
+            <h5><a href="#" class="btn btn-primary">Create Exam</a></h5>
+        </span>
+    </div>
+
 </div>

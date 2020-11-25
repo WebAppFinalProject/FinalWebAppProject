@@ -39,12 +39,12 @@ $(document).ready(() => {
     })
 
     //this function will show the form create exam
-    $('.createExam').click(() => {
-        $('#modalExamForm').toggle();
+    $('.createExam').click(()=>{
+        $('#createExamForm').show();
     })
 
-    $('#closeModal').click(() => {
-        $('#modalExamForm').toggle();
+    $('#closeModal').click(()=>{
+        $('#createExamForm').hide();
     });
     //this method will toggle the 
     //side bar of the dashboard
