@@ -43,6 +43,10 @@ connect();
 const DirectRoute = require('./routes/DirectRoute');
 app.use("/",DirectRoute);
 
+//use quiz zone routes
+const QuizZoneRoutes = require('./routes/QuizZoneRoutes');
+app.use(QuizZoneRoutes);
+
 //use account routes
 const AccountRoutes = require('./modules/account/routes/AccountRoute');
 app.use(AccountRoutes);

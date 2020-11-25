@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 module.exports = {
     //this function will outhorized the routes that
     // the client will request
-    authorizedRequest: async(req, res, next) =>{
+    authorizedRequest: async (req, res, next) => {
         const authHeader = req.headers.authorization;
         if (authHeader) {
             const token = authHeader.split(' ')[1];
@@ -19,32 +19,32 @@ module.exports = {
             res.sendStatus(401);
         }
     },
-    avoidLogin: async(req, res, next)=> {
+    avoidLogin: async (req, res, next) => {
         const token = req.cookies.token;
-        
+
         if (token) {
             jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
                 if (err) {
                     return res.sendStatus(403);
                 }
-               res.redirect('/dashboard');
+                res.redirect('/dashboard');
             });
         } else {
             next();
         }
     },
-    avoidDashboard: async(req, res, next)=>{
+    Dashboard: async (req, res, next) => {
         const token = req.cookies.token;
-        
+
         if (token) {
             jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
                 if (err) {
                     return res.sendStatus(403);
                 }
-               res.redirect('/signin');
             });
-        } else {
             next();
+        } else {
+            res.redirect('/signin');
         }
     }
 }
