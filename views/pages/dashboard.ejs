@@ -1,0 +1,27 @@
+<div style="z-index: 0;">
+    <!-- this is the exam form -->
+    <div class="modal bg-light" id="modalExamForm">
+        <h3 class="text-center">Create Exam</h3>
+        <form>
+            <input type="text" id="title"  class="form-control" placeholder="Exam Title ...">
+        </form>
+    </div>
+
+    <div class="navbar navbar-expand-md navbar-light bg-light border-bottom position-relative">
+        <a class="ml-2 btn" id="showMenu"><i class="fa fa-bars"></i></a>
+        <div class="navbar-nav ml-auto">
+            <span class="mr-2 btn btn-white createExam"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;Create Exam</span>
+        </div>
+    </div>
+    <div class="collapse border-right position-fixed h-100 w" id="sideb">
+        <p class="text-left  p-4 dashMenu dashMenuActive"><a href="#" class="text-white">Exams</a></p>
+        <p class="text-left  p-4 dashMenu"><a href="#">Schedules</a></p>
+        <p class="text-left  p-4 dashMenu"><a href="#">Active Exams</a></p>
+        <p class="text-left  p-4 dashMenu"><a href="#">Expired Exams</a></p>
+        <p class="text-left  p-4 dashMenu"><a href="#">Settings</a></p>
+    </div>
+    <div class="container text-center h-100 w-100 m-center m-center">
+        <span class="align-middle"><h3 class="text text-secondary">Theres no Exams created yet!</h3></span>
+        <span class="align-middle createExam"><h5><a href="#" class="btn btn-primary">Create Exam</a></h5></span>
+    </div>
+</div>

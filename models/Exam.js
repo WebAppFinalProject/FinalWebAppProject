@@ -7,6 +7,7 @@ const ExamSchema = new Schema({
     questions: [{type: Schema.Types.ObjectId, ref: 'Question'}],
     status: {type: String, enum:["activates","activated","deactivated"],default: "activates"},
     timeLimit: {type: Date, required: true},
+    students: [{type: mongoose.Schema.Types.ObjectId, ref: "User", default: null}],
     expireDate: {type: Date, required: true},
     createdAt: {type: Date, default: new Date()},
     deletedAt: {type: Date, default: null}

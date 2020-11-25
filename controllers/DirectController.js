@@ -1,9 +1,9 @@
 module.exports = {
     getIndex(req, res){
-        res.render("index",{title: "QuizZone"});
+        res.render("pages/index",{title: "QuizZone"});
     },
     getDashboard(req, res){
-        res.render("dashboard",{title: "QuizZone|Dashboard"});
+        res.render("pages/dashboard",{title: "QuizZone|Dashboard"});
     },
     getSignIn(req, res) {
         res.render('signin',{title: "QuizZone|Sign In", layout: "layouts/signinSignoutLayout"});
