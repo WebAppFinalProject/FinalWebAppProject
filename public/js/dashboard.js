@@ -197,7 +197,7 @@ $(document).ready(() => {
 //this function will loads the views for 
 // a student user
 function studentView() {
-
+    
 }
 
 
