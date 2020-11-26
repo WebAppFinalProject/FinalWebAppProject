@@ -15,6 +15,10 @@ $(document).ready(() => {
             .then((res) => {
                 $("#username").text(`  ${res.user.firstname} ${res.user.lastname}`);
                 console.log(res.user);
+                if(res.user.position == "student"){
+                    studentView();
+                    console.log("Im here");
+                }
             })
             .catch((error) => {
                 console.log(error);
@@ -197,7 +201,28 @@ $(document).ready(() => {
 //this function will loads the views for 
 // a student user
 function studentView() {
-    
+    $("#sideb").empty();
+    $("#sideb").append(
+        `<p class="text-left  p-4 dashMenu dashMenuActive"><a href="#" class="text-white">Exams</a></p>
+        <p class="text-left  p-4 dashMenu"><a href="#">Expired Exams</a></p>
+        <p class="text-left  p-4 dashMenu"><a href="#">Settings</a></p>`
+    );
+    $("#content").empty();
+    $("#content").append(
+        `<div class="container text-center h-100 w-100 m-center m-center" id="noExamJoined">
+        <span class="align-middle">
+            <h3 class="text text-secondary">Theres no Exams joined yet!</h3>
+        </span>
+        <span class="align-middle joinExam">
+            <h5><a href="#" class="btn btn-primary mt-1">Join Exam</a></h5>
+        </span>
+        </div>`
+    );
+    $("#create-cont").empty();
+    $("#create-cont").append(
+        `<span class="mr-2 btn btn-white joinExam"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;Join
+        Exam</span>`
+    );
 }
 
 

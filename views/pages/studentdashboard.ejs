@@ -1,0 +1,29 @@
+<div style="z-index: 0;">
+    <input type="hidden" id="userId" value="<%=userId%>">
+    <div class="navbar navbar-expand-md navbar-light bg-light border-bottom position-relative">
+        <a class="ml-2 btn" id="showMenu"><i class="fa fa-bars"></i></a>
+        <div class="navbar-nav ml-auto">
+            <span class="mr-2 btn btn-white joinExam"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;Join
+                Exam</span>
+        </div>
+    </div>
+    <!-- side bar -->
+    <div class="collapse border-right position-fixed h-100 bg-dark w" id="sideb">
+        <p class="text-left  p-4 dashMenu dashMenuActive"><a href="#" class="text-white">Exams</a></p>
+        <p class="text-left  p-4 dashMenu"><a href="#">Expired Exams</a></p>
+        <p class="text-left  p-4 dashMenu"><a href="#">Settings</a></p>
+    </div>
+
+ 
+
+    <!-- display if no exam created yet -->
+    <div class="container text-center h-100 w-100 m-center m-center" id="noExamJoined">
+        <span class="align-middle">
+            <h3 class="text text-secondary">Theres no Exams joined yet!</h3>
+        </span>
+        <span class="align-middle joinExam">
+            <h5><a href="#" class="btn btn-primary mt-1">Join Exam</a></h5>
+        </span>
+    </div>
+
+</div>
