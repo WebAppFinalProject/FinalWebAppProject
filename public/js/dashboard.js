@@ -53,7 +53,7 @@ $(document).ready(() => {
     //this function will show the form create exam
     $('.createExam').click(()=>{
         $('#createExamForm').toggle();
-        $("#noExam").toggle();
+        $("#noExam").hide();
     })
 
     //this method will toggle the 
@@ -61,6 +61,13 @@ $(document).ready(() => {
     $('#showMenu').click(() => {
         $("#sideb").toggle();
     });
+
+
+
+
+
+
+
     //////################## Methods To Request from the server ################/////
         //submit question multiple choice
         $('#submitMulti').click(()=>{

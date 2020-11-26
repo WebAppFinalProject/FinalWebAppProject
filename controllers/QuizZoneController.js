@@ -62,7 +62,9 @@ module.exports = {
     getExamsByauthor: async (req, res) => {
         const author = req.params.author;
         try {
-            const Exams = await Exam.find({author: author});
+            const Exams = await Exam.find({author: author})
+                .populate('author')
+                .populate('questions');
             if(!author) return res.status(400).json({message: "Something went wrong!"});
 
             res.json({message: "Successfully retrieved!", exams: Exams});
