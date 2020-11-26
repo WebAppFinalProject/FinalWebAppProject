@@ -1,6 +1,13 @@
-<div style="z-index: 0;">
+<div style="z-index: 3;">
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
     <input type="hidden" id="userId" value="<%=userId%>">
-    <div class="navbar navbar-expand-md navbar-light bg-light border-bottom position-relative">
+    <div class="navbar navbar-expand-md navbar-light bg-light border-bottom position-fixed w-100" id="sub-nav">
         <a class="ml-2 btn" id="showMenu"><i class="fa fa-bars"></i></a>
         <div class="navbar-nav ml-auto " id="create-cont">
             <span class="mr-2 btn btn-white createExam"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;Create
@@ -10,17 +17,17 @@
     </div>
     <!-- side bar -->
     <div class="collapse border-right position-fixed h-100 bg-dark w" id="sideb">
-        <p class="text-left  p-4 dashMenu dashMenuActive"><a href="#" class="text-white">Exams</a></p>
-        <p class="text-left  p-4 dashMenu"><a href="#">Schedules</a></p>
-        <p class="text-left  p-4 dashMenu"><a href="#">Active Exams</a></p>
-        <p class="text-left  p-4 dashMenu"><a href="#">Expired Exams</a></p>
-        <p class="text-left  p-4 dashMenu"><a href="#">Settings</a></p>
+        <p class="text-left  p-4 dashMenu dashMenuActive" id="examsBtn"><a href="#" class="text-white">Exams</a></p>
+        <p class="text-left  p-4 dashMenu" id="activeExamBtn"><a href="#">Active Exams</a></p>
+        <p class="text-left  p-4 dashMenu" id="expiredExamBtn"><a href="#">Expired Exams</a></p>
+        <p class="text-left  p-4 dashMenu settings"><a href="#">Settings</a></p>
     </div>
 
     <!-- this is the exam form -->
     <div id=createExamForm>
         <div class="row mt-5 border bg-light">
-            <div class="col-md-12 border bg-dark"><span class="float-right text-white" id="closeExamForm"><i class="fas fa-times-circle fa-2x"></i></span></div>
+            <div class="col-md-12 border bg-dark"><span class="float-right text-white" id="closeExamForm"><i
+                        class="fas fa-times"></i></span></div>
             <div class="col-md-12">
                 <h3 class="text-center pt-3">Create Exam</h3>
                 <form class="p-2">
@@ -100,8 +107,10 @@
                         <label>Question(required): </label>
                         <input type="text" id="questionIden" class="form-control" placeholder="Enter Question ...">
                         <label>Correct Answer(required): </label><br>
-                        <small class="text-warning"><i>Note: If there are many possible answer please specify using a <b>comma</b> ( <b>,</b> ).</i></small><br>
-                        <small class="text-warning"><i>WARNING: please follow the convention properly else it wont work properly</i></small>
+                        <small class="text-warning"><i>Note: If there are many possible answer please specify using a
+                                <b>comma</b> ( <b>,</b> ).</i></small><br>
+                        <small class="text-warning"><i>WARNING: please follow the convention properly else it wont work
+                                properly</i></small>
                         <input type="text" id="correctAnsIden" class="form-control" placeholder="Enter answer ...">
 
                         <input type="button" id="submitIden" value="Add Question"
@@ -116,7 +125,7 @@
     </div>
 
     <!-- display if no exam created yet -->
-    <div class="container-fluid" id="content">
+    <div class="row" id="content">
         <div class="container text-center h-100 w-100 m-center m-center" id="noExam">
             <span class="align-middle">
                 <h3 class="text text-secondary">Theres no Exams created yet!</h3>
@@ -126,6 +135,4 @@
             </span>
         </div>
     </div>
-    
-
 </div>

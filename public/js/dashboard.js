@@ -1,25 +1,35 @@
 $(document).ready(() => {
     //global vars
+    let isTeacher = false;
     let questionDetails = [];
     let userId = "";
+    //set the container empty
+    $("#content").empty();
+    $("#content").append(
+        ` <div class="container text-center h-100 w-100 m-center m-center" id="noExam">
+        <span class="align-middle">
+            <h3 class="text text-secondary">Retrieving Exams ...</h3>
+        </span>
+    </div>`
+    );
+    $("#noExam").hide();
 
     //chect the user id if present
     if ($("#userId").val()) {
         const id = $("#userId").val();
         userId = id;
         $(".hideIf").hide();
-
-
-
         //request the user by id
         apiRequest('/user/getuser/' + id, "get")
             .then((res) => {
                 $("#username").text(`  ${res.user.firstname} ${res.user.lastname}`);
                 console.log(res.user);
                 if (res.user.position == "student") {
+                    isTeacher = false;
                     studentView();
                 }else if(res.user.position == "teacher"){
-                    retirveExamByUserId(id);
+                   retirveExamByUserId(id);
+                   isTeacher = true;
                 }
             })
             .catch((error) => {
@@ -85,6 +95,7 @@ $(document).ready(() => {
                 "timeLimit",
             ];
             resetFields(ids);
+            $("#content").show();
         }
     });
 
@@ -92,12 +103,25 @@ $(document).ready(() => {
     $('.createExam').click(() => {
         $('#createExamForm').show();
         $("#noExam").hide();
+        $("#content").hide();
     })
 
     //this method will toggle the 
     //side bar of the dashboard
     $('#showMenu').click(() => {
         $("#sideb").toggle();
+    });
+
+    //this method will get the active exams
+    $("#activeExamBtn").click(()=>{
+        $("#content").empty();
+        retrieveExamsByStatusAndId(userId, "activated");
+    });
+
+    //this method will get the expired exams
+    $("#expiredExamBtn").click(()=>{
+        $("#content").empty();
+        retrieveExamsByStatusAndId(userId, "deactivated");
     });
 
     //////################## Methods To Request from the server ################/////
@@ -211,13 +235,16 @@ $(document).ready(() => {
                 title: $('#title').val(),
                 timeLimit: $("#timeLimit").val(),
                 expireDate: $("#expireDate").val(),
+                code: generateCode()
             }
 
             //send request to the server 
             //to save exam
-            saveExamAndQuestions(data, questionDetails);
+            saveExamAndQuestions(data, questionDetails, userId);
             ids.push("expireDate");
+            $("#createExamForm").toggle();
             resetFields(ids);
+            $("#content").show();
         }
     });
 })
@@ -265,15 +292,55 @@ function studentView() {
 function retirveExamByUserId(userId) {
     apiRequest(`/app/get/exam/${userId}`, "get")
         .then((res) => {
-            console.log(res);
+            if(res.exams.length <= 0){
+                console.log("no exams");
+                $("#noExam").show();
+            }else{
+                showExams(res.exams);
+            }
         })
         .catch((error) => {
             console.log(error);
         })
 }
 
+function retrieveExamsByStatusAndId(userId, status){
+    apiRequest(`/app/get/exam/${status}/${userId}`,"get")
+        .then((res)=>{
+            console.log(res);
+            showExams();
+        })
+        .catch((error)=>{
+            console.log(error);
+        })
+}
+
+
+//this function will show the cards of exam
+function showExams(exams){
+    $("#content").empty();
+    exams.forEach(exam => {
+        $("#content").append(
+            `<div class="col-md-3 mt-5 mx-4">
+            <div class="card bg-dark">
+                <img class="card-img-top" src="/static/img/cardbg1.jpg" alt="Card image">
+                <div class="card-body text-white">
+                    <span class="card-text">Exam title: ${exam.title}</span><br>
+                    <span class="card-text">Exam code: ${exam.code}</span>
+                    <br>
+                    <button class="btn btn-success">Activate</button>
+                    <button class="btn btn-warning">Edit</button>
+                    <button class="btn btn-secondary">View</button>
+                </div>
+            </div>
+        </div>`
+        );
+    });
+}
+
+
 //this function will save the exam ant the questions to the database
-async function saveExamAndQuestions(Exam, Questions) {
+async function saveExamAndQuestions(Exam, Questions, userId) {
     let questionIds = [];
     for (let question of Questions) {
         //save every question created
@@ -290,9 +357,11 @@ async function saveExamAndQuestions(Exam, Questions) {
     apiRequest("/app/add/exam", "post", Exam)
         .then((res) => {
             alert(res.message);
+            retirveExamByUserId(userId);
         })
         .catch((error) => {
             console.log(error);
         })
 
 }
+

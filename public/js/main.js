@@ -20,6 +20,13 @@ const apiRequest = (url, method, data = null) => {
     });
 }
 
+//helper function
+
+//this function will generate random strings as code
+function generateCode(){
+    return Math.random().toString(36).slice(2);
+}
+
 
 //validation for forms
 //validate email
