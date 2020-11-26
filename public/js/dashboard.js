@@ -15,6 +15,10 @@ $(document).ready(() => {
             .then((res) => {
                 $("#username").text(`  ${res.user.firstname} ${res.user.lastname}`);
                 console.log(res.user);
+                if (res.user.position == "student") {
+                    studentView();
+                    console.log("Im here");
+                }
             })
             .catch((error) => {
                 console.log(error);
@@ -26,7 +30,7 @@ $(document).ready(() => {
 
     //validate Expiring date
 
-    $('#expireDate').on("change", ()=>{
+    $('#expireDate').on("change", () => {
         validateDate($('#expireDate').val());
     })
 
@@ -57,9 +61,31 @@ $(document).ready(() => {
         $('#formQuestion').toggle();
     })
 
+    //this will close the exam
+    $('#closeExamForm').click(() => {
+        if (confirm("Do you really want to cancel exam creation?")) {
+            $("#createExamForm").hide();
+            let ids = [
+                "questionMultiple",
+                "typeMulti",
+                "correctAnsMulti",
+                "a",
+                "b",
+                "c",
+                "d",
+                "questionTrue",
+                "correctAnsTrue",
+                "title",
+                "expireDate",
+                "timeLimit",
+            ];
+            resetFields(ids);
+        }
+    });
+
     //this function will show the form create exam
     $('.createExam').click(() => {
-        $('#createExamForm').toggle();
+        $('#createExamForm').show();
         $("#noExam").hide();
     })
 
@@ -89,10 +115,10 @@ $(document).ready(() => {
         ];
         //use validation here
         let errors = AvoidEmpty(ids);
-        
-        if(isContainsError(errors)){
+
+        if (isContainsError(errors)) {
             showErrors(errors);
-        }else{
+        } else {
 
             let data = {
                 question: $("#questionMultiple").val(),
@@ -105,9 +131,10 @@ $(document).ready(() => {
                     $("#d").val()
                 ]
             };
-    
+
             questionDetails.push(data);
-        };  
+            resetFields(ids);
+        };
     });
 
 
@@ -120,9 +147,9 @@ $(document).ready(() => {
         //use validation here
         let errors = AvoidEmpty(ids);
 
-        if(isContainsError(errors)){
+        if (isContainsError(errors)) {
             showErrors(errors);
-        }else{
+        } else {
             let data = {
                 question: $("#questionTrue").val(),
                 type: $('#typeTrue').val(),
@@ -134,8 +161,9 @@ $(document).ready(() => {
             };
 
             questionDetails.push(data);
+            resetFields(ids);
         }
-        
+
     });
 
     //submits the identification question
@@ -147,19 +175,22 @@ $(document).ready(() => {
 
         //use validation here
         let errors = AvoidEmpty(ids);
-        if(isContainsError(errors)){
+        if (isContainsError(errors)) {
             showErrors(errors);
-        }else{
+        } else {
             let data = {
                 question: $("#questionIden").val(),
                 type: $('#typeIden').val(),
                 answerKey: $("#correctAnsIden").val(),
                 choices: null
             }
-    
+
             questionDetails.push(data);
+            resetFields(ids);
         }
-        
+
+
+
     });
 
     //submit the exam
@@ -170,21 +201,22 @@ $(document).ready(() => {
         ];
         //use validation here
         let errors = AvoidEmpty(ids);
-        if(isContainsError(errors)){
+        if (isContainsError(errors)) {
             showErrors(errors);
-        }else{
+        } else {
             let data = {
                 author: userId,
                 title: $('#title').val(),
                 timeLimit: $("#timeLimit").val(),
                 expireDate: $("#expireDate").val(),
             }
-    
+
             //send request to the server 
             //to save exam
-            saveExamAndQuestions(data, questionDetails);    
+            saveExamAndQuestions(data, questionDetails);
+            ids.push("expireDate");
+            resetFields(ids);
         }
-        
     });
 })
 
@@ -195,7 +227,28 @@ $(document).ready(() => {
 //this function will loads the views for 
 // a student user
 function studentView() {
-
+    $("#sideb").empty();
+    $("#sideb").append(
+        `<p class="text-left  p-4 dashMenu dashMenuActive"><a href="#" class="text-white">Exams</a></p>
+        <p class="text-left  p-4 dashMenu"><a href="#">Expired Exams</a></p>
+        <p class="text-left  p-4 dashMenu"><a href="#">Settings</a></p>`
+    );
+    $("#content").empty();
+    $("#content").append(
+        `<div class="container text-center h-100 w-100 m-center m-center" id="noExamJoined">
+        <span class="align-middle">
+            <h3 class="text text-secondary">Theres no Exams joined yet!</h3>
+        </span>
+        <span class="align-middle joinExam">
+            <h5><a href="#" class="btn btn-primary mt-1">Join Exam</a></h5>
+        </span>
+        </div>`
+    );
+    $("#create-cont").empty();
+    $("#create-cont").append(
+        `<span class="mr-2 btn btn-white joinExam"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;Join
+        Exam</span>`
+    );
 }
 
 
@@ -217,6 +270,7 @@ function retirveExamByUserId(userId) {
         })
 }
 
+//this function will save the exam ant the questions to the database
 async function saveExamAndQuestions(Exam, Questions) {
     let questionIds = [];
     for (let question of Questions) {

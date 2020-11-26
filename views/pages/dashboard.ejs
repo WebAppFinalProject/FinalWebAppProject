@@ -2,7 +2,7 @@
     <input type="hidden" id="userId" value="<%=userId%>">
     <div class="navbar navbar-expand-md navbar-light bg-light border-bottom position-relative">
         <a class="ml-2 btn" id="showMenu"><i class="fa fa-bars"></i></a>
-        <div class="navbar-nav ml-auto">
+        <div class="navbar-nav ml-auto " id="create-cont">
             <span class="mr-2 btn btn-white createExam"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;Create
                 Exam</span>
 
@@ -20,6 +20,7 @@
     <!-- this is the exam form -->
     <div id=createExamForm>
         <div class="row mt-5 border bg-light">
+            <div class="col-md-12 border bg-dark"><span class="float-right text-white" id="closeExamForm"><i class="fas fa-times-circle fa-2x"></i></span></div>
             <div class="col-md-12">
                 <h3 class="text-center pt-3">Create Exam</h3>
                 <form class="p-2">
@@ -115,13 +116,16 @@
     </div>
 
     <!-- display if no exam created yet -->
-    <div class="container text-center h-100 w-100 m-center m-center" id="noExam">
-        <span class="align-middle">
-            <h3 class="text text-secondary">Theres no Exams created yet!</h3>
-        </span>
-        <span class="align-middle createExam">
-            <h5><a href="#" class="btn btn-primary mt-1">Create Exam</a></h5>
-        </span>
+    <div class="container-fluid" id="content">
+        <div class="container text-center h-100 w-100 m-center m-center" id="noExam">
+            <span class="align-middle">
+                <h3 class="text text-secondary">Theres no Exams created yet!</h3>
+            </span>
+            <span class="align-middle createExam">
+                <h5><a href="#" class="btn btn-primary mt-1">Create Exam</a></h5>
+            </span>
+        </div>
     </div>
+    
 
 </div>
