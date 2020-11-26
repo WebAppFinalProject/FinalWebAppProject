@@ -24,6 +24,11 @@ $(document).ready(() => {
         $(".showIf").hide();
     }
 
+    //validate Expiring date
+
+    $('#expireDate').on("change", ()=>{
+        validateDate($('#expireDate').val());
+    })
 
     $("#1").show();
     //change the view when the user changes the type of question
@@ -161,7 +166,6 @@ $(document).ready(() => {
     $('#submitCreateExam').click(() => {
         let ids = [
             "title",
-            "expireDate",
             "timeLimit"
         ];
         //use validation here

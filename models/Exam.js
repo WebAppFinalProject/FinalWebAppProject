@@ -8,7 +8,7 @@ const ExamSchema = new Schema({
     status: {type: String, enum:["activates","activated","deactivated"],default: "activates"},
     timeLimit: {type: Number, required: true},
     students: [{type: mongoose.Schema.Types.ObjectId, ref: "User", default: null}],
-    expireDate: {type: Date, required: true},
+    expireDate: {type: Number},
     createdAt: {type: Date, default: new Date()},
     deletedAt: {type: Date, default: null}
 });
