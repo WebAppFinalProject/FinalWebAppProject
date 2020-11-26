@@ -3,7 +3,7 @@ module.exports = {
         res.render("pages/index",{title: "QuizZone"});
     },
     getDashboard(req, res){
-        res.render("pages/dashboard",{title: "QuizZone|Dashboard"});
+        res.render("pages/dashboard",{title: "QuizZone|Dashboard",userId:req.user.userId});
     },
     getSignIn(req, res) {
         res.render('signin',{title: "QuizZone|Sign In", layout: "layouts/signinSignoutLayout"});

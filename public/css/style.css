@@ -133,9 +133,25 @@ body {
 .typesHide {
     display: none;
 }
+
 .typesShow {
     display: block;
 }
+
 #submitCreateExam {
     margin-right: 20px;
 }
+.showIf {
+    cursor: pointer;
+}
+
+#username:hover {
+    color: white;
+}
+
+.dropdown-cont {
+    position: absolute;
+    z-index: 1;
+    left: 85%;
+    top: 90px;
+} 

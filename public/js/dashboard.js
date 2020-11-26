@@ -1,4 +1,28 @@
 $(document).ready(() => {
+    //global vars
+    let questionIds = [];
+    let userId = "";
+
+    //chect the user id if present
+    if($("#userId").val()){
+        const id = $("#userId").val();
+        userId = id;
+        retirveExamByUserId(id);
+        $(".hideIf").hide();
+
+        //request the user by id
+        apiRequest('/user/getuser/'+id,"get")
+            .then((res)=>{
+                $("#username").text(`  ${res.user.firstname} ${res.user.lastname}`);
+            })
+            .catch((error)=>{
+                console.log(error);
+            })
+    }else{
+        $(".showIf").hide();
+    }
+    
+
     $("#1").show();
     //change the view when the user changes the type of question
     $("#multiplechoice").click((e)=>{
@@ -32,68 +56,28 @@ $(document).ready(() => {
         $("#noExam").toggle();
     })
 
-    //this function will close the modal
-    $('#closeModal').click(()=>{
-        $('#createExamForm').toggle();
-    });
     //this method will toggle the 
     //side bar of the dashboard
     $('#showMenu').click(() => {
         $("#sideb").toggle();
     });
     //////################## Methods To Request from the server ################/////
-        //test sample data for the exams
-        let ExamData = [
-            {
-                title: "P.E Exam",
-                status: "activates",
-                expireDate: "2020-13-12",
-                timeLimit: 40, //this should be minutes
-            },
-            {
-                title: "English Exam",
-                status: "activates",
-                expireDate: "2020-14-12",
-                timeLimit: 30, //this should be minutes
-            },
-            {
-                title: "Math Exam",
-                status: "activates",
-                expireDate: "2020-15-12",
-                timeLimit: 10, //this should be minutes
-            },
-            {
-                title: "Filipino Exam",
-                status: "activates",
-                expireDate: "2020-16-12",
-                timeLimit: 50, //this should be minutes
-            },
-            {
-                title: "Science Exam",
-                status: "activates",
-                expireDate: "2020-17-12",
-                timeLimit: 60, //this should be minutes
-            },
-        ];
-        // this is temporary
-        //this will display the exams 
-        ExamData.forEach(exam => {
-            
-        })
-/**
- * question: {type: String, required: true},
-    type: {type: String, enum: ["multiplechoice","trueorfalse","identification"], required: true},
-    answerKey: [{type: String, required: true}],
-    choices: [{type: String}],
-    createdAt: {type: Date, default: new Date()},
-    deletedAt: {type: Date, default: null} 
- */
         //submit question multiple choice
         $('#submitMulti').click(()=>{
-            //test
+            let ids = [
+                "questionMultiple",
+                "typeMulti",
+                "correctAnsMulti",
+                "a",
+                "b",
+                "c",
+                "d"
+            ];
+            //use validation here
+
             let data = {
                 question: $("#questionMultiple").val(),
-                type: $("#type").val(),
+                type: $("#typeMulti").val(),
                 answerKey: $("#correctAnsMulti").val(),
                 choices: [
                     $("#a").val(),
@@ -103,14 +87,110 @@ $(document).ready(() => {
                 ]
             };
 
-            apiRequest("/add/question", "post", data)
+            apiRequest("/app/add/question", "post", data)
                 .then((res)=>{
-                    console.log(res);
+                    alert(res.message);
+                    questionIds.push(res.questionId);
                 })
                 .catch((error)=>{
                     console.log(error);
                 })
-        })
-    
+        });
 
+        //submits the true or false question
+        $('#submitTrue').click(()=>{
+            let ids = [
+                "questionTrue",
+                "correctAnsTrue"
+            ];
+            //use validation here
+            let data = {
+                question: $("#questionTrue").val(),
+                type: $('#typeTrue').val(),
+                answerKey: $("#correctAnsTrue").val(),
+                choices: [
+                    "true",
+                    "false"
+                ]
+            };
+            //send it to the server
+            apiRequest('/app/add/question',"post", data)
+                .then((res)=>{
+                    alert(res.message);
+                    questionIds.push(res.questionId);
+                })
+                .catch((error)=>{
+                    console.log(error);
+                });
+        });
+
+        //submits the identification question
+        $("#submitIden").click(()=>{
+            let ids = [
+                "questionIden",
+                "correctAnsIden"
+            ];
+
+            //use validation here
+            let data = {
+                question: $("#questionIden").val(),
+                type: $('#typeIden').val(),
+                answerKey: $("#correctAnsIden").val(),
+                choices: null
+            }
+
+            //send it to the server
+            apiRequest("/app/add/question","post", data)
+                .then((res)=>{
+                    alert(res.message);
+                    questionIds.push(res.questionId);
+                })
+                .catch((error)=>{
+                    console.log(error);
+                });
+        });
+    
+        //submit the exam
+        $('#submitCreateExam').click(()=>{
+            let ids = [
+                "title",
+                "expireDate",
+                "timeLimit"
+            ];
+            //use validation here
+            let data = {
+                author: userId,
+                title: $('#title').val(),
+                questions: questionIds,
+                timeLimit: $("#timeLimit").val(),
+                expireDate: $("#expireDate").val(),
+            }
+            
+            //send request to the server 
+            //to save exam
+            apiRequest("/app/add/exam","post", data)
+                .then((res)=>{
+                    alert(res.message);
+                })
+                .catch((error)=>{
+                    console.log(error);
+                })
+
+        });
 })
+/**
+ * THIS FUNCTION CREATED BY THE DEVELOPERS
+ * PLEASE DONT EDIT IT!
+ */
+
+ //this fucntion will get all the exam created by the
+ //user login
+ function retirveExamByUserId(userId) {
+     apiRequest(`/app/get/exam/${userId}`,"get")
+        .then((res)=>{
+            console.log(res);
+        })
+        .catch((error)=>{
+            console.log(error);
+        })
+ }

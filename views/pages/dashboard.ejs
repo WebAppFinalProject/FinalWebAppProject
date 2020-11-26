@@ -1,4 +1,5 @@
 <div style="z-index: 0;">
+    <input type="hidden" id="userId" value="<%=userId%>">
     <div class="navbar navbar-expand-md navbar-light bg-light border-bottom position-relative">
         <a class="ml-2 btn" id="showMenu"><i class="fa fa-bars"></i></a>
         <div class="navbar-nav ml-auto">
@@ -7,7 +8,7 @@
         </div>
     </div>
     <!-- side bar -->
-    <div class="collapse border-right position-fixed h-100 w" id="sideb">
+    <div class="collapse border-right position-fixed h-100 bg-dark w" id="sideb">
         <p class="text-left  p-4 dashMenu dashMenuActive"><a href="#" class="text-white">Exams</a></p>
         <p class="text-left  p-4 dashMenu"><a href="#">Schedules</a></p>
         <p class="text-left  p-4 dashMenu"><a href="#">Active Exams</a></p>
@@ -45,7 +46,7 @@
                     <h4 class="text-center mt-3">Multiple Choice</h4>
                     <form class="form-group">
                         <label>Question: </label>
-                        <input type="hidden" value="multiplechoice" id="type">
+                        <input type="hidden" value="multiplechoice" id="typeMulti">
                         <input type="text" id="questionMultiple" class="form-control" placeholder="Enter Question ...">
                         <div class="mt-4 ">
                             <p>Enter Choices:</p>
@@ -72,6 +73,7 @@
                 <div id="2" class="typesHide border">
                     <h4 class="text-center mt-3">True or False</h4>
                     <form>
+                        <input type="hidden" value="trueorfalse" id="typeTrue">
                         <label>Question: </label>
                         <input type="text" id="questionTrue" class="form-control" placeholder="Enter Question ...">
                         <p class="  mt-4">Correct Answer:</p>
@@ -89,10 +91,11 @@
                 <div id="3" class="typesHide border">
                     <h4 class="text-center mt-3">Identification</h4>
                     <form>
+                        <input type="hidden" value="identification" id="typeIden">
                         <label>Question: </label>
                         <input type="text" id="questionIden" class="form-control" placeholder="Enter Question ...">    
                         <label>Correct Answer: </label>
-                        <input type="text" id="questionTrue" class="form-control" placeholder="Enter answer ..."> 
+                        <input type="text" id="correctAnsIden" class="form-control" placeholder="Enter answer ..."> 
 
                         <input type="button" id="submitIden" value="Add Question" class="btn btn-secondary float-right mt-2 mr-1">
                         <br>

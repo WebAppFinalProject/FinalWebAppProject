@@ -45,11 +45,11 @@ app.use("/",DirectRoute);
 
 //use quiz zone routes
 const QuizZoneRoutes = require('./routes/QuizZoneRoutes');
-app.use(QuizZoneRoutes);
+app.use('/app',QuizZoneRoutes);
 
 //use account routes
 const AccountRoutes = require('./modules/account/routes/AccountRoute');
-app.use(AccountRoutes);
+app.use('/user',AccountRoutes);
 
 
 //handles 404 urls

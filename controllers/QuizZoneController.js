@@ -28,7 +28,7 @@ module.exports = {
 
             if(!newlyAddedQuestion) return res.status(400).json({message: "Something went wrong!"});
 
-            res.json({message: "Successfully added", examId: newlyAddedQuestion._id});
+            res.json({message: "Successfully added", questionId: newlyAddedQuestion._id});
         } catch (error) {
             res.status(500).json({message: error, error: true});
         } 
@@ -53,6 +53,19 @@ module.exports = {
             if(!Questions) return res.status(400).json({message: "Something went wrong!"});
 
             res.json({message: "Successfully retrieve", questions: Questions});
+        } catch (error) {
+            res.status(500).json({message: error, error: true});
+        }
+    },
+    
+    //get exams by author 
+    getExamsByauthor: async (req, res) => {
+        const author = req.params.author;
+        try {
+            const Exams = await Exam.find({author: author});
+            if(!author) return res.status(400).json({message: "Something went wrong!"});
+
+            res.json({message: "Successfully retrieved!", exams: Exams});
         } catch (error) {
             res.status(500).json({message: error, error: true});
         }

@@ -41,10 +41,19 @@ module.exports = {
                 if (err) {
                     return res.sendStatus(403);
                 }
+                req.user = user;
+                next();
             });
-            next();
         } else {
             res.redirect('/signin');
         }
+    },
+    //this only for logout
+    clearCookies: (req, res, next) =>{
+        const token = req.cookies.token;
+        if(token) {
+            res.clearCookie('token');
+        }
+        next();
     }
 }
