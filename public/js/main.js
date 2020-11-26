@@ -53,6 +53,7 @@ function resetFields(ids) {
 function isContainsError(errors){
     for(let key in errors){
         if(errors[key]){
+            alert("Please supply all fields!");
             return true;
         }
     }

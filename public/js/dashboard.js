@@ -7,8 +7,9 @@ $(document).ready(() => {
     if ($("#userId").val()) {
         const id = $("#userId").val();
         userId = id;
-        retirveExamByUserId(id);
         $(".hideIf").hide();
+
+
 
         //request the user by id
         apiRequest('/user/getuser/' + id, "get")
@@ -17,12 +18,16 @@ $(document).ready(() => {
                 console.log(res.user);
                 if(res.user.position == "student"){
                     studentView();
-                    console.log("Im here");
+                }else if(res.user.position == "teacher"){
+                    retirveExamByUserId(id);
                 }
             })
             .catch((error) => {
                 console.log(error);
             })
+
+
+
 
     } else {
         $(".showIf").hide();
@@ -90,12 +95,6 @@ $(document).ready(() => {
         $("#sideb").toggle();
     });
 
-
-
-
-
-
-
     //////################## Methods To Request from the server ################/////
     //submit question multiple choice
     $('#submitMulti').click(() => {
@@ -109,24 +108,30 @@ $(document).ready(() => {
             "d"
         ];
         //use validation here
+        let errors = AvoidEmpty(ids);
+        
+        if(isContainsError(errors)){
+            showErrors(errors);
+        }else{
 
-        let data = {
-            question: $("#questionMultiple").val(),
-            type: $("#typeMulti").val(),
-            answerKey: $("#correctAnsMulti").val(),
-            choices: [
-                $("#a").val(),
-                $("#b").val(),
-                $("#c").val(),
-                $("#d").val()
-            ]
-        };
-
-        questionDetails.push(data);
-        resetFields(ids);
-
-
+            let data = {
+                question: $("#questionMultiple").val(),
+                type: $("#typeMulti").val(),
+                answerKey: $("#correctAnsMulti").val(),
+                choices: [
+                    $("#a").val(),
+                    $("#b").val(),
+                    $("#c").val(),
+                    $("#d").val()
+                ]
+            };
+    
+            questionDetails.push(data);
+            alert("question successfully added!");
+            resetFields(ids);
+        };  
     });
+
 
     //submits the true or false question
     $('#submitTrue').click(() => {
@@ -134,20 +139,27 @@ $(document).ready(() => {
             "questionTrue",
             "correctAnsTrue"
         ];
-        //use validation here
-        let data = {
-            question: $("#questionTrue").val(),
-            type: $('#typeTrue').val(),
-            answerKey: $("#correctAnsTrue").val(),
-            choices: [
-                "true",
-                "false"
-            ]
-        };
 
-        questionDetails.push(data);
-        resetFields(ids);
+        let errors = AvoidEmpty(ids);
 
+        if(isContainsError(errors)){
+            showErrors(errors);
+        }else{
+            let data = {
+                question: $("#questionTrue").val(),
+                type: $('#typeTrue').val(),
+                answerKey: $("#correctAnsTrue").val(),
+                choices: [
+                    "true",
+                    "false"
+                ]
+            };
+
+            questionDetails.push(data);
+            alert("question successfully added!");
+            resetFields(ids);
+        }
+        
     });
 
     //submits the identification question
@@ -158,16 +170,25 @@ $(document).ready(() => {
         ];
 
         //use validation here
-        let data = {
-            question: $("#questionIden").val(),
-            type: $('#typeIden').val(),
-            answerKey: $("#correctAnsIden").val(),
-            choices: null
+        let errors = AvoidEmpty(ids);
+        if(isContainsError(errors)){
+            showErrors(errors);
+        }else{
+            let data = {
+                question: $("#questionIden").val(),
+                type: $('#typeIden').val(),
+                answerKey: $("#correctAnsIden").val(),
+                choices: null
+            }
+    
+            questionDetails.push(data);
+            alert("question successfully added!");
+            resetFields(ids);
         }
 
-        questionDetails.push(data);
-        resetFields(ids);
+        
 
+        
     });
 
     //submit the exam
@@ -178,19 +199,22 @@ $(document).ready(() => {
             "timeLimit"
         ];
         //use validation here
-        let data = {
-            author: userId,
-            title: $('#title').val(),
-            questions: questionIds,
-            timeLimit: $("#timeLimit").val(),
-            expireDate: $("#expireDate").val(),
+        let errors = AvoidEmpty(ids);
+        if(isContainsError(errors)){
+            showErrors(errors);
+        }else{
+            let data = {
+                author: userId,
+                title: $('#title').val(),
+                timeLimit: $("#timeLimit").val(),
+                expireDate: $("#expireDate").val(),
+            }
+    
+            //send request to the server 
+            //to save exam
+            saveExamAndQuestions(data, questionDetails); 
+            resetFields(ids);   
         }
-
-        //send request to the server 
-        //to save exam
-        saveExamAndQuestions(data, questionDetails);
-        resetFields(ids);
-
     });
 })
 
@@ -251,7 +275,6 @@ async function saveExamAndQuestions(Exam, Questions) {
         //save every question created
         await apiRequest("/app/add/question", "post", question)
             .then((res) => {
-                alert(res.message);
                 questionIds.push(res.questionId);
             })
             .catch((error) => {

@@ -50,7 +50,6 @@ $(document).ready(() => {
                 console.log(errors);
                 if (isContainsError(errors)) {
                     showErrors(errors);
-                    alert("Please supply the needed Informatiom!");
                 } else {
                     let data = {
                         firstname: $("#firstname").val(),
@@ -60,9 +59,9 @@ $(document).ready(() => {
                         position: $("#position").val()
                     };
                     apiRequest("/user/signup", "post", data)
-                        .then((res) => {        
+                        .then((res) => {      
+                            alert("Successfully signed up!");  
                             window.location.href = res.url;
-                            console.log(res);
                         })
                         .catch((error) => {
                             console.log(error);
@@ -104,7 +103,7 @@ $(document).ready(() => {
                 };
                 apiRequest("/user/signin", "post", data)
                     .then((res) => {
-                        console.log(res);
+                        alert("successfully signed in!");
                         localStorage.setItem("token", res.token);
                         window.location.href = res.url;
                     })
@@ -120,7 +119,6 @@ $(document).ready(() => {
             $("#emailSignin").attr("placeholder","Invalid Email Address");
         }
     });
-
 });
 
 function incrementIndex(n, startingPoint) {
