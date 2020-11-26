@@ -24,3 +24,4 @@ const apiRequest = (url, method, data = null) => {
 //validation for forms
 //validate email
 //make sure all fields are not empty
+

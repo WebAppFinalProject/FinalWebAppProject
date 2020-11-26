@@ -26,12 +26,13 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ml-auto">
-                <a href="/signin" class="nav-item nav-link ">Sign in</a>
-                <a href="/signup" class="nav-item nav-link ">Sign up</a>
+                <a href="/signin" class="nav-item nav-link hideIf">Sign in</a>
+                <a href="/signup" class="nav-item nav-link hideIf">Sign up</a>
+                <span class="nav-item nav-link text-primary showIf"><i class="far fa-user-circle fa-sm" id="username"> &nbsp;Username</i></span>
+                <span class="nav-item nav-link text-primary showIf"><a href="/signout"><i class="fas fa-sign-out-alt fa-sm" aria-hidden="true">&nbsp;Sign out</i></a></span>
             </div>
         </div>
     </div>
-
     <!-- this is the body part -->
 
     <%- body %>

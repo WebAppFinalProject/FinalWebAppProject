@@ -41,7 +41,7 @@ $(document).ready(() => {
                 password: $("#password").val(),
                 position: $("#position").val()
             };
-            apiRequest("/signup", "post", data)
+            apiRequest("/user/signup", "post", data)
                 .then((res) => {
 
                     window.location.href = res.url;
@@ -63,7 +63,7 @@ $(document).ready(() => {
             email: $("#emailSignin").val(),
             password: $("#passwordSignin").val()
         };
-        apiRequest("/signin", "post", data)
+        apiRequest("/user/signin", "post", data)
             .then((res) => {
                 console.log(res);
                 localStorage.setItem("token", res.token);

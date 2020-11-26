@@ -3,8 +3,8 @@ const Schema = mongoose.Schema;
 
 const QuestionSchema = new Schema({
     question: {type: String, required: true},
-    type: {type: String, enum: ["multiple choice","true or false","identification"], required: true},
-    answerKey: [{type: String, required: true}],
+    type: {type: String, enum: ["multiplechoice","trueorfalse","identification"], required: true},
+    answerKey: {type: String, required: true},
     choices: [{type: String}],
     createdAt: {type: Date, default: new Date()},
     deletedAt: {type: Date, default: null} 
