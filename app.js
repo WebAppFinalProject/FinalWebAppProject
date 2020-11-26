@@ -2,10 +2,13 @@ const express = require('express');
 const app = express();
 const expressEjsLayout = require('express-ejs-layouts');
 const path = require('path');
+const cookieParser = require('cookie-parser');
 //use .env file
 require('dotenv').config();
 const PORT = process.env.PORT || 4000;
 
+//use cookie-parser middleware
+app.use(cookieParser());
 
 //set view engine
 app.set("view engine","ejs");
@@ -17,6 +20,9 @@ app.use(expressEjsLayout);
 app.set('layout','layouts/layout');
 app.set("layout extractScripts", true);
 app.set("layout extractStyles", true);
+
+//require authorization
+const AUTH = require('./middlewares/Authorization');
 
 //let your app handles json
 app.use(express.json());
@@ -37,9 +43,13 @@ connect();
 const DirectRoute = require('./routes/DirectRoute');
 app.use("/",DirectRoute);
 
+//use quiz zone routes
+const QuizZoneRoutes = require('./routes/QuizZoneRoutes');
+app.use('/app',QuizZoneRoutes);
+
 //use account routes
 const AccountRoutes = require('./modules/account/routes/AccountRoute');
-app.use(AccountRoutes);
+app.use('/user',AccountRoutes);
 
 
 //handles 404 urls

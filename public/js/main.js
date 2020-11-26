@@ -25,23 +25,20 @@ const apiRequest = (url, method, data = null) => {
 //validate email
 //make sure all fields are not empty
 
-function ValidateEmail(email) {
+function ValidateEmail(emailId) {
     var mailformat = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-    if (email.match(mailformat)) {
-        alert("Valid email address!");
-        return true;
-    }
-    else {
+    if (!$(`#${emailId}`).val().match(mailformat)) {
         alert("You have entered an invalid email address!");
         return false;
     }
+    return true;
 }
 
 function AvoidEmpty(ids){
     let errors = {};
-    for(let id in ids){
+    for(let id of ids){
         if($(`#${id}`).val() == ""){
-            errors[id] = `${id} should not be empty!`;
+            errors[id] = `This field should not be empty!`;
         }
     }
     return errors;
@@ -57,3 +54,9 @@ function isContainsError(errors){
 }
 
 
+function showErrors(errors){
+    for(let key in errors){
+        $(`#${key}`).attr("placeholder",errors[key])
+            .css({"border": "solid 2px red"});
+    }
+}

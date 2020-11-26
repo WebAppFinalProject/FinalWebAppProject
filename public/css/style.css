@@ -1,3 +1,4 @@
+/* this is for the landing pages designs */
 body {
     padding: 0px;
     margin: 0px; 
@@ -81,4 +82,76 @@ body {
     left: 0%;
 }
 
+.btn-blue {
+    background-color: blue;
+}
+.btn-blue:hover {
+    background: #731397;
+}
+.btn-white:hover {
+    background: #1282dd;
+}
+.w {
+    width: 200px;
+}
 
+/* this is for dashboard styles */
+/* adds animation to side bar */
+.m-center {
+    margin-top: 10%;
+}
+
+@keyframes sidemove {
+    from {left: -200px;}
+    to {left: 0px;}
+}
+
+@keyframes examFormMove {
+    from {top: -200px;}
+    to {top: 0px;}
+}
+
+#createExamForm {
+    display: none;
+    position: relative;
+    z-index: 1;
+    width: 60%;
+    margin-left: 20%;
+    animation: examFormMove 1s 1;
+}
+
+.dashMenu:hover {
+    background-color: rgb(163, 168, 172);
+}
+
+#sideb {
+    animation: sidemove 1s 1;
+}
+.dashMenuActive {
+    background-color: rgb(163, 168, 172);
+}
+.typesHide {
+    display: none;
+}
+
+.typesShow {
+    display: block;
+}
+
+#submitCreateExam {
+    margin-right: 20px;
+}
+.showIf {
+    cursor: pointer;
+}
+
+#username:hover {
+    color: white;
+}
+
+.dropdown-cont {
+    position: absolute;
+    z-index: 1;
+    left: 85%;
+    top: 90px;
+} 

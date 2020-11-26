@@ -1,0 +1,128 @@
+<div style="z-index: 0;">
+    <input type="hidden" id="userId" value="<%=userId%>">
+    <div class="navbar navbar-expand-md navbar-light bg-light border-bottom position-relative">
+        <a class="ml-2 btn" id="showMenu"><i class="fa fa-bars"></i></a>
+        <div class="navbar-nav ml-auto">
+            <span class="mr-2 btn btn-white createExam"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;Create
+                Exam</span>
+
+        </div>
+    </div>
+    <!-- side bar -->
+    <div class="collapse border-right position-fixed h-100 bg-dark w" id="sideb">
+        <p class="text-left  p-4 dashMenu dashMenuActive"><a href="#" class="text-white">Exams</a></p>
+        <p class="text-left  p-4 dashMenu"><a href="#">Schedules</a></p>
+        <p class="text-left  p-4 dashMenu"><a href="#">Active Exams</a></p>
+        <p class="text-left  p-4 dashMenu"><a href="#">Expired Exams</a></p>
+        <p class="text-left  p-4 dashMenu"><a href="#">Settings</a></p>
+    </div>
+
+    <!-- this is the exam form -->
+    <div id=createExamForm>
+        <div class="row mt-5 border bg-light">
+            <div class="col-md-12">
+                <h3 class="text-center pt-3">Create Exam</h3>
+                <form class="p-2">
+                    <label for="title" class="font-weight-bold">Title:</label>
+                    <input type="text" id="title" class="form-control" placeholder="Exam Title ...">
+                    <br>
+                    <label for="expireDate" class="font-weight-bold">Expiration Date and Time:</label>
+                    <input type="datetime-local" id="expireDate" class="form-control " placeholder="">
+                    <br>
+                    <label for="timeLimit" class="font-weight-bold">Time Limit(minutes):</label>
+                    <input type="number" id="timeLimit" class="form-control " placeholder="Enter number of minutes">
+
+                </form>
+                <br>
+                <a href="#" id="addQuestion" class="mb-3">Create questions&nbsp;&nbsp;<i class="fas fa-plus"></i></a>
+            </div>
+            <div class="col-md-12 collapse" id="formQuestion">
+                <label for="">Choose Question Type</label>
+                <nav class="nav bg-light">
+                    <a id="multiplechoice" class="ml-5 btn btn">Multiple Choice</a>
+                    <a id="trueorfalse" class="ml-5 btn">True or False</a>
+                    <a id="identification" class="ml-5 btn">Identification</a>
+                </nav>
+                <div id="1" class="border">
+                    <h4 class="text-center mt-3">Multiple Choice</h4>
+                    <form class="form-group">
+                        <label>Question: </label>
+                        <input type="hidden" value="multiplechoice" id="typeMulti">
+                        <input type="text" id="questionMultiple" class="form-control" placeholder="Enter Question ...">
+                        <div class="mt-4 ">
+                            <p>Enter Choices:</p>
+                            <label>A: <input id="a" type="text"></label><br>
+                            <label>B: <input id="b" type="text"></label><br>
+                            <label>C: <input id="c" type="text"></label><br>
+                            <label>D: <input id="d" type="text"></label>
+                        </div>
+                        <p class="mt-4">Correct Answer:</p>
+
+                        <select class="form-control" name="" id="correctAnsMulti">
+                            <option value=""></option>
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                            <option value="D">D</option>
+                        </select>
+                        <br>
+
+                        <input type="button" id="submitMulti" value="Add Question"
+                            class="btn btn-secondary float-right mt-2 mr-1">
+                        <br>
+                        <br>
+                    </form>
+                </div>
+                <div id="2" class="typesHide border">
+                    <h4 class="text-center mt-3">True or False</h4>
+                    <form>
+                        <input type="hidden" value="trueorfalse" id="typeTrue">
+                        <label>Question: </label>
+                        <input type="text" id="questionTrue" class="form-control" placeholder="Enter Question ...">
+                        <p class="  mt-4">Correct Answer:</p>
+
+                        <select name="" class="form-control" id="correctAnsTrue">
+                            <option value=""></option>
+                            <option value="true">True</option>
+                            <option value="false">False</option>
+                        </select>
+
+                        <input type="button" id="submitTrue" value="Add Question"
+                            class="btn btn-secondary float-right mt-2 mr-1">
+                        <br>
+                        <br>
+                    </form>
+                </div>
+                <div id="3" class="typesHide border">
+                    <h4 class="text-center mt-3">Identification</h4>
+                    <form>
+                        <input type="hidden" value="identification" id="typeIden">
+                        <label>Question: </label>
+                        <input type="text" id="questionIden" class="form-control" placeholder="Enter Question ...">
+                        <label>Correct Answer: </label><br>
+                        <small class="text-warning"><i>Note: If there are many possible answer please specify using a <b>comma</b> ( <b>,</b> ).</i></small><br>
+                        <small class="text-warning"><i>WARNING: please follow the convention properly else it wont work properly</i></small>
+                        <input type="text" id="correctAnsIden" class="form-control" placeholder="Enter answer ...">
+
+                        <input type="button" id="submitIden" value="Add Question"
+                            class="btn btn-secondary float-right mt-2 mr-1">
+                        <br>
+                        <br>
+                    </form>
+                </div>
+                <center><button class="btn btn-blue text-white mt-5" id="submitCreateExam">Add Exam</button></center>
+            </div>
+        </div>
+    </div>
+
+    <!-- display if no exam created yet -->
+    <div class="container text-center h-100 w-100 m-center m-center" id="noExam">
+        <span class="align-middle">
+            <h3 class="text text-secondary">Theres no Exams created yet!</h3>
+        </span>
+        <span class="align-middle createExam">
+            <h5><a href="#" class="btn btn-primary mt-1">Create Exam</a></h5>
+        </span>
+    </div>
+
+</div>
