@@ -52,9 +52,31 @@ $(document).ready(() => {
         $('#formQuestion').toggle();
     })
 
+    //this will close the exam
+    $('#closeExamForm').click(() => {
+        if (confirm("Do you really want to cancel exam creation?")) {
+            $("#createExamForm").hide();
+            let ids = [
+                "questionMultiple",
+                "typeMulti",
+                "correctAnsMulti",
+                "a",
+                "b",
+                "c",
+                "d",
+                "questionTrue",
+                "correctAnsTrue",
+                "title",
+                "expireDate",
+                "timeLimit",
+            ];
+            resetFields(ids);
+        }
+    });
+
     //this function will show the form create exam
     $('.createExam').click(() => {
-        $('#createExamForm').toggle();
+        $('#createExamForm').show();
         $("#noExam").hide();
     })
 
@@ -97,7 +119,9 @@ $(document).ready(() => {
         };
 
         questionDetails.push(data);
-    
+        resetFields(ids);
+
+
     });
 
     //submits the true or false question
@@ -116,8 +140,10 @@ $(document).ready(() => {
                 "false"
             ]
         };
-        
+
         questionDetails.push(data);
+        resetFields(ids);
+
     });
 
     //submits the identification question
@@ -136,6 +162,8 @@ $(document).ready(() => {
         }
 
         questionDetails.push(data);
+        resetFields(ids);
+
     });
 
     //submit the exam
@@ -157,6 +185,7 @@ $(document).ready(() => {
         //send request to the server 
         //to save exam
         saveExamAndQuestions(data, questionDetails);
+        resetFields(ids);
 
     });
 })
@@ -190,6 +219,7 @@ function retirveExamByUserId(userId) {
         })
 }
 
+//this function will save the exam ant the questions to the database
 async function saveExamAndQuestions(Exam, Questions) {
     let questionIds = [];
     for (let question of Questions) {
@@ -204,7 +234,8 @@ async function saveExamAndQuestions(Exam, Questions) {
             });
     }
     //save exam 
-    apiRequest("/app/add/exam", "post", data)
+    Exam["questions"] = questionIds;
+    apiRequest("/app/add/exam", "post", Exam)
         .then((res) => {
             alert(res.message);
         })

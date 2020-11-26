@@ -44,6 +44,12 @@ function AvoidEmpty(ids){
     return errors;
 }
 
+function resetFields(ids) {
+    for(let id of ids){
+        $(`#${id}`).val("");
+    }
+}
+
 function isContainsError(errors){
     for(let key in errors){
         if(errors[key]){
