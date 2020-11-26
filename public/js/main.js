@@ -67,3 +67,9 @@ function showErrors(errors){
             .css({"border": "solid 2px red"});
     }
 }
+
+function validateDate(date){
+    if(date < 60){
+        alert("Exam expiration must be atleast 60 minutes");
+    }
+}

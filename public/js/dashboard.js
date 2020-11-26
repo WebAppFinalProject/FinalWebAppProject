@@ -16,7 +16,7 @@ $(document).ready(() => {
             .then((res) => {
                 $("#username").text(`  ${res.user.firstname} ${res.user.lastname}`);
                 console.log(res.user);
-                if(res.user.position == "student"){
+                if (res.user.position == "student") {
                     studentView();
                 }else if(res.user.position == "teacher"){
                     retirveExamByUserId(id);
@@ -33,6 +33,11 @@ $(document).ready(() => {
         $(".showIf").hide();
     }
 
+    //validate Expiring date
+
+    $('#expireDate').on("change", () => {
+        validateDate($('#expireDate').val());
+    })
 
     $("#1").show();
     //change the view when the user changes the type of question
@@ -109,10 +114,10 @@ $(document).ready(() => {
         ];
         //use validation here
         let errors = AvoidEmpty(ids);
-        
-        if(isContainsError(errors)){
+
+        if (isContainsError(errors)) {
             showErrors(errors);
-        }else{
+        } else {
 
             let data = {
                 question: $("#questionMultiple").val(),
@@ -125,7 +130,7 @@ $(document).ready(() => {
                     $("#d").val()
                 ]
             };
-    
+
             questionDetails.push(data);
             alert("question successfully added!");
             resetFields(ids);
@@ -139,12 +144,11 @@ $(document).ready(() => {
             "questionTrue",
             "correctAnsTrue"
         ];
-
         let errors = AvoidEmpty(ids);
 
-        if(isContainsError(errors)){
+        if (isContainsError(errors)) {
             showErrors(errors);
-        }else{
+        } else {
             let data = {
                 question: $("#questionTrue").val(),
                 type: $('#typeTrue').val(),
@@ -171,16 +175,16 @@ $(document).ready(() => {
 
         //use validation here
         let errors = AvoidEmpty(ids);
-        if(isContainsError(errors)){
+        if (isContainsError(errors)) {
             showErrors(errors);
-        }else{
+        } else {
             let data = {
                 question: $("#questionIden").val(),
                 type: $('#typeIden').val(),
                 answerKey: $("#correctAnsIden").val(),
                 choices: null
             }
-    
+
             questionDetails.push(data);
             alert("question successfully added!");
             resetFields(ids);
@@ -195,25 +199,25 @@ $(document).ready(() => {
     $('#submitCreateExam').click(() => {
         let ids = [
             "title",
-            "expireDate",
             "timeLimit"
         ];
         //use validation here
         let errors = AvoidEmpty(ids);
-        if(isContainsError(errors)){
+        if (isContainsError(errors)) {
             showErrors(errors);
-        }else{
+        } else {
             let data = {
                 author: userId,
                 title: $('#title').val(),
                 timeLimit: $("#timeLimit").val(),
                 expireDate: $("#expireDate").val(),
             }
-    
+
             //send request to the server 
             //to save exam
-            saveExamAndQuestions(data, questionDetails); 
-            resetFields(ids);   
+            saveExamAndQuestions(data, questionDetails);
+            ids.push("expireDate");
+            resetFields(ids);
         }
     });
 })

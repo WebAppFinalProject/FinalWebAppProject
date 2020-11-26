@@ -24,15 +24,14 @@
             <div class="col-md-12">
                 <h3 class="text-center pt-3">Create Exam</h3>
                 <form class="p-2">
-                    <label for="title" class="font-weight-bold">Title:</label>
+                    <label for="title" class="font-weight-bold">Title(required):</label>
                     <input type="text" id="title" class="form-control" placeholder="Exam Title ...">
                     <br>
-                    <label for="expireDate" class="font-weight-bold">Expiration Date and Time:</label>
-                    <input type="datetime-local" id="expireDate" class="form-control " placeholder="">
+                    <label for="expireDate" class="font-weight-bold">Exam Expiration(in munites)(optional)</label>
+                    <input type="number" id="expireDate" class="form-control" value="60" placeholder="In minutes">
                     <br>
-                    <label for="timeLimit" class="font-weight-bold">Time Limit(minutes):</label>
+                    <label for="timeLimit" class="font-weight-bold">Time Limit(in minutes)(required):</label>
                     <input type="number" id="timeLimit" class="form-control " placeholder="Enter number of minutes">
-
                 </form>
                 <br>
                 <a href="#" id="addQuestion" class="mb-3">Create questions&nbsp;&nbsp;<i class="fas fa-plus"></i></a>
@@ -47,17 +46,17 @@
                 <div id="1" class="border">
                     <h4 class="text-center mt-3">Multiple Choice</h4>
                     <form class="form-group">
-                        <label>Question: </label>
+                        <label>Question(required): </label>
                         <input type="hidden" value="multiplechoice" id="typeMulti">
                         <input type="text" id="questionMultiple" class="form-control" placeholder="Enter Question ...">
                         <div class="mt-4 ">
-                            <p>Enter Choices:</p>
+                            <p>Enter Choices(required):</p>
                             <label>A: <input id="a" type="text"></label><br>
                             <label>B: <input id="b" type="text"></label><br>
                             <label>C: <input id="c" type="text"></label><br>
                             <label>D: <input id="d" type="text"></label>
                         </div>
-                        <p class="mt-4">Correct Answer:</p>
+                        <p class="mt-4">Correct Answer(required):</p>
 
                         <select class="form-control" name="" id="correctAnsMulti">
                             <option value=""></option>
@@ -78,9 +77,9 @@
                     <h4 class="text-center mt-3">True or False</h4>
                     <form>
                         <input type="hidden" value="trueorfalse" id="typeTrue">
-                        <label>Question: </label>
+                        <label>Question(required): </label>
                         <input type="text" id="questionTrue" class="form-control" placeholder="Enter Question ...">
-                        <p class="  mt-4">Correct Answer:</p>
+                        <p class="  mt-4">Correct Answer(required):</p>
 
                         <select name="" class="form-control" id="correctAnsTrue">
                             <option value=""></option>
@@ -98,9 +97,9 @@
                     <h4 class="text-center mt-3">Identification</h4>
                     <form>
                         <input type="hidden" value="identification" id="typeIden">
-                        <label>Question: </label>
+                        <label>Question(required): </label>
                         <input type="text" id="questionIden" class="form-control" placeholder="Enter Question ...">
-                        <label>Correct Answer: </label><br>
+                        <label>Correct Answer(required): </label><br>
                         <small class="text-warning"><i>Note: If there are many possible answer please specify using a <b>comma</b> ( <b>,</b> ).</i></small><br>
                         <small class="text-warning"><i>WARNING: please follow the convention properly else it wont work properly</i></small>
                         <input type="text" id="correctAnsIden" class="form-control" placeholder="Enter answer ...">
