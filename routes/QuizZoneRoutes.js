@@ -6,6 +6,7 @@ router.post('/add/question', AUTH.authorizedRequest,QuizZoneController.addQuesti
 router.post('/add/exam', AUTH.authorizedRequest, QuizZoneController.addExam);
 router.get('/get/exam/:author', AUTH.authorizedRequest,QuizZoneController.getExamsByauthor);
 router.get('/get/exam/:status/:id', AUTH.authorizedRequest, QuizZoneController.getActiveExamsByStatusAndId);
-
+router.get('/get/exam/v2/:code/:status',AUTH.authorizedRequest ,QuizZoneController.getActiveExamByStatusAndCode);
+router.put('/put/exam/:id', AUTH.authorizedRequest, QuizZoneController.updateExamById);
 
 module.exports = router;

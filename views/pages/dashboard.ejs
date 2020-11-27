@@ -20,9 +20,8 @@
         <p class="text-left  p-4 dashMenu dashMenuActive" id="examsBtn"><a href="#" class="text-white">Exams</a></p>
         <p class="text-left  p-4 dashMenu" id="activeExamBtn"><a href="#">Active Exams</a></p>
         <p class="text-left  p-4 dashMenu" id="expiredExamBtn"><a href="#">Expired Exams</a></p>
-        <p class="text-left  p-4 dashMenu settings"><a href="#">Settings</a></p>
+        <p class="text-left  p-4 dashMenu" id="settings"><a href="#">Settings</a></p>
     </div>
-
     <!-- this is the exam form -->
     <div id=createExamForm>
         <div class="row mt-5 border bg-light">
@@ -124,15 +123,27 @@
         </div>
     </div>
 
-    <!-- display if no exam created yet -->
-    <div class="row" id="content">
-        <div class="container text-center h-100 w-100 m-center m-center" id="noExam">
-            <span class="align-middle">
-                <h3 class="text text-secondary">Theres no Exams created yet!</h3>
-            </span>
-            <span class="align-middle createExam">
-                <h5><a href="#" class="btn btn-primary mt-1">Create Exam</a></h5>
-            </span>
+    <div class="container">
+        <!-- this is for the student input -->
+        <div class="position-fixed text-center collapse" id="joinExamForm">
+           <center><div class="border  bg-light" id="cont-join">
+                <h3 class="text-right mr-1" id="closeCodePopUp"><span><i class="fas fa-times"></i></span></h3>
+                <h3 class="text text-secondary p-2">Please enter class code</h3>
+                <input type="text" id="classCode" class="form-control" placeholder="Enter class code">
+                <input type="button" class="btn btn-primary" id="classCodeBtn" value="submit">
+            </div>
+            </center>
+        </div>
+        <div class="row" id="content">
+            <!-- display if no exam created yet -->
+            <div class="container text-center h-100 w-100 m-center m-center" id="noExam">
+                <span class="align-middle">
+                    <h3 class="text text-secondary" id="noExamMsg">Theres no Exams created yet!</h3>
+                </span>
+                <span class="align-middle createExam">
+                    <h5><a href="#" class="btn btn-primary mt-1" id="noExamBtn">Create Exam</a></h5>
+                </span>
+            </div>
         </div>
     </div>
 </div>

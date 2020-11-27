@@ -2,6 +2,8 @@
 const Exam = require('../models/Exam');
 const Question = require('../models/Question');
 
+const requestBodyParser = require('../utils/requestBodyParser');
+
 
 module.exports = {
     //add exam
@@ -72,7 +74,7 @@ module.exports = {
             res.status(500).json({message: error, error: true});
         }
     },
-
+    //get exam by id and status
     getActiveExamsByStatusAndId: async (req, res) =>{
         const status = req.params.status;
         const userId = req.params.id;
@@ -84,5 +86,37 @@ module.exports = {
         } catch (error) {
             res.status(500).json({message: error, error: true});
         }
+    },
+
+    //get exam by code status and code
+    getActiveExamByStatusAndCode: async (req, res) =>{
+        const status = req.params.status;
+        const code = req.params.code;
+        console.log(code, status);
+        try {
+            const exam = await Exam.findOne({code: code, status: status});
+            if(!exam) return res.status(400).json({message: "Something went wrong!",error: true});
+
+            res.json({exam: exam,message: "Successfully retrieve!"});
+        } catch (error) {
+            res.status(500).json({message: error, error: true});
+        }
+    },
+
+    //this controller will update the exam
+    //by id
+    updateExamById: async (req, res)=>{
+        const id = req.params.id;
+        const updates = requestBodyParser(req.body);
+
+        try {
+            const updatedExam = await Exam.findByIdAndUpdate(id,{$set: updates},{new:true});
+            if(!updatedExam) return res.status(400).json({message: "Cannot find the exam!",error: true});
+
+            res.json({message: "Successfully edited exam!", update: updatedExam});
+        } catch (error) {
+            res.status(500).json({message: error, error: true});
+        }
     }
+    
 }

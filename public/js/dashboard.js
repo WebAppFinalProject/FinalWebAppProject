@@ -12,7 +12,6 @@ $(document).ready(() => {
         </span>
     </div>`
     );
-    $("#noExam").hide();
 
     //chect the user id if present
     if ($("#userId").val()) {
@@ -112,16 +111,63 @@ $(document).ready(() => {
         $("#sideb").toggle();
     });
 
-    //this method will get the active exams
-    $("#activeExamBtn").click(()=>{
+    //this method will get the exams created but not yet activated
+    $("#sideb").on('click','#examsBtn',()=>{
         $("#content").empty();
-        retrieveExamsByStatusAndId(userId, "activated");
+        if(isTeacher){
+            retirveExamByUserId(userId);
+        }else {
+            // call a function here
+        }
+        $("#examsBtn").addClass("dashMenuActive");
+        $("#activeExamBtn").removeClass("dashMenuActive");
+        $("#expiredExamBtn").removeClass("dashMenuActive");
+        $("#settings").removeClass("dashMenuActive");
+    });
+
+    //this method will get the active exams
+    $("#sideb").on('click','#activeExamBtn',()=>{
+        $("#content").empty();
+        if(isTeacher){
+            retrieveExamsByStatusAndId(userId, "activated");
+        }else{
+            //Do Somthieng
+        }
+        $("#examsBtn").removeClass("dashMenuActive");
+        $("#activeExamBtn").addClass("dashMenuActive");
+        $("#expiredExamBtn").removeClass("dashMenuActive");
+        $("#settings").removeClass("dashMenuActive");
     });
 
     //this method will get the expired exams
-    $("#expiredExamBtn").click(()=>{
+    $("#sideb").on('click','#expiredExamBtn',()=>{
         $("#content").empty();
-        retrieveExamsByStatusAndId(userId, "deactivated");
+        if(isTeacher){
+            retrieveExamsByStatusAndId(userId, "deactivated");            
+        }else {
+            // call a function here
+        }
+
+        $("#examsBtn").removeClass("dashMenuActive");
+        $("#activeExamBtn").removeClass("dashMenuActive");
+        $("#expiredExamBtn").addClass("dashMenuActive");
+        $("#settings").removeClass("dashMenuActive"); 
+
+    });
+
+    //this function will get the settig view
+    $("#sideb").on('click','#settings',()=>{
+        if(isTeacher){
+            //Do Something if teacher
+        }else{
+            //Do somthing if student
+        }
+        $("#content").empty();
+        $("#examsBtn").removeClass("dashMenuActive");
+        $("#activeExamBtn").removeClass("dashMenuActive");
+        $("#expiredExamBtn").removeClass("dashMenuActive");
+        $("#settings").addClass("dashMenuActive");
+
     });
 
     //////################## Methods To Request from the server ################/////
@@ -247,6 +293,24 @@ $(document).ready(() => {
             $("#content").show();
         }
     });
+
+    //this is for the student part
+    //get the join button exam
+    $("body").on('click','.joinExam',()=>{
+        $("#joinExamForm").show();
+    })
+    //this will get the code 
+    $("#classCodeBtn").click(()=>{
+        $("#joinExamForm").hide();
+        getAndProcessCode($('#classCode').val(), "activated");
+    })
+
+    //this will close the pop up
+    $("#closeCodePopUp").click(()=>{
+        $("#joinExamForm").hide();
+        $('#classCode').val("");
+
+    });
 })
 
 /**
@@ -258,18 +322,19 @@ $(document).ready(() => {
 function studentView() {
     $("#sideb").empty();
     $("#sideb").append(
-        `<p class="text-left  p-4 dashMenu dashMenuActive"><a href="#" class="text-white">Exams</a></p>
-        <p class="text-left  p-4 dashMenu"><a href="#">Expired Exams</a></p>
-        <p class="text-left  p-4 dashMenu"><a href="#">Settings</a></p>`
+        `<p class="text-left  p-4 dashMenu dashMenuActive" id="examsBtn"><a href="#">Exams</a></p>
+        <p class="text-left  p-4 dashMenu" id="expiredExamBtn"><a href="#">Expired Exams</a></p>
+        <p class="text-left  p-4 dashMenu" id="settings"><a href="#">Settings</a></p>`
     );
     $("#content").empty();
     $("#content").append(
         `<div class="container text-center h-100 w-100 m-center m-center" id="noExamJoined">
         <span class="align-middle">
+            <h3 class="text text-secondary"></h3>
             <h3 class="text text-secondary">Theres no Exams joined yet!</h3>
         </span>
         <span class="align-middle joinExam">
-            <h5><a href="#" class="btn btn-primary mt-1">Join Exam</a></h5>
+            <h5><a href="#" class="btn btn-primary mt-1 joinExam">Join Exam</a></h5>
         </span>
         </div>`
     );
@@ -279,6 +344,29 @@ function studentView() {
         Exam</span>`
     );
 }
+///STUDENTS VIEW FUCNTIONS
+
+
+
+//if the student click the submit code
+function getAndProcessCode(code, status){
+    console.log(code, status);
+    apiRequest(`/app/get/exam/v2/${code}/${status}`,"get")
+        .then((res)=>{
+            console.log(res);
+        })
+        .catch((error)=>{
+            if(error.responseJSON.message){
+                alert("Exam code is not valid!");
+            }else {
+                console.log(error);
+            }
+            $("#joinExamForm").show();
+        })
+}
+
+
+
 
 
 
@@ -294,6 +382,7 @@ function retirveExamByUserId(userId) {
         .then((res) => {
             if(res.exams.length <= 0){
                 console.log("no exams");
+                $("#noExamBtn").show();
                 $("#noExam").show();
             }else{
                 showExams(res.exams);
@@ -308,7 +397,13 @@ function retrieveExamsByStatusAndId(userId, status){
     apiRequest(`/app/get/exam/${status}/${userId}`,"get")
         .then((res)=>{
             console.log(res);
-            showExams();
+            if(res.exams.length <=0){
+                $("#noExamMsg").text(`No ${status} exam yet!`);
+                $("#noExamBtn").hide();
+                $("#noExam").show();
+            }else{
+                showExams(res.exams);
+            }
         })
         .catch((error)=>{
             console.log(error);
@@ -321,16 +416,17 @@ function showExams(exams){
     $("#content").empty();
     exams.forEach(exam => {
         $("#content").append(
-            `<div class="col-md-3 mt-5 mx-4">
-            <div class="card bg-dark">
-                <img class="card-img-top" src="/static/img/cardbg1.jpg" alt="Card image">
-                <div class="card-body text-white">
-                    <span class="card-text">Exam title: ${exam.title}</span><br>
-                    <span class="card-text">Exam code: ${exam.code}</span>
-                    <br>
-                    <button class="btn btn-success">Activate</button>
-                    <button class="btn btn-warning">Edit</button>
-                    <button class="btn btn-secondary">View</button>
+            `<div class="col-md-4 mt-5">
+            <div class="card bg-dark position-relative">
+                <div class="card-img-top"></div>
+                <div class="position-absolute examTitle w-100">
+                    <h2 class="text-center text-primary">${exam.title}</h2>
+                    <h4 class="text-center text-secondary">${exam.code}</h4>
+                </div>
+                <div class="card-body text-white float-right">
+                    <button title="Activate Exam" class="btn btn-success"><i class="fas fa-power-off"></i></button>
+                    <button title="Edit Exam" class="btn btn-warning"><i class="fas fa-edit"></i></button>
+                    <button title="View Exam" class="btn btn-secondary"><i class="fas fa-eye"></i></button>
                 </div>
             </div>
         </div>`
@@ -365,3 +461,14 @@ async function saveExamAndQuestions(Exam, Questions, userId) {
 
 }
 
+//this function will update the 
+//exam
+function updateExamById(ExamId,data) {
+    apiRequest(`/app/put/exam/${ExamId}`,"put",data)
+        .then((res)=>{
+            console.log(res);
+        })
+        .catch((error)=>{
+            console.log(error);
+        })
+}

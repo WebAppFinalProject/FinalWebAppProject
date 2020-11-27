@@ -65,6 +65,7 @@ body {
 }
 .card-img-top {
     height: 250px;
+    background-color: lightblue;
 }
 .card-text {
     color: white;
@@ -140,6 +141,7 @@ body {
 }
 .dashMenuActive {
     background-color: rgb(163, 168, 172);
+    color: white;
 }
 .typesHide {
     display: none;
@@ -165,3 +167,32 @@ body {
     z-index: 0;
 }
 
+.examTitle {
+    z-index: 3;
+    top: 100px;
+}
+
+#main-nav {
+    z-index: 3;
+}
+
+
+
+/* this is for the student dashboard */
+@keyframes moveJoinExamForm {
+    from {top: -100px;}
+    to {top: 250px;}
+}
+
+#joinExamForm {
+    z-index: 3;
+    top: 250px;
+    left: 0%;
+    width: 100%;
+    border-radius: 5px;
+    animation: moveJoinExamForm 2s 1;
+}
+
+#cont-join {
+    width: 300px;
+}
