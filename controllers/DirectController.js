@@ -10,6 +10,11 @@ module.exports = {
     },
     getSignUp(req,res){
         res.render('signup', {title: "QuizZone|sign Up", layout: "layouts/signinSignoutLayout"});
+    },
+
+    //this is temporary
+    getTest(req,res){
+        res.render('test',{title: "QuizeZone|test", userId:req.user.userId});
     }
 
 }
