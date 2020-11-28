@@ -81,7 +81,7 @@ module.exports = {
         try {
             const exams = await Exam.find({_id: userId,status: status});
             if(!exams) return res.status(400).json({message: "Something went wrong!"});
-
+            console.log(status, userId, exams);
             res.json({message: "Successfully retrieved!", exams: exams});
         } catch (error) {
             res.status(500).json({message: error, error: true});

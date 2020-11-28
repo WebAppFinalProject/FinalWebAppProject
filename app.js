@@ -3,6 +3,12 @@ const app = express();
 const expressEjsLayout = require('express-ejs-layouts');
 const path = require('path');
 const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+
+
+//use a logger middleware
+app.use(logger('tiny'));
+
 //use .env file
 require('dotenv').config();
 const PORT = process.env.PORT || 4000;

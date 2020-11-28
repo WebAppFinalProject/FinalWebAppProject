@@ -27,7 +27,7 @@ $(document).ready(() => {
                     isTeacher = false;
                     studentView();
                 }else if(res.user.position == "teacher"){
-                   retirveExamByUserId(id);
+                   retrieveExamsByStatusAndId(userId, "activates");
                    isTeacher = true;
                 }
             })
@@ -115,7 +115,7 @@ $(document).ready(() => {
     $("#sideb").on('click','#examsBtn',()=>{
         $("#content").empty();
         if(isTeacher){
-            retirveExamByUserId(userId);
+            retrieveExamsByStatusAndId(userId, "activates");
         }else {
             // call a function here
         }
@@ -170,7 +170,7 @@ $(document).ready(() => {
 
     });
 
-    //////################## Methods To Request from the server ################/////
+    //////################## Methods To Request from the server from the Teacher part ################/////
     //submit question multiple choice
     $('#submitMulti').click(() => {
         let ids = [
@@ -206,6 +206,7 @@ $(document).ready(() => {
             resetFields(ids);
         };  
     });
+
 
 
     //submits the true or false question
@@ -259,10 +260,6 @@ $(document).ready(() => {
             alert("question successfully added!");
             resetFields(ids);
         }
-
-        
-
-        
     });
 
     //submit the exam
@@ -294,6 +291,23 @@ $(document).ready(() => {
         }
     });
 
+    //this fucntion will activate the exam
+    $(".container").on('click','#activateExam',(e)=>{
+        let examId = e.target.name || e.target.id;
+        let examCode = $("#examCode").text();
+        updateExamById(examId, {"status": "activated"})
+            .then((res)=>{
+                alert(`Give this exam code to your student\nExam Code: ${examCode}`);
+                console.log(res);
+            })
+            .catch((error)=>{
+                console.log(error);
+            })
+    })
+
+
+
+    ////#########STUDENT PART/########### //
     //this is for the student part
     //get the join button exam
     $("body").on('click','.joinExam',()=>{
@@ -344,10 +358,8 @@ function studentView() {
         Exam</span>`
     );
 }
+
 ///STUDENTS VIEW FUCNTIONS
-
-
-
 //if the student click the submit code
 function getAndProcessCode(code, status){
     console.log(code, status);
@@ -421,12 +433,12 @@ function showExams(exams){
                 <div class="card-img-top"></div>
                 <div class="position-absolute examTitle w-100">
                     <h2 class="text-center text-primary">${exam.title}</h2>
-                    <h4 class="text-center text-secondary">${exam.code}</h4>
+                    <h4 class="text-center text-secondary" id="examCode">${exam.code}</h4>
                 </div>
                 <div class="card-body text-white float-right">
-                    <button title="Activate Exam" class="btn btn-success"><i class="fas fa-power-off"></i></button>
-                    <button title="Edit Exam" class="btn btn-warning"><i class="fas fa-edit"></i></button>
-                    <button title="View Exam" class="btn btn-secondary"><i class="fas fa-eye"></i></button>
+                    <button title="Activate Exam" id="activateExam"  name="${exam._id}" class="btn btn-success"><i class="fas fa-power-off" id="${exam._id}"></i></button>
+                    <button title="Edit Exam" id="editExam"  name="${exam._id}" class="btn btn-warning"><i class="fas fa-edit" id="${exam._id}"></i></button>
+                    <button title="View Exam" id="viewExam"  name="${exam._id}" class="btn btn-secondary"><i class="fas fa-eye" id="${exam._id}"></i></button>
                 </div>
             </div>
         </div>`
@@ -464,11 +476,13 @@ async function saveExamAndQuestions(Exam, Questions, userId) {
 //this function will update the 
 //exam
 function updateExamById(ExamId,data) {
-    apiRequest(`/app/put/exam/${ExamId}`,"put",data)
+    return new Promise((resolve, reject)=>{
+        apiRequest(`/app/put/exam/${ExamId}`,"put",data)
         .then((res)=>{
-            console.log(res);
+            resolve(res);
         })
         .catch((error)=>{
-            console.log(error);
+            reject(error);
         })
+    })
 }
