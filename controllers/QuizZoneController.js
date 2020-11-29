@@ -120,9 +120,10 @@ module.exports = {
     //get the exam joined by the student
     getStudentJoinedExam: async (req, res)=>{
         const studentId = req.params.studentId;
+        const status = req.params.status;
         console.log("This is froM",studentId);
         try {
-            const exams = await Exam.find({students: studentId});
+            const exams = await Exam.find({students: studentId, status: status});
             if(!exams)  res.status(400).json({ message: "Something went wrong!", error: true });
 
             res.json({message: "Successfully retrieved!", exams: exams});

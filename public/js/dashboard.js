@@ -27,7 +27,7 @@ $(document).ready(() => {
                     isTeacher = false;
                     studentView();
                     //retrieve all the joined exam by the stuednt
-                    getJoinedExam(userId);
+                    getJoinedExam(userId,"unactivated");
                 } else if (res.user.position == "teacher") {
                     retrieveExamsByStatusAndId(userId, "unactivated");
                     isTeacher = true;
@@ -112,6 +112,8 @@ $(document).ready(() => {
             retrieveExamsByStatusAndId(userId, "unactivated");
         } else {
             // call a function here
+            getJoinedExam(userId, "unactivated");
+
         }
         $(".examsBtn").addClass("dashMenuActive");
         $(".activeExamBtn").removeClass("dashMenuActive");
@@ -126,7 +128,7 @@ $(document).ready(() => {
             $("#noExam1").show();
             retrieveExamsByStatusAndId(userId, "activated");
         } else {
-            //Do Somthing
+            getJoinedExam(userId, "activated");
         }
         $(".examsBtn").removeClass("dashMenuActive");
         $(".activeExamBtn").addClass("dashMenuActive");
@@ -140,7 +142,7 @@ $(document).ready(() => {
         if (isTeacher) {
             retrieveExamsByStatusAndId(userId, "deactivated");
         } else {
-            // call a function here
+            getJoinedExam(userId, "deactivated");
         }
 
         $(".examsBtn").removeClass("dashMenuActive");

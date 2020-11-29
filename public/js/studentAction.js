@@ -17,7 +17,7 @@ function getAndProcessCode(code, status, userId) {
                     .then((res) => {
                         console.log(res);
                         //show the students joined exams
-                        getJoinedExam(userId);
+                        getJoinedExam(userId, "unactivated");
                     })
                     .catch((error) => {
                         console.log(error);
@@ -35,9 +35,14 @@ function getAndProcessCode(code, status, userId) {
 }
 
 //this fucntion will get the exams joined by the student
-function getJoinedExam(userId) {
-    apiRequest(`/app/student/exam/${userId}`, 'get')
+function getJoinedExam(userId, status) {
+    apiRequest(`/app/student/exam/${userId}/${status}`, 'get')
         .then((res) => {
+            console.log(res.exams.length <= 0);
+            if(res.exams.length <= 0){    
+                $("#noExamJoined").show();
+                return;
+            }
             showExams(res.exams);
         })
         .catch((error) => {
