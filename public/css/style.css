@@ -184,6 +184,11 @@ body {
     to {top: 250px;}
 }
 
+@keyframes moveEditQuestionForm {
+    from {top: -100px;}
+    to {top: 100px;}
+}
+
 #joinExamForm {
     z-index: 3;
     top: 250px;
@@ -193,6 +198,14 @@ body {
     animation: moveJoinExamForm 2s 1;
 }
 
+#editQuestionForm {
+    z-index: 3;
+    top: 100px;
+    left: 0%;
+    width: 100%;
+    border-radius: 5px;
+    animation: moveEditQuestionForm 2s 1;
+}
 #cont-join {
     width: 300px;
 }
@@ -202,4 +215,7 @@ body {
 
 .show {
     display: block;
+}
+#fixedWidthForm {
+    width: 600px;
 }

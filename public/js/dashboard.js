@@ -3,6 +3,8 @@ $(document).ready(() => {
     let isTeacher = false;
     let questionDetails = [];
     let userId = "";
+    let questionId = "";
+
     //set the container empty
     $("#noExam").hide();
     $("#content").append(
@@ -48,15 +50,18 @@ $(document).ready(() => {
         e.preventDefault();
         showMultipleChoiceForm();
     });
+
     $("#trueorfalse").click((e) => {
         e.preventDefault();
         $("#1").hide();
        showTrueForm();
     });
+
     $("#identification").click((e) => {
         e.preventDefault();
         showIdenForm();
     });
+
     $("#viewQuestion").click((e) => {
         e.preventDefault();
         showQuestionTable(questionDetails);
@@ -73,10 +78,40 @@ $(document).ready(() => {
         $('#formQuestion').show();
     })
 
-    //edit a question in the Jquery part
-    $("#questionTable").on('click','#editQuestion',()=>{
 
-        console.log("I was clicked!");
+    // this part will show the edit form of a question
+    $("body").on('click','.viewQuestion',(e)=>{
+        let id = e.target.name || e.target.classList[2];
+        let question = questionDetails[id];
+        questionId = id;
+
+        console.log(question);
+        if(question.type == "multiplechoice"){
+            showMultipleChoiceEditForm(question);
+        }
+        if(question.type == "trueorfalse"){
+            showTrueorFalseEditForm(question);         
+        }
+        if(question.type == "identification") {
+            showIdentEditForm(question);    
+        }
+        $("#editQuestionForm").toggle();
+        
+    })
+
+
+    //this function will delete the exam
+    $("body").on('click','.deleteQuestion',(e)=>{
+        let id = e.target.name || e.target.classList[2];
+        questionDetails.splice(id, 1);
+        alert("Successfully deleted!");
+        showQuestionTable(questionDetails);
+    })
+
+
+    //close the edit form for the question
+    $("body").on('click','.closeForm',()=>{
+        $("#editQuestionForm").toggle();
     })
 
 
@@ -101,7 +136,9 @@ $(document).ready(() => {
             ];
             resetFields(ids);
             retrieveExamsByStatusAndId(userId, "unactivated");
+            questionDetails = [];
             $("#content").show();
+
         }
     });
 
@@ -197,19 +234,17 @@ $(document).ready(() => {
         if (isContainsError(errors)) {
             showErrors(errors);
         } else {
-
             let data = {
                 question: $("#questionMultiple").val(),
                 type: $("#typeMulti").val(),
                 answerKey: $("#correctAnsMulti").val(),
                 choices: [
-                    $("#a").val(),
-                    $("#b").val(),
-                    $("#c").val(),
-                    $("#d").val()
+                    {"A":$("#a").val()},
+                    {"B": $("#b").val()},
+                    {"C": $("#c").val()},
+                    {"D": $("#d").val()}
                 ]
             };
-
             questionDetails.push(data);
             alert("question successfully added!");
             resetFields(ids);
@@ -217,6 +252,41 @@ $(document).ready(() => {
     });
 
 
+    //submit edidted multiple choice question
+    $("body").on('click','#submitMultiE',() => {
+        let ids = [
+            "questionMultipleE",
+            "typeMultiE",
+            "correctAnsMultiE",
+            "aE",
+            "bE",
+            "cE",
+            "dE"
+        ];
+        //use validation here
+        let errors = AvoidEmpty(ids);
+
+        if (isContainsError(errors)) {
+            showErrors(errors);
+        } else {
+            let data = {
+                question: $("#questionMultipleE").val(),
+                type: $("#typeMultiE").val(),
+                answerKey: $("#correctAnsMultiE").val(),
+                choices: [
+                    {"A":$("#aE").val()},
+                    {"B": $("#bE").val()},
+                    {"C": $("#cE").val()},
+                    {"D": $("#dE").val()}
+                ]
+            };
+            questionDetails[questionId] = data;
+            alert("question successfully Edited!");
+            $("#editQuestionForm").toggle();
+            showQuestionTable(questionDetails);
+            resetFields(ids);
+        };
+    });
 
     //submits the true or false question
     $('#submitTrue').click(() => {
@@ -246,6 +316,36 @@ $(document).ready(() => {
 
     });
 
+    //edits the true or false question
+    $("body").on('click','#submitTrueE',() => {
+        let ids = [
+            "questionTrueE",
+            "correctAnsTrueE"
+        ];
+        let errors = AvoidEmpty(ids);
+
+        if (isContainsError(errors)) {
+            showErrors(errors);
+        } else {
+            let data = {
+                question: $("#questionTrueE").val(),
+                type: $('#typeTrueE').val(),
+                answerKey: $("#correctAnsTrueE").val(),
+                choices: [
+                    "true",
+                    "false"
+                ]
+            };
+
+            questionDetails[questionId] = data;
+            alert("question successfully edited!");
+            $("#editQuestionForm").toggle();
+            showQuestionTable(questionDetails);
+            resetFields(ids);
+        }
+
+    });
+
     //submits the identification question
     $("#submitIden").click(() => {
         let ids = [
@@ -267,6 +367,34 @@ $(document).ready(() => {
 
             questionDetails.push(data);
             alert("question successfully added!");
+            resetFields(ids);
+        }
+    });
+
+    //edit identification question
+    $("body").on('click','#submitIdenE',() => {
+        let ids = [
+            "questionIdenE",
+            "correctAnsIdenE"
+        ];
+
+        //use validation here
+        let errors = AvoidEmpty(ids);
+        if (isContainsError(errors)) {
+            showErrors(errors);
+        } else {
+            let data = {
+                question: $("#questionIdenE").val(),
+                type: $('#typeIdenE').val(),
+                answerKey: $("#correctAnsIdenE").val(),
+                choices: null
+            }
+
+            questionDetails[questionId]=data;
+            console.log(data);
+            alert("question successfully Edited!");
+            $("#editQuestionForm").toggle();
+            showQuestionTable(questionDetails);
             resetFields(ids);
         }
     });
@@ -301,11 +429,6 @@ $(document).ready(() => {
             $("#content").show();
         }
     });
-
-
-
-
-
 
     //this fucntion will activate the exam
     $(".container").on('click', '#activateExam', (e) => {
