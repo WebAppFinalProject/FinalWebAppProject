@@ -9,4 +9,7 @@ router.get('/get/exam/:status/:id', AUTH.authorizedRequest, QuizZoneController.g
 router.get('/get/exam/v2/:code/:status',AUTH.authorizedRequest ,QuizZoneController.getActiveExamByStatusAndCode);
 router.put('/put/exam/:id', AUTH.authorizedRequest, QuizZoneController.updateExamById);
 
+//this will get the exam by id
+router.get('/exam/:id', AUTH.authorizedRequest, QuizZoneController.getExamById);
+
 module.exports = router;

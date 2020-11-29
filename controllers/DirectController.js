@@ -14,13 +14,14 @@ module.exports = {
 
     //this is temporary
     getTest(req,res){
-        res.render('test',{title: "QuizeZone|test", userId:req.user.userId});
+        res.render('test',{title: "QuizeZone|test", userId:req.user.userId, layout: "layouts/signinSignoutLayout"});
     },
 
     //temporary settings
 
     getSettings(req,res){
-        res.render('settings',{title: "QuizeZone|settings", layout: "layouts/signinSignoutLayout" })
+        res.render('settings',{title: "QuizeZone|settings",userId:req.user.userId, layout: "layouts/signinSignoutLayout" })
+       
     }
 
 }
