@@ -4,9 +4,9 @@ $(document).ready(() => {
     let questionDetails = [];
     let userId = "";
     //set the container empty
-    $("#content").empty();
+    $("#noExam").hide();
     $("#content").append(
-        ` <div class="container text-center h-100 w-100 m-center m-center" id="noExam">
+        ` <div class="container text-center h-100 w-100 m-center m-center" id="noExam1">
         <span class="align-middle">
             <h3 class="text text-secondary">Retrieving Exams ...</h3>
         </span>
@@ -26,8 +26,10 @@ $(document).ready(() => {
                 if (res.user.position == "student") {
                     isTeacher = false;
                     studentView();
+                    //retrieve all the joined exam by the stuednt
+                    getJoinedExam(userId);
                 } else if (res.user.position == "teacher") {
-                    retrieveExamsByStatusAndId(userId, "activates");
+                    retrieveExamsByStatusAndId(userId, "unactivated");
                     isTeacher = true;
                 }
             })
@@ -35,19 +37,10 @@ $(document).ready(() => {
                 console.log(error);
             })
 
-
-
-
     } else {
         $(".showIf").hide();
     }
-
-    //validate Expiring date
-
-    $('#expireDate').on("change", () => {
-        validateDate($('#expireDate').val());
-    })
-
+    
     $("#1").show();
     //change the view when the user changes the type of question
     $("#multiplechoice").click((e) => {
@@ -94,6 +87,7 @@ $(document).ready(() => {
                 "timeLimit",
             ];
             resetFields(ids);
+            retrieveExamsByStatusAndId(userId, "unactivated");
             $("#content").show();
         }
     });
@@ -112,35 +106,36 @@ $(document).ready(() => {
     });
 
     //this method will get the exams created but not yet activated
-    $("#sideb").on('click', '#examsBtn', () => {
+    $("#sideb").on('click', '.examsBtn', () => {
         $("#content").empty();
         if (isTeacher) {
-            retrieveExamsByStatusAndId(userId, "activates");
+            retrieveExamsByStatusAndId(userId, "unactivated");
         } else {
             // call a function here
         }
-        $("#examsBtn").addClass("dashMenuActive");
-        $("#activeExamBtn").removeClass("dashMenuActive");
-        $("#expiredExamBtn").removeClass("dashMenuActive");
-        $("#settings").removeClass("dashMenuActive");
+        $(".examsBtn").addClass("dashMenuActive");
+        $(".activeExamBtn").removeClass("dashMenuActive");
+        $(".expiredExamBtn").removeClass("dashMenuActive");
+        $(".settings").removeClass("dashMenuActive");
     });
 
     //this method will get the active exams
-    $("#sideb").on('click', '#activeExamBtn', () => {
+    $("#sideb").on('click', '.activeExamBtn', () => {
         $("#content").empty();
         if (isTeacher) {
+            $("#noExam1").show();
             retrieveExamsByStatusAndId(userId, "activated");
         } else {
-            //Do Somthieng
+            //Do Somthing
         }
-        $("#examsBtn").removeClass("dashMenuActive");
-        $("#activeExamBtn").addClass("dashMenuActive");
-        $("#expiredExamBtn").removeClass("dashMenuActive");
-        $("#settings").removeClass("dashMenuActive");
+        $(".examsBtn").removeClass("dashMenuActive");
+        $(".activeExamBtn").addClass("dashMenuActive");
+        $(".expiredExamBtn").removeClass("dashMenuActive");
+        $(".settings").removeClass("dashMenuActive");
     });
 
     //this method will get the expired exams
-    $("#sideb").on('click', '#expiredExamBtn', () => {
+    $("#sideb").on('click', '.expiredExamBtn', () => {
         $("#content").empty();
         if (isTeacher) {
             retrieveExamsByStatusAndId(userId, "deactivated");
@@ -148,25 +143,25 @@ $(document).ready(() => {
             // call a function here
         }
 
-        $("#examsBtn").removeClass("dashMenuActive");
-        $("#activeExamBtn").removeClass("dashMenuActive");
-        $("#expiredExamBtn").addClass("dashMenuActive");
-        $("#settings").removeClass("dashMenuActive");
+        $(".examsBtn").removeClass("dashMenuActive");
+        $(".activeExamBtn").removeClass("dashMenuActive");
+        $(".expiredExamBtn").addClass("dashMenuActive");
+        $(".settings").removeClass("dashMenuActive");
 
     });
 
     //this function will get the settig view
-    $("#sideb").on('click', '#settings', () => {
+    $("#sideb").on('click', '.settings', () => {
         if (isTeacher) {
             //Do Something if teacher
         } else {
             //Do somthing if student
         }
         $("#content").empty();
-        $("#examsBtn").removeClass("dashMenuActive");
-        $("#activeExamBtn").removeClass("dashMenuActive");
-        $("#expiredExamBtn").removeClass("dashMenuActive");
-        $("#settings").addClass("dashMenuActive");
+        $(".examsBtn").removeClass("dashMenuActive");
+        $(".activeExamBtn").removeClass("dashMenuActive");
+        $(".expiredExamBtn").removeClass("dashMenuActive");
+        $(".settings").addClass("dashMenuActive");
 
     });
 
@@ -266,7 +261,8 @@ $(document).ready(() => {
     $('#submitCreateExam').click(() => {
         let ids = [
             "title",
-            "timeLimit"
+            "timeLimit",
+            "instruction"
         ];
         //use validation here
         let errors = AvoidEmpty(ids);
@@ -278,6 +274,7 @@ $(document).ready(() => {
                 title: $('#title').val(),
                 timeLimit: $("#timeLimit").val(),
                 expireDate: $("#expireDate").val(),
+                instruction: $("#instruction").val(),
                 code: generateCode()
             }
 
@@ -335,10 +332,11 @@ $(document).ready(() => {
     $("body").on('click', '.joinExam', () => {
         $("#joinExamForm").show();
     })
+
     //this will get the code 
     $("#classCodeBtn").click(() => {
         $("#joinExamForm").hide();
-        getAndProcessCode($('#classCode').val(), "activated");
+        getAndProcessCode($('#classCode').val(), "activated", userId);
     })
 
     //this will close the pop up
@@ -383,8 +381,8 @@ function retrieveExamsByStatusAndId(userId, status) {
             console.log(res);
             if (res.exams.length <= 0) {
                 $("#noExamMsg").text(`No ${status} exam yet!`);
-                $("#noExamBtn").hide();
                 $("#noExam").show();
+                $("#noExam1").hide();
             } else {
                 showExams(res.exams);
             }

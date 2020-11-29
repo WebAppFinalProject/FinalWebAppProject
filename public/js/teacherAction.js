@@ -33,9 +33,7 @@ function viewExamDetails(exam) {
         `<div class=" container border bg-info mt-5">
         <h1 class="text-center mt-3 text-white" id="examTitle">${exam.title}</h1>
 
-
         <h5 class="text-white" id="code">Code: ${exam.code}</h5>
-
 
         <div class="container border bg-white">
             <h2 class="text-center">Exam Details</h2>

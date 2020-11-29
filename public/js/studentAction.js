@@ -1,28 +1,59 @@
 ///STUDENTS VIEW FUCNTIONS
 //if the student click the submit code
-function getAndProcessCode(code, status){
+function getAndProcessCode(code, status, userId) {
     console.log(code, status);
-    apiRequest(`/app/get/exam/v2/${code}/${status}`,"get")
-        .then((res)=>{
+    apiRequest(`/app/get/exam/v2/${code}/${status}`, "get")
+        .then((res) => {
             console.log(res);
+            //update the exam
+            let studentsJoined = res.exam.students;
+            //check if the students already joined the exam
+            if (studentsJoined.includes(userId)) {
+                alert("You already joined this exam!");
+                return;
+            } else {
+                studentsJoined.push(userId);
+                updateExamById(res.exam._id, { students: studentsJoined })
+                    .then((res) => {
+                        console.log(res);
+                        //show the students joined exams
+                        getJoinedExam(userId);
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    })
+            }
         })
-        .catch((error)=>{
-            if(error.responseJSON.message){
+        .catch((error) => {
+            if (error.responseJSON.message) {
                 alert("Exam code is not valid!");
-            }else {
+            } else {
                 console.log(error);
             }
             $("#joinExamForm").show();
         })
 }
 
+//this fucntion will get the exams joined by the student
+function getJoinedExam(userId) {
+    apiRequest(`/app/student/exam/${userId}`, 'get')
+        .then((res) => {
+            showExams(res.exams);
+        })
+        .catch((error) => {
+            alert("Something went wrong!");
+            console.log(error);
+        })
+}
+
+
 //this function will show the student view dashboard
 function studentView() {
     $("#sideb").empty();
     $("#sideb").append(
-        `<p class="text-left  p-4 dashMenu dashMenuActive" id="examsBtn"><a href="#">Exams</a></p>
-        <p class="text-left  p-4 dashMenu" id="expiredExamBtn"><a href="#">Expired Exams</a></p>
-        <p class="text-left  p-4 dashMenu" id="settings"><a href="#">Settings</a></p>`
+        `<p class="text-left  p-4 dashMenu dashMenuActive examsBtn"><a href="#">Exams</a></p>
+        <p class="text-left  p-4 dashMenu expiredExamBtn"><a href="#">Expired Exams</a></p>
+        <p class="text-left  p-4 dashMenu settings"><a href="#">Settings</a></p>`
     );
     $("#content").empty();
     $("#content").append(

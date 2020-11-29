@@ -117,6 +117,20 @@ module.exports = {
         }
     },
 
+    //get the exam joined by the student
+    getStudentJoinedExam: async (req, res)=>{
+        const studentId = req.params.studentId;
+        console.log("This is froM",studentId);
+        try {
+            const exams = await Exam.find({students: studentId});
+            if(!exams)  res.status(400).json({ message: "Something went wrong!", error: true });
+
+            res.json({message: "Successfully retrieved!", exams: exams});
+        } catch (error) {
+            res.status(500).json({ message: error, error: true });
+        }
+    },
+
     //this controller will update the exam
     //by id
     updateExamById: async (req, res) => {
