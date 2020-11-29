@@ -11,9 +11,7 @@ router.get('/get/exam/v2/:code/:status',AUTH.authorizedRequest ,QuizZoneControll
 //this will get the exam by id
 router.get('/exam/:id', AUTH.authorizedRequest, QuizZoneController.getExamById);
 //student part
-router.get('/student/exam/:studentId/:status',AUTH.authorizedRequest, QuizZoneController.getStudentJoinedExam);
-
-
+router.get('/get/student/exam/:studentId/:status',AUTH.authorizedRequest, QuizZoneController.getStudentJoinedExam);
 router.put('/put/exam/:id', AUTH.authorizedRequest, QuizZoneController.updateExamById);
 
 

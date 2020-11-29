@@ -27,11 +27,12 @@ $(document).ready(() => {
                     isTeacher = false;
                     studentView();
                     //retrieve all the joined exam by the stuednt
-                    getJoinedExam(userId,"unactivated");
+                    getJoinedExam(userId, "activated");
                 } else if (res.user.position == "teacher") {
                     retrieveExamsByStatusAndId(userId, "unactivated");
                     isTeacher = true;
                 }
+                $("#noExam1").hide();
             })
             .catch((error) => {
                 console.log(error);
@@ -40,33 +41,45 @@ $(document).ready(() => {
     } else {
         $(".showIf").hide();
     }
-    
+
     $("#1").show();
     //change the view when the user changes the type of question
     $("#multiplechoice").click((e) => {
         e.preventDefault();
-        $("#1").show();
-        $("#2").hide();
-        $("#3").hide();
+        showMultipleChoiceForm();
     });
     $("#trueorfalse").click((e) => {
         e.preventDefault();
         $("#1").hide();
-        $("#2").show();
-        $("#3").hide();
+       showTrueForm();
     });
     $("#identification").click((e) => {
         e.preventDefault();
+        showIdenForm();
+    });
+    $("#viewQuestion").click((e) => {
+        e.preventDefault();
+        showQuestionTable(questionDetails);
+        $('#formQuestion').show();
         $("#1").hide();
         $("#2").hide();
-        $("#3").show();
+        $("#3").hide();
+        $("#4").show();
     });
-
 
     //this will show the question form
     $('#addQuestion').click(() => {
-        $('#formQuestion').toggle();
+        $("#identification").click();
+        $('#formQuestion').show();
     })
+
+    //edit a question in the Jquery part
+    $("#questionTable").on('click','#editQuestion',()=>{
+
+        console.log("I was clicked!");
+    })
+
+
 
     //this will close the exam
     $('#closeExamForm').click(() => {
@@ -93,7 +106,7 @@ $(document).ready(() => {
     });
 
     //this function will show the form create exam
-    $('.createExam').click(() => {
+    $('body').on('click','.createExam',() => {
         $('#createExamForm').show();
         $("#noExam").hide();
         $("#content").hide();
@@ -107,14 +120,13 @@ $(document).ready(() => {
 
     //this method will get the exams created but not yet activated
     $("#sideb").on('click', '.examsBtn', () => {
-        $("#content").empty();
         if (isTeacher) {
             retrieveExamsByStatusAndId(userId, "unactivated");
         } else {
             // call a function here
-            getJoinedExam(userId, "unactivated");
-
+            getJoinedExam(userId, "activated");
         }
+
         $(".examsBtn").addClass("dashMenuActive");
         $(".activeExamBtn").removeClass("dashMenuActive");
         $(".expiredExamBtn").removeClass("dashMenuActive");
@@ -123,7 +135,7 @@ $(document).ready(() => {
 
     //this method will get the active exams
     $("#sideb").on('click', '.activeExamBtn', () => {
-        $("#content").empty();
+
         if (isTeacher) {
             $("#noExam1").show();
             retrieveExamsByStatusAndId(userId, "activated");
@@ -138,7 +150,7 @@ $(document).ready(() => {
 
     //this method will get the expired exams
     $("#sideb").on('click', '.expiredExamBtn', () => {
-        $("#content").empty();
+
         if (isTeacher) {
             retrieveExamsByStatusAndId(userId, "deactivated");
         } else {
@@ -333,6 +345,7 @@ $(document).ready(() => {
     //get the join button exam
     $("body").on('click', '.joinExam', () => {
         $("#joinExamForm").show();
+        $("#createExamForm").hide();
     })
 
     //this will get the code 
@@ -349,7 +362,6 @@ $(document).ready(() => {
     });
 
 })
-
 
 
 
@@ -377,13 +389,23 @@ function retirveExamByUserId(userId) {
         })
 }
 
+
+//this function will retrieve and show the exams
 function retrieveExamsByStatusAndId(userId, status) {
+    $("#content").empty();
     apiRequest(`/app/get/exam/${status}/${userId}`, "get")
         .then((res) => {
-            console.log(res);
+            let view = (status === "unactivated")?'<span class="align-middle createExam">'
+            +'<h5><a href="#" class="btn btn-primary mt-1" id="noExamBtn">Create Exam</a></h5>'
+        +'</span>':"";
             if (res.exams.length <= 0) {
-                $("#noExamMsg").text(`No ${status} exam yet!`);
-                $("#noExam").show();
+                $("#content").append(`
+                <div class="container text-center h-100 w-100 m-center m-center" id="noExam">
+                    <span class="align-middle">
+                        <h3 class="text text-secondary" id="noExamMsg">Theres no ${status} exam yet!</h3>
+                    </span>
+                    ${view}
+                </div>`);
                 $("#noExam1").hide();
             } else {
                 showExams(res.exams);
@@ -394,9 +416,11 @@ function retrieveExamsByStatusAndId(userId, status) {
         })
 }
 
+
+
 //this function will show the cards of exam
-function showExams(exams) {
-    $("#content").empty();
+function showExams(exams, data = {teacher: "", student:"hide"}) {
+    $("#noExam").hide();
     exams.forEach(exam => {
         $("#content").append(
             `<div class="col-md-4 mt-5">
@@ -407,9 +431,10 @@ function showExams(exams) {
                     <h4 class="text-center text-secondary" id="examCode">${exam.code}</h4>
                 </div>
                 <div class="card-body text-white float-right">
-                    <button title="Activate Exam" id="activateExam"  name="${exam._id}" class="btn btn-success"><i class="fas fa-power-off" id="${exam._id}"></i></button>
-                    <button title="Edit Exam" id="editExam"  name="${exam._id}" class="btn btn-warning"><i class="fas fa-edit" id="${exam._id}"></i></button>
-                    <button title="View Exam" id="viewExam"  name="${exam._id}" class="btn btn-secondary"><i class="fas fa-eye" id="${exam._id}"></i></button>
+                    <button title="Activate Exam" id="activateExam"  name="${exam._id}" class="btn btn-success ${data.teacher}"><i class="fas fa-power-off" id="${exam._id}"></i></button>
+                    <button title="Edit Exam" id="editExam"  name="${exam._id}" class="btn btn-warning ${data.teacher}"><i class="fas fa-edit" id="${exam._id}"></i></button>
+                    <button title="View Exam" id="viewExam"  name="${exam._id}" class="btn btn-secondary ${data.teacher}"><i class="fas fa-eye" id="${exam._id}"></i></button>
+                    <span title="Take Exam" id="viewExam"  name="${exam._id}" class="btn btn-success float-right ${data.student}">Take Quiz</span>
                 </div>
             </div>
         </div>`

@@ -26,7 +26,6 @@ async function saveExamAndQuestions(Exam, Questions, userId) {
 
 
 //show exam 
-
 function viewExamDetails(exam) {
     $("#content").empty();
     $("#content").append(
@@ -74,4 +73,63 @@ function viewExamDetails(exam) {
         </div>
     </div>`
     );
+}
+
+function showMultipleChoiceForm(){
+    $("#1").show();
+    $("#2").hide();
+    $("#3").hide();
+    $("#4").hide();
+}
+
+function showTrueForm(){
+    $("#1").hide();
+    $("#2").show();
+    $("#3").hide();
+    $("#4").hide();
+}
+
+function showIdenForm(){
+    $("#1").hide();
+    $("#2").hide();
+    $("#3").show();
+    $("#4").hide();
+}
+
+
+function editExam(exam){
+    //plaese specify the needed information here
+
+}   
+
+//show the questions in table
+function showQuestionTable(questions){
+    $("#questionTable").empty();
+    if(questions.length <=0){
+        $("#questionTable").html(
+            `<tr class="col">
+                <td></td>
+                <td class="text-secondary text-center">No questions created!</td>
+                <td></td>
+            </tr>`
+        );
+    }
+    let counter = 0;
+    questions.forEach(question => {
+        $("#questionTable").append(
+            `<tr class="col">
+            <td>${counter}</td>
+            <td>${question.question}</td>
+            <td>${question.type}</td>
+            <td>
+                <button title="Edit Question" id="editQuestion"
+                    class="btn btn-warning"><i class="fas fa-edit"
+                        id=""></i></button>
+                <button title="Delete Question" id="deleteQuestion" 
+                    class="btn btn-danger "><i class="fas fa-trash"></i></button>
+            </td>
+        </tr>`
+        );  
+        counter++;      
+    });
 }

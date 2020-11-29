@@ -196,3 +196,10 @@ body {
 #cont-join {
     width: 300px;
 }
+.hide {
+    display: none;
+}
+
+.show {
+    display: block;
+}
