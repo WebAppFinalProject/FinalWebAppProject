@@ -14,7 +14,7 @@ module.exports = {
 
     //this is temporary
     getTest(req,res){
-        res.render('test',{title: "QuizeZone|test", userId:req.user.userId});
+        res.render('test',{title: "QuizeZone|test", userId:req.user.userId, layout: "layouts/signinSignoutLayout"});
     }
 
 }
