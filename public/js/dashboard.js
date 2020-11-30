@@ -55,7 +55,7 @@ $(document).ready(() => {
     $("#trueorfalse").click((e) => {
         e.preventDefault();
         $("#1").hide();
-       showTrueForm();
+        showTrueForm();
     });
 
     $("#identification").click((e) => {
@@ -80,28 +80,28 @@ $(document).ready(() => {
     })
 
     // this part will show the edit form of a question
-    $("body").on('click','.viewQuestion',(e)=>{
+    $("body").on('click', '.viewQuestion', (e) => {
         let id = e.target.name || e.target.classList[2];
         let question = questionDetails[id];
         questionId = id;
 
         console.log(question);
-        if(question.type == "multiplechoice"){
+        if (question.type == "multiplechoice") {
             showMultipleChoiceEditForm(question);
         }
-        if(question.type == "trueorfalse"){
-            showTrueorFalseEditForm(question);         
+        if (question.type == "trueorfalse") {
+            showTrueorFalseEditForm(question);
         }
-        if(question.type == "identification") {
-            showIdentEditForm(question);    
+        if (question.type == "identification") {
+            showIdentEditForm(question);
         }
         $("#editQuestionForm").toggle();
-        
+
     })
 
 
     //this function will delete the exam
-    $("body").on('click','.deleteQuestion',(e)=>{
+    $("body").on('click', '.deleteQuestion', (e) => {
         let id = e.target.name || e.target.classList[2];
         questionDetails.splice(id, 1);
         alert("Successfully deleted!");
@@ -110,7 +110,7 @@ $(document).ready(() => {
 
 
     //close the edit form for the question
-    $("body").on('click','.closeForm',()=>{
+    $("body").on('click', '.closeForm', () => {
         $("#editQuestionForm").toggle();
     })
 
@@ -141,7 +141,7 @@ $(document).ready(() => {
     });
 
     //this function will show the form create exam
-    $('body').on('click','.createExam',() => {
+    $('body').on('click', '.createExam', () => {
         $('#createExamForm').show();
         $("#noExam").hide();
         $("#content").hide();
@@ -231,10 +231,10 @@ $(document).ready(() => {
                 type: $("#typeMulti").val(),
                 answerKey: $("#correctAnsMulti").val(),
                 choices: [
-                    {"A":$("#a").val()},
-                    {"B": $("#b").val()},
-                    {"C": $("#c").val()},
-                    {"D": $("#d").val()}
+                    { "A": $("#a").val() },
+                    { "B": $("#b").val() },
+                    { "C": $("#c").val() },
+                    { "D": $("#d").val() }
                 ],
                 "points": $("#points").val()
             };
@@ -246,7 +246,7 @@ $(document).ready(() => {
 
 
     //submit edidted multiple choice question
-    $("body").on('click','#submitMultiE',() => {
+    $("body").on('click', '#submitMultiE', () => {
         let ids = [
             "questionMultipleE",
             "correctAnsMultiE",
@@ -266,10 +266,10 @@ $(document).ready(() => {
                 type: $("#typeMultiE").val(),
                 answerKey: $("#correctAnsMultiE").val(),
                 choices: [
-                    {"A":$("#aE").val()},
-                    {"B": $("#bE").val()},
-                    {"C": $("#cE").val()},
-                    {"D": $("#dE").val()}
+                    { "A": $("#aE").val() },
+                    { "B": $("#bE").val() },
+                    { "C": $("#cE").val() },
+                    { "D": $("#dE").val() }
                 ]
             };
             questionDetails[questionId] = data;
@@ -310,7 +310,7 @@ $(document).ready(() => {
     });
 
     //edits the true or false question
-    $("body").on('click','#submitTrueE',() => {
+    $("body").on('click', '#submitTrueE', () => {
         let ids = [
             "questionTrueE",
             "correctAnsTrueE"
@@ -366,7 +366,7 @@ $(document).ready(() => {
     });
 
     //edit identification question
-    $("body").on('click','#submitIdenE',() => {
+    $("body").on('click', '#submitIdenE', () => {
         let ids = [
             "questionIdenE",
             "correctAnsIdenE"
@@ -384,7 +384,7 @@ $(document).ready(() => {
                 choices: null
             }
 
-            questionDetails[questionId]=data;
+            questionDetails[questionId] = data;
             console.log(data);
             alert("question successfully Edited!");
             $("#editQuestionForm").toggle();
@@ -395,18 +395,18 @@ $(document).ready(() => {
 
 
     //Delete the exam
-    $("body").on('click','.deleteExam',(e)=>{
+    $("body").on('click', '.deleteExam', (e) => {
         let examId = e.target.name || e.target.id;
 
-        apiRequest(`/app/delete/exam/${examId}`,'delete')
-            .then((res)=>{
+        apiRequest(`/app/delete/exam/${examId}`, 'delete')
+            .then((res) => {
                 alert("Successfully deleted!")
                 retrieveExamsByStatusAndId(userId, "unactivated");
             })
-            .catch((error)=>{
+            .catch((error) => {
                 console.log(error);
             })
-    })  
+    })
 
     //submit the exam
     $('#submitCreateExam').click(() => {
@@ -415,7 +415,7 @@ $(document).ready(() => {
             "timeLimit",
             "instruction",
         ];
-        if(questionDetails.length <= 0){
+        if (questionDetails.length <= 0) {
             alert("No Questions Created!");
             return;
         }
@@ -453,13 +453,13 @@ $(document).ready(() => {
             "status": "activated"
         };
         apiRequest(`/app/exam/${examId}`, 'get')
-            .then((res)=>{
+            .then((res) => {
                 console.log(res.exam.examSpan);
-                if(res.exam.examSpan){
-                    updates["expireDate"] = currentDate.setDate(currentDate.getDate + res.exam.examSpan); 
+                if (res.exam.examSpan) {
+                    updates["expireDate"] = currentDate.setDate(currentDate.getDate + res.exam.examSpan);
                 }
             })
-            .catch((error)=>{
+            .catch((error) => {
                 console.log(error);
             })
         updateExamById(examId, updates)
@@ -486,7 +486,7 @@ $(document).ready(() => {
                 console.log(error);
             });
     })
-    
+
 
     ////#########STUDENT PART/########### //
     //this is for the student part
@@ -510,20 +510,45 @@ $(document).ready(() => {
     });
 
     //the student take the quiz
-    $("body").on('click','.takeQuiz',(e)=>{
+    $("body").on('click', '.takeQuiz', (e) => {
         let examId = e.target.id;
-      
-        apiRequest(`/app/exam/${examId}`,'get')
-            .then((res)=> {
+
+        apiRequest(`/app/exam/${examId}`, 'get')
+            .then((res) => {
                 //alert reminders for the students
                 alert("              Reminders:\n Please dont reload the page while taking the exam or else your exam will be void.");
                 showExamView(res.exam);
             })
-            .catch((error)=>{
+            .catch((error) => {
                 console.log(error);
             })
-        
+
     });
+
+    //student submit the exam
+    $('body').on('click', '.submitExam', async (e) => {
+        let examId = e.target.id;
+        let questionIds = [];
+        let answerkeyWithPoints = [];
+        await apiRequest(`/app/exam/${examId}`, "get")
+            .then((res) => {
+                questionIds = res.exam.questions;
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+            let studentAnswers = {};
+       if(!validateExamBeforeSubmit(questionIds)){
+           alert("Please answer all questions!");
+            return;
+        }
+        
+        questionIds.forEach(id => {
+            studentAnswers[id._id] = $(`input[name="${id._id}"]:checked`).val() || $(`#${id._id}`).val();
+            answerkeyWithPoints[id._id] = { correctAns: id.answerKey, points: id.points,question: id.question};
+        })
+        validateStudentsAns(studentAnswers, answerkeyWithPoints, examId, userId);
+    })
 })
 
 
@@ -555,9 +580,9 @@ function retrieveExamsByStatusAndId(userId, status) {
     $("#content").empty();
     apiRequest(`/app/get/exam/${status}/${userId}`, "get")
         .then((res) => {
-            let view = (status === "unactivated")?'<span class="align-middle createExam">'
-            +'<h5><a href="#" class="btn btn-primary mt-1" id="noExamBtn">Create Exam</a></h5>'
-        +'</span>':"";
+            let view = (status === "unactivated") ? '<span class="align-middle createExam">'
+                + '<h5><a href="#" class="btn btn-primary mt-1" id="noExamBtn">Create Exam</a></h5>'
+                + '</span>' : "";
             if (res.exams.length <= 0) {
                 $("#content").append(`
                 <div class="container text-center h-100 w-100 m-center m-center" id="noExam">

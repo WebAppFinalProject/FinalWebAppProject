@@ -1,6 +1,7 @@
 //import the models
 const Exam = require('../models/Exam');
 const Question = require('../models/Question');
+const ExamResult = require('../models/ExamResult');
 
 const requestBodyParser = require('../utils/requestBodyParser');
 
@@ -89,6 +90,7 @@ module.exports = {
             res.status(500).json({ message: error, error: true });
         }
     },
+
     //get exam by id and status
     getActiveExamsByStatusAndId: async (req, res) => {
         const status = req.params.status;
@@ -148,7 +150,8 @@ module.exports = {
             res.status(500).json({ message: error, error: true });
         }
     },
-
+    
+    //this controller will delete the exam by id
     deleteExamById: async (req, res) =>{
         const id = req.params.id;
         try {
@@ -159,6 +162,21 @@ module.exports = {
         } catch (error) {
             res.status(500).json({ message: error, error: true });
         }
-    }
+    },
 
+
+    //add new exam result
+    addExamResult: async (req, res)=>{
+        const newExamResult = req.body;
+        try {
+            const examResTobAdded = await new ExamResult(newExamResult);
+            const newlyAdded = await examResTobAdded.save();
+            if(!newlyAdded) return res.status(400).json({message: "Something went wrong!"});
+
+            res.json({mesage: "Successfully added!", result: newlyAdded});
+
+        } catch (error) {
+            res.status(500).json({ message: error, error: true });
+        }
+    }
 }

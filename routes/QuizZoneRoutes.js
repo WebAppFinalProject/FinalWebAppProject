@@ -19,5 +19,8 @@ router.delete('/delete/exam/:id', AUTH.authorizedRequest, QuizZoneController.del
 router.get('/get/student/exam/:studentId/:status',AUTH.authorizedRequest, QuizZoneController.getStudentJoinedExam);
 router.put('/put/exam/:id', AUTH.authorizedRequest, QuizZoneController.updateExamById);
 
+//student exam result
+router.post('/add/exam-result',AUTH.authorizedRequest, QuizZoneController.addExamResult);
+
 
 module.exports = router;

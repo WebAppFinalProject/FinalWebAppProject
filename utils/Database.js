@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const {dbUri} = require('../config/config');
+const {dbUri, dbUriv1} = require('../config/config');
 const connectToMongoose = () => {
     mongoose
         .connect(dbUri, {
