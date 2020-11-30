@@ -20,6 +20,11 @@ module.exports = {
     //temporary settings
     getSettings(req,res){
         res.render('settings',{title: "QuizeZone|settings",userId:req.user.userId, layout: "layouts/signinSignoutLayout" })
+       
+    },
+
+    getExam(req,res) {
+        res.render('exam', {title:"QuizZone|exam", userId:req.user.userId, layout: "layouts/signinSignoutLayout"});
     }
 
 }
