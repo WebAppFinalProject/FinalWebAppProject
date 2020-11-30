@@ -68,8 +68,7 @@ function studentView() {
     $("#sideb").empty();
     $("#sideb").append(
         `<p class="text-left  p-4 dashMenu dashMenuActive examsBtn"><a href="#">Exams</a></p>
-        <p class="text-left  p-4 dashMenu expiredExamBtn"><a href="#">Expired Exams</a></p>
-        <p class="text-left  p-4 dashMenu settings"><a href="#">Settings</a></p>`
+        <p class="text-left  p-4 dashMenu expiredExamBtn"><a href="#">Expired Exams</a></p>`
     );
     $("#create-cont").empty();
     $("#create-cont").append(

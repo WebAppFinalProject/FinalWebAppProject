@@ -1,4 +1,9 @@
-//this function will save the exam ant the questions to the database
+/**
+ * This function will save the exams and questions to the database
+ * @param {*} Exam 
+ * @param {*} Questions 
+ * @param {*} userId 
+ */
 async function saveExamAndQuestions(Exam, Questions, userId) {
     let questionIds = [];
     for (let question of Questions) {
@@ -23,11 +28,16 @@ async function saveExamAndQuestions(Exam, Questions, userId) {
         })
 }
 
-//show exam 
-function viewExamDetails(exam) {
+/**
+ * This function will be called when the
+ * teacher wants to view the exam he/she created 
+ * @param {*} exam 
+ */
+function viewUnactivatedExamDetails(exam) {
     $("#content").empty();
     $("#content").append(
         `<div class=" container border bg-info mt-5">
+        <button class="btn btn-secondary text-primary examsBtn">back</button>
         <h1 class="text-center mt-3 text-white" id="examTitle">${exam.title}</h1>
 
         <h5 class="text-white" id="code">Code: ${exam.code}</h5>
@@ -73,6 +83,7 @@ function viewExamDetails(exam) {
     );
 }
 
+
 function showMultipleChoiceForm() {
     $("#1").show();
     $("#2").hide();
@@ -95,12 +106,21 @@ function showIdenForm() {
 }
 
 
+/**
+ * This function is invoked when a teacher wants to edit the 
+ * exam
+ * @param {*} exam 
+ */
 function editExam(exam) {
     //plaese specify the needed information here
 
 }
 
-//show the questions in table
+/**
+ * This fucntion will show the question in details
+ * via table
+ * @param {*} questions 
+ */
 function showQuestionTable(questions) {
     $("#questionTable").empty();
     if (questions.length <= 0) {
@@ -131,6 +151,11 @@ function showQuestionTable(questions) {
     });
 }
 
+/**
+ * This function is use to show the identification question form 
+ * this is needed when the teacher edits this question
+ * @param {*} questionDetails 
+ */
 function showIdentEditForm(questionDetails) {
     console.log("I was here");
     $("#fixedWidthForm").empty()
@@ -159,7 +184,11 @@ function showIdentEditForm(questionDetails) {
     );
 }
 
-//this function will show the true or false edit form
+/**
+ * This function will show the true or false question form
+ * This function is needed when the teachers edits the question
+ * @param {*} questionDetails 
+ */
 function showTrueorFalseEditForm(questionDetails) {
     $("#fixedWidthForm").empty()
     $("#fixedWidthForm").append(
@@ -186,10 +215,14 @@ function showTrueorFalseEditForm(questionDetails) {
         </form>
     </div>`
     );
-
 }
 
-//this function will show the multiple edit form question
+
+/**
+ * This function will show the multiple choice exam form
+ * This fucntion is needed when the teacher edits a question
+ * @param {*} questionDetails 
+ */
 function showMultipleChoiceEditForm(questionDetails) {
     $("#fixedWidthForm").empty()
     $("#fixedWidthForm").append(
@@ -226,4 +259,60 @@ function showMultipleChoiceEditForm(questionDetails) {
         </form>
     </div>`
     );
+}
+
+
+
+//this function will show the cards of exam
+function showExams(exams, data = {teacher: "", student:"hide"}) {
+    console.log(exams);
+    $("#noExam").hide();
+    
+    exams.forEach(exam => {
+        let buttons = `<button title="Activate Exam" name="${exam._id}" class="btn btn-success activateExam ${data.teacher}"><i class="fas fa-power-off" id="${exam._id}"></i></button>
+        <button title="View Exam" name="${exam._id}" class="btn btn-secondary viewExam ${data.teacher}"><i class="fas fa-eye" id="${exam._id}"></i></button>
+        <button title="Delete Exam"  name="${exam._id}" class="btn btn-danger deleteExam ${data.teacher}"><i class="fas fa-trash" id="${exam._id}"></i></button>
+        <span title="Take Exam"   id="${exam._id}" class="btn btn-success float-right takeQuiz ${data.student}">Take Quiz</span>`;
+        if(exam.status=="activated"){
+            buttons = `<span title="Students joined the Exam"   id="${exam._id}" class="btn btn-secondary float-right Students Joined ${data.teacher}">Joined students</span>
+            <span title="Deactivate Exam" id="${exam._id}" class="btn btn-danger float-right deactivateExam ${data.teacher} mr-2">Deactivate</span>`;
+        }
+        if(exam.status == "deactivated"){
+            buttons = `<span title="view Result" id="${exam._id}" class="btn btn-info float-right deactivateExam ${data.teacher} mr-2">View Exam Result</span>`;
+        }
+        $("#content").append(
+            `<div class="col-md-4 mt-5">
+            <div class="card bg-dark position-relative">
+                <div class="card-img-top"></div>
+                <div class="position-absolute examTitle w-100">
+                    <h2 class="text-center text-primary">${exam.title}</h2>
+                    <h4 class="text-center text-secondary" id="examCode">${exam.code}</h4>
+                    <h6 class="text-center text-secondary  ${data.student}" id="author">Teacher: ${exam.author.firstname+" "+exam.author.lastname}</h6>
+                </div>
+                <div class="card-body text-white float-right">
+                    ${buttons}
+                    <span title="Take Exam"   id="${exam._id}" class="btn btn-success float-right takeQuiz ${data.student}">Take Quiz</span>
+                </div>
+            </div>
+        </div>`
+        );
+    });
+}
+
+/**
+ * This function will update the exam
+ * using its id
+ * @param {*} ExamId 
+ * @param {*} data 
+ */
+function updateExamById(ExamId, data) {
+    return new Promise((resolve, reject) => {
+        apiRequest(`/app/put/exam/${ExamId}`, "put", data)
+            .then((res) => {
+                resolve(res);
+            })
+            .catch((error) => {
+                reject(error);
+            })
+    })
 }

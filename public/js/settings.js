@@ -1,4 +1,18 @@
-function userProfile(userInfo, pos) {
+
+/**
+ * This function will show the 
+ * Teachers informatiom but not editable
+ * @param {*} userInfo 
+ */
+function userProfile(userInfo) {
+    //pending
+    apiRequest(`/app/get/exam/${userInfo._id}`,"get")
+        .then((res)=>{
+            console.log(res);
+        })
+        .catch((error)=>{
+            console.log(error);
+        })
     $("#content").empty();
     $("#content").append(
         `<div class=" container   bg-white mt-1">
@@ -26,7 +40,7 @@ function userProfile(userInfo, pos) {
             </div>
         </div>
         <div class="container border bg-info mt-3 mb-3 ">
-            <h3 class="mt-2 text-center text-white font-weight-bold">List of Exam ${pos}}</h3>
+            <h3 class="mt-2 text-center text-white font-weight-bold">List of Exams/s Created</h3>
             <table class="table table-striped table-white bg-white ">
                 <tbody>
                     <tr>

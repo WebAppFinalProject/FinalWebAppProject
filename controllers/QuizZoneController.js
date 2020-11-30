@@ -123,7 +123,8 @@ module.exports = {
         const studentId = req.params.studentId;
         const status = req.params.status;
         try {
-            const exams = await Exam.find({students: studentId, status: status});
+            const exams = await Exam.find({students: studentId, status: status})
+                .populate('author');
             if(!exams)  res.status(400).json({ message: "Something went wrong!", error: true });
 
             res.json({message: "Successfully retrieved!", exams: exams});

@@ -4,6 +4,7 @@ $(document).ready(() => {
     let questionDetails = [];
     let userId = "";
     let questionId = "";
+    let userInfo = "";
 
     //set the container empty
     $("#noExam").hide();
@@ -24,7 +25,7 @@ $(document).ready(() => {
         apiRequest('/user/getuser/' + id, "get")
             .then((res) => {
                 $("#username").text(`  ${res.user.firstname} ${res.user.lastname}`);
-                console.log(res.user);
+                userInfo = res.user;
                 if (res.user.position == "student") {
                     isTeacher = false;
                     studentView();
@@ -78,7 +79,6 @@ $(document).ready(() => {
         $('#formQuestion').show();
     })
 
-
     // this part will show the edit form of a question
     $("body").on('click','.viewQuestion',(e)=>{
         let id = e.target.name || e.target.classList[2];
@@ -113,8 +113,6 @@ $(document).ready(() => {
     $("body").on('click','.closeForm',()=>{
         $("#editQuestionForm").toggle();
     })
-
-
 
     //this will close the exam
     $('#closeExamForm').click(() => {
@@ -156,14 +154,13 @@ $(document).ready(() => {
     });
 
     //this method will get the exams created but not yet activated
-    $("#sideb").on('click', '.examsBtn', () => {
+    $("body").on('click', '.examsBtn', () => {
         if (isTeacher) {
             retrieveExamsByStatusAndId(userId, "unactivated");
         } else {
             // call a function here
             getJoinedExam(userId, "activated");
         }
-
         $(".examsBtn").addClass("dashMenuActive");
         $(".activeExamBtn").removeClass("dashMenuActive");
         $(".expiredExamBtn").removeClass("dashMenuActive");
@@ -202,11 +199,7 @@ $(document).ready(() => {
 
     //this function will get the settig view
     $("#sideb").on('click', '.settings', () => {
-        if (isTeacher) {
-            userProfile({"test":"test"});
-        }else {
-            userProfile({"test":"test"});
-        }
+        userProfile(userInfo);
         $(".examsBtn").removeClass("dashMenuActive");
         $(".activeExamBtn").removeClass("dashMenuActive");
         $(".expiredExamBtn").removeClass("dashMenuActive");
@@ -220,7 +213,6 @@ $(document).ready(() => {
     $('#submitMulti').click(() => {
         let ids = [
             "questionMultiple",
-            "typeMulti",
             "correctAnsMulti",
             "a",
             "b",
@@ -257,7 +249,6 @@ $(document).ready(() => {
     $("body").on('click','#submitMultiE',() => {
         let ids = [
             "questionMultipleE",
-            "typeMultiE",
             "correctAnsMultiE",
             "aE",
             "bE",
@@ -294,7 +285,6 @@ $(document).ready(() => {
         let ids = [
             "questionTrue",
             "correctAnsTrue",
-            "points"
         ];
         let errors = AvoidEmpty(ids);
 
@@ -346,7 +336,6 @@ $(document).ready(() => {
             showQuestionTable(questionDetails);
             resetFields(ids);
         }
-
     });
 
     //submits the identification question
@@ -465,8 +454,9 @@ $(document).ready(() => {
         };
         apiRequest(`/app/exam/${examId}`, 'get')
             .then((res)=>{
+                console.log(res.exam.examSpan);
                 if(res.exam.examSpan){
-                    updates["expireDate"] = currentDate.setTime(currentDate.getTime + res.exam.examSpan); 
+                    updates["expireDate"] = currentDate.setDate(currentDate.getDate + res.exam.examSpan); 
                 }
             })
             .catch((error)=>{
@@ -490,15 +480,14 @@ $(document).ready(() => {
         apiRequest(`/app/exam/${examId}`, 'get')
             .then((res) => {
                 console.log(res.exam);
-                viewExamDetails(res.exam);
+                viewUnactivatedExamDetails(res.exam);
             })
             .catch((error) => {
                 console.log(error);
             });
     })
-
-
     
+
     ////#########STUDENT PART/########### //
     //this is for the student part
     //get the join button exam
@@ -519,7 +508,24 @@ $(document).ready(() => {
         $('#classCode').val("");
 
     });
+
+    //the student take the quiz
+    $("body").on('click','.takeQuiz',(e)=>{
+        let examId = e.target.id;
+      
+        apiRequest(`/app/exam/${examId}`,'get')
+            .then((res)=> {
+                //alert reminders for the students
+                alert("              Reminders:\n Please dont reload the page while taking the exam or else your exam will be void.");
+                showExamView(res.exam);
+            })
+            .catch((error)=>{
+                console.log(error);
+            })
+        
+    });
 })
+
 
 /**
  * THIS FUNCTION CREATED BY THE DEVELOPERS
@@ -570,41 +576,3 @@ function retrieveExamsByStatusAndId(userId, status) {
         })
 }
 
-
-//this function will show the cards of exam
-function showExams(exams, data = {teacher: "", student:"hide"}) {
-    $("#noExam").hide();
-    exams.forEach(exam => {
-        $("#content").append(
-            `<div class="col-md-4 mt-5">
-            <div class="card bg-dark position-relative">
-                <div class="card-img-top"></div>
-                <div class="position-absolute examTitle w-100">
-                    <h2 class="text-center text-primary">${exam.title}</h2>
-                    <h4 class="text-center text-secondary" id="examCode">${exam.code}</h4>
-                </div>
-                <div class="card-body text-white float-right">
-                    <button title="Activate Exam" name="${exam._id}" class="btn btn-success activateExam ${data.teacher}"><i class="fas fa-power-off" id="${exam._id}"></i></button>
-                    <button title="View Exam" name="${exam._id}" class="btn btn-secondary viewExam ${data.teacher}"><i class="fas fa-eye" id="${exam._id}"></i></button>
-                    <button title="Delete Exam"  name="${exam._id}" class="btn btn-danger deleteExam ${data.teacher}"><i class="fas fa-trash" id="${exam._id}"></i></button>
-                    <span title="Take Exam"   name="${exam._id}" class="btn btn-success float-right ${data.student}">Take Quiz</span>
-                </div>
-            </div>
-        </div>`
-        );
-    });
-}
-
-//this function will update the 
-//exam
-function updateExamById(ExamId, data) {
-    return new Promise((resolve, reject) => {
-        apiRequest(`/app/put/exam/${ExamId}`, "put", data)
-            .then((res) => {
-                resolve(res);
-            })
-            .catch((error) => {
-                reject(error);
-            })
-    })
-}

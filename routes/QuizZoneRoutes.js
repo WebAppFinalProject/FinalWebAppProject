@@ -20,6 +20,4 @@ router.get('/get/student/exam/:studentId/:status',AUTH.authorizedRequest, QuizZo
 router.put('/put/exam/:id', AUTH.authorizedRequest, QuizZoneController.updateExamById);
 
 
-
-
 module.exports = router;
