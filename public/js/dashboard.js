@@ -459,10 +459,6 @@ $(document).ready(() => {
             });
     })
 
-
-
-
-
     ////#########STUDENT PART/########### //
     //this is for the student part
     //get the join button exam
