@@ -10,6 +10,11 @@ router.get('/get/exam/:status/:id', AUTH.authorizedRequest, QuizZoneController.g
 router.get('/get/exam/v2/:code/:status',AUTH.authorizedRequest ,QuizZoneController.getActiveExamByStatusAndCode);
 //this will get the exam by id
 router.get('/exam/:id', AUTH.authorizedRequest, QuizZoneController.getExamById);
+
+//this route will delete the exam
+router.delete('/delete/exam/:id', AUTH.authorizedRequest, QuizZoneController.deleteExamById);
+
+
 //student part
 router.get('/get/student/exam/:studentId/:status',AUTH.authorizedRequest, QuizZoneController.getStudentJoinedExam);
 router.put('/put/exam/:id', AUTH.authorizedRequest, QuizZoneController.updateExamById);

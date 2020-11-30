@@ -16,14 +16,12 @@ async function saveExamAndQuestions(Exam, Questions, userId) {
     apiRequest("/app/add/exam", "post", Exam)
         .then((res) => {
             alert(res.message);
-            retirveExamByUserId(userId);
+            retrieveExamsByStatusAndId(userId, "unactivated");
         })
         .catch((error) => {
             console.log(error);
         })
-
 }
-
 
 //show exam 
 function viewExamDetails(exam) {

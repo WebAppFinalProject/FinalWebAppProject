@@ -24,7 +24,6 @@ app.set("view engine","ejs");
 //use express ejs layout
 app.use(expressEjsLayout);
 app.set('layout','layouts/layout');
-app.set("layout extractScripts", true);
 app.set("layout extractStyles", true);
 
 //require authorization

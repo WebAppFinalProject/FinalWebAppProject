@@ -187,7 +187,6 @@ $(document).ready(() => {
 
     //this method will get the expired exams
     $("#sideb").on('click', '.expiredExamBtn', () => {
-
         if (isTeacher) {
             retrieveExamsByStatusAndId(userId, "deactivated");
         } else {
@@ -204,17 +203,17 @@ $(document).ready(() => {
     //this function will get the settig view
     $("#sideb").on('click', '.settings', () => {
         if (isTeacher) {
-            //Do Something if teacher
-        } else {
-            //Do somthing if student
+            userProfile({"test":"test"});
+        }else {
+            userProfile({"test":"test"});
         }
-        $("#content").empty();
         $(".examsBtn").removeClass("dashMenuActive");
         $(".activeExamBtn").removeClass("dashMenuActive");
         $(".expiredExamBtn").removeClass("dashMenuActive");
         $(".settings").addClass("dashMenuActive");
 
     });
+
 
     //////################## Methods To Request from the server from the Teacher part ################/////
     //submit question multiple choice
@@ -226,7 +225,8 @@ $(document).ready(() => {
             "a",
             "b",
             "c",
-            "d"
+            "d",
+            "points"
         ];
         //use validation here
         let errors = AvoidEmpty(ids);
@@ -243,7 +243,8 @@ $(document).ready(() => {
                     {"B": $("#b").val()},
                     {"C": $("#c").val()},
                     {"D": $("#d").val()}
-                ]
+                ],
+                "points": $("#points").val()
             };
             questionDetails.push(data);
             alert("question successfully added!");
@@ -292,7 +293,8 @@ $(document).ready(() => {
     $('#submitTrue').click(() => {
         let ids = [
             "questionTrue",
-            "correctAnsTrue"
+            "correctAnsTrue",
+            "points"
         ];
         let errors = AvoidEmpty(ids);
 
@@ -306,7 +308,8 @@ $(document).ready(() => {
                 choices: [
                     "true",
                     "false"
-                ]
+                ],
+                "points": $("#points").val()
             };
 
             questionDetails.push(data);
@@ -350,7 +353,8 @@ $(document).ready(() => {
     $("#submitIden").click(() => {
         let ids = [
             "questionIden",
-            "correctAnsIden"
+            "correctAnsIden",
+            "points"
         ];
 
         //use validation here
@@ -362,7 +366,8 @@ $(document).ready(() => {
                 question: $("#questionIden").val(),
                 type: $('#typeIden').val(),
                 answerKey: $("#correctAnsIden").val(),
-                choices: null
+                choices: null,
+                "points": $("#points").val()
             }
 
             questionDetails.push(data);
@@ -399,13 +404,33 @@ $(document).ready(() => {
         }
     });
 
+
+    //Delete the exam
+    $("body").on('click','.deleteExam',(e)=>{
+        let examId = e.target.name || e.target.id;
+
+        apiRequest(`/app/delete/exam/${examId}`,'delete')
+            .then((res)=>{
+                alert("Successfully deleted!")
+                retrieveExamsByStatusAndId(userId, "unactivated");
+            })
+            .catch((error)=>{
+                console.log(error);
+            })
+    })  
+
     //submit the exam
     $('#submitCreateExam').click(() => {
         let ids = [
             "title",
             "timeLimit",
-            "instruction"
+            "instruction",
         ];
+        if(questionDetails.length <= 0){
+            alert("No Questions Created!");
+            return;
+        }
+
         //use validation here
         let errors = AvoidEmpty(ids);
         if (isContainsError(errors)) {
@@ -415,15 +440,15 @@ $(document).ready(() => {
                 author: userId,
                 title: $('#title').val(),
                 timeLimit: $("#timeLimit").val(),
-                expireDate: $("#expireDate").val(),
                 instruction: $("#instruction").val(),
                 code: generateCode()
             }
+            data["examSpan"] = $("#examSpan").val() || null;
 
             //send request to the server 
             //to save exam
             saveExamAndQuestions(data, questionDetails, userId);
-            ids.push("expireDate");
+            ids.push("examSpan");
             $("#createExamForm").toggle();
             resetFields(ids);
             $("#content").show();
@@ -431,10 +456,23 @@ $(document).ready(() => {
     });
 
     //this fucntion will activate the exam
-    $(".container").on('click', '#activateExam', (e) => {
+    $(".container").on('click', '.activateExam', (e) => {
         let examId = e.target.name || e.target.id;
         let examCode = $("#examCode").text();
-        updateExamById(examId, { "status": "activated" })
+        let currentDate = new Date();
+        let updates = {
+            "status": "activated"
+        };
+        apiRequest(`/app/exam/${examId}`, 'get')
+            .then((res)=>{
+                if(res.exam.examSpan){
+                    updates["expireDate"] = currentDate.setTime(currentDate.getTime + res.exam.examSpan); 
+                }
+            })
+            .catch((error)=>{
+                console.log(error);
+            })
+        updateExamById(examId, updates)
             .then((res) => {
                 alert(`Give this exam code to your student\nExam Code: ${examCode}`);
                 console.log(res);
@@ -445,7 +483,7 @@ $(document).ready(() => {
     })
 
     //this fucntion will view the exam
-    $(".container").on('click', '#viewExam', (e) => {
+    $(".container").on('click', '.viewExam', (e) => {
         let examId = e.target.name || e.target.id;
         console.log(examId);
         //request the exam
@@ -459,6 +497,8 @@ $(document).ready(() => {
             });
     })
 
+
+    
     ////#########STUDENT PART/########### //
     //this is for the student part
     //get the join button exam
@@ -479,17 +519,12 @@ $(document).ready(() => {
         $('#classCode').val("");
 
     });
-
 })
-
-
-
 
 /**
  * THIS FUNCTION CREATED BY THE DEVELOPERS
  * PLEASE DONT EDIT IT!
  */
-
 //this fucntion will get all the exam created by the
 //user login
 function retirveExamByUserId(userId) {
@@ -536,7 +571,6 @@ function retrieveExamsByStatusAndId(userId, status) {
 }
 
 
-
 //this function will show the cards of exam
 function showExams(exams, data = {teacher: "", student:"hide"}) {
     $("#noExam").hide();
@@ -550,10 +584,10 @@ function showExams(exams, data = {teacher: "", student:"hide"}) {
                     <h4 class="text-center text-secondary" id="examCode">${exam.code}</h4>
                 </div>
                 <div class="card-body text-white float-right">
-                    <button title="Activate Exam" id="activateExam"  name="${exam._id}" class="btn btn-success ${data.teacher}"><i class="fas fa-power-off" id="${exam._id}"></i></button>
-                    <button title="Edit Exam" id="editExam"  name="${exam._id}" class="btn btn-warning ${data.teacher}"><i class="fas fa-edit" id="${exam._id}"></i></button>
-                    <button title="View Exam" id="viewExam"  name="${exam._id}" class="btn btn-secondary ${data.teacher}"><i class="fas fa-eye" id="${exam._id}"></i></button>
-                    <span title="Take Exam" id="viewExam"  name="${exam._id}" class="btn btn-success float-right ${data.student}">Take Quiz</span>
+                    <button title="Activate Exam" name="${exam._id}" class="btn btn-success activateExam ${data.teacher}"><i class="fas fa-power-off" id="${exam._id}"></i></button>
+                    <button title="View Exam" name="${exam._id}" class="btn btn-secondary viewExam ${data.teacher}"><i class="fas fa-eye" id="${exam._id}"></i></button>
+                    <button title="Delete Exam"  name="${exam._id}" class="btn btn-danger deleteExam ${data.teacher}"><i class="fas fa-trash" id="${exam._id}"></i></button>
+                    <span title="Take Exam"   name="${exam._id}" class="btn btn-success float-right ${data.student}">Take Quiz</span>
                 </div>
             </div>
         </div>`

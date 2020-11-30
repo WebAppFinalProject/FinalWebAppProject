@@ -37,7 +37,7 @@
                     <input type="text" id="instruction" class="form-control" placeholder="Exam Instruction ...">
                     <br>
                     <label for="expireDate" class="font-weight-bold">Exam Expiration(in munites)(optional)</label>
-                    <input type="number" id="expireDate" class="form-control" value="60" placeholder="In minutes">
+                    <input type="number" id="examSpan" class="form-control" placeholder="In minutes">
                     <br>
                     <label for="timeLimit" class="font-weight-bold">Time Limit(in minutes)(required):</label>
                     <input type="number" id="timeLimit" class="form-control " placeholder="Enter number of minutes">
@@ -55,6 +55,9 @@
                     <a id="trueorfalse" href="#" class="ml-5 btn btn-primary">True or False</a>
                     <a id="identification" href="#" class="ml-5 btn btn-primary">Identification</a>
                 </nav>
+
+                <label for="">Question Points</label>
+                <input type="number" name="" value="1" id="points">
                 <div id="4" class="border typesHide">
                     <table class="table">
                         <thead class="bg-dark text-white">
@@ -179,3 +182,8 @@
         </div>
     </div>
 </div>
+
+<script src="/static/js/dashboard.js"></script>
+<script src="/static/js/teacherAction.js"></script>
+<script src="/static/js/studentAction.js"></script>
+<script src="/static/js/settings.js"></script>

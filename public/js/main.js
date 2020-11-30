@@ -53,7 +53,7 @@ function AvoidEmpty(ids){
 
 function resetFields(ids) {
     for(let id of ids){
-        $(`#${id}`).val("").css({"border": "none"});
+        $(`#${id}`).val("").addClass("border");
     }
 }
 

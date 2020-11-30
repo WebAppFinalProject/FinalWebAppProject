@@ -40,7 +40,7 @@ function getJoinedExam(userId, status) {
         .then((res) => {
             $("#content").empty();
             let view = (status === "activated")?'<span class="align-middle joinExam">'
-            +'<h5><a href="#" class="btn btn-primary mt-1" id="noExamBtn">Create Exam</a></h5>'
+            +'<h5><a href="#" class="btn btn-primary mt-1" id="noExamBtn">Join Exam</a></h5>'
             +'</span>':"";
             if(res.exams.length <= 0){   
                 $("#content").append(`

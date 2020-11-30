@@ -61,11 +61,12 @@ module.exports = {
     },
     getExamById: async (req, res) => {
         const examId = req.params.id;
-        console.log(examId);
+       
         try {
             const exam = await Exam.findById(examId)
                 .populate('author')
                 .populate('questions');
+            console.log(exam);
             if (!exam) return res.status(400).json({ message: "Something went wrong!" });
 
             res.json({ message: "Successfully retrieved!", exam: exam });
@@ -142,6 +143,18 @@ module.exports = {
             if (!updatedExam) return res.status(400).json({ message: "Cannot find the exam!", error: true });
 
             res.json({ message: "Successfully edited exam!", update: updatedExam });
+        } catch (error) {
+            res.status(500).json({ message: error, error: true });
+        }
+    },
+
+    deleteExamById: async (req, res) =>{
+        const id = req.params.id;
+        try {
+            const deletedExam = await Exam.findByIdAndDelete(id);
+            if(!deletedExam) return res.status(400).json({message: "Something went wrong!"});
+
+            res.json({message: "Successfully deleted", exam: deletedExam});
         } catch (error) {
             res.status(500).json({ message: error, error: true });
         }
