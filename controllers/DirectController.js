@@ -16,15 +16,20 @@ module.exports = {
     getTest(req,res){
         res.render('exam',{title: "QuizeZone|exam", userId:req.user.userId, layout: "layouts/signinSignoutLayout"});
     },
+    getExam(req,res) {
+        res.render('exam', {title:"QuizZone|exam", userId:req.user.userId, layout: "layouts/signinSignoutLayout"});
+    },
+    getResult(req, res) {
+        res.render('result', {title: "QuizZone|result", userId:req.user.userId, layout: "layouts/signinSignoutLayout"})
+    },
 
     //temporary settings
     getSettings(req,res){
         res.render('settings',{title: "QuizeZone|settings",userId:req.user.userId, layout: "layouts/signinSignoutLayout" })
        
-    },
-
-    getExam(req,res) {
-        res.render('exam', {title:"QuizZone|exam", userId:req.user.userId, layout: "layouts/signinSignoutLayout"});
     }
+
+    
+
 
 }

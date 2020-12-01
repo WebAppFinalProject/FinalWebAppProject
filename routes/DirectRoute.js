@@ -10,6 +10,7 @@ router.get('/signup',AUTH.avoidLogin ,Direct.getSignUp);
 router.get('/signout', AUTH.clearCookies, Direct.getSignIn);
 router.get('/test',AUTH.Dashboard,Direct.getTest);
 router.get('/settings',AUTH.Dashboard,Direct.getSettings);
-router.get('/exam', AUTH.Dashboard,Direct.getExam)
+router.get('/exam', AUTH.Dashboard,Direct.getExam);
+router.get('/result', AUTH.Dashboard,Direct.getResult);
 
 module.exports = router;
