@@ -15,6 +15,7 @@
 
         </div>
     </div>
+    
     <!-- side bar -->
     <div class="collapse border-right position-fixed h-100 bg-dark w" id="sideb">
         <p class="text-left  p-4 dashMenu dashMenuActive examsBtn"><a href="#">Exams</a></p>
@@ -22,6 +23,7 @@
         <p class="text-left  p-4 dashMenu expiredExamBtn"><a href="#">Expired Exams</a></p>
         <p class="text-left  p-4 dashMenu settings"><a href="#">Settings</a></p>
     </div>
+
     <!-- this is the exam form -->
     <div id=createExamForm>
         <div class="row mt-5 border bg-light">
@@ -36,7 +38,8 @@
                     <label for="title" class="font-weight-bold">Instruction(required):</label>
                     <input type="text" id="instruction" class="form-control" placeholder="Exam Instruction ...">
                     <br>
-                    <label for="expireDate" class="font-weight-bold">Exam Expiration(in munites)(optional)</label>
+                    <label for="expireDate" class="font-weight-bold">Exam Span(in munites)(optional)</label><br>
+                    <i><small class="text-warning">If you want to set exam span you it must be greater than the time limit of the exam.</small></i>
                     <input type="number" id="examSpan" class="form-control" placeholder="In minutes">
                     <br>
                     <label for="timeLimit" class="font-weight-bold">Time Limit(in minutes)(required):</label>

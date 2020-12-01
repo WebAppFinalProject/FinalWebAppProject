@@ -439,24 +439,25 @@ $(document).ready(() => {
     });
 
     //this fucntion will activate the exam
-    $(".container").on('click', '.activateExam', (e) => {
+    $(".container").on('click', '.activateExam',async (e) => {
         let examId = e.target.name || e.target.id;
         let examCode = $("#examCode").text();
         let currentDate = new Date();
+        
         let updates = {
             "status": "activated"
         };
-        apiRequest(`/app/exam/${examId}`, 'get')
+        await apiRequest(`/app/exam/${examId}`, 'get')
             .then((res) => {
                 console.log(res.exam.examSpan);
                 if (res.exam.examSpan) {
-                    updates["expireDate"] = currentDate.setDate(currentDate.getDate + res.exam.examSpan);
+                    updates["expireDate"] =  new Date(currentDate.setMinutes(currentDate.getMinutes() + res.exam.examSpan));
                 }
             })
             .catch((error) => {
                 console.log(error);
             })
-        updateExamById(examId, updates)
+        await updateExamById(examId, updates)
             .then((res) => {
                 alert(`Give this exam code to your student\nExam Code: ${examCode}`);
                 console.log(res);
@@ -587,11 +588,8 @@ $(document).ready(() => {
                 console.log(error);
             })
     })
-
-
-    
-
 })
+
 
 
 /**

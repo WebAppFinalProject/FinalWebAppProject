@@ -82,6 +82,7 @@ module.exports = {
             res.status(500).json({message: error, error: true});
         }
     },
+    
     //user do login
     //####temporary###//
     userDologin: async(req, res) =>{
@@ -97,6 +98,7 @@ module.exports = {
             if(!await bcrypt.compare(password,user.password)) return  res.status(401).json({
                 message: "password does'nt match"
             });
+
 
             let access_token = jwt.sign({userId: user._id, name: user.firstname},process.env.ACCESS_TOKEN_SECRET,{ expiresIn: '12h' });
 
