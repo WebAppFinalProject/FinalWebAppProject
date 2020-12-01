@@ -1,0 +1,221 @@
+/* this is for the landing pages designs */
+body {
+    padding: 0px;
+    margin: 0px; 
+}
+
+#sub-nav {
+    top: 80px;
+    z-index: 2;
+}
+#main-nav {
+    z-index: 2;
+}
+
+.fixed-nav {
+    position: fixed;
+    z-index: 1;
+}
+
+/* Landing Page Carousel*/
+.carousel-item,
+.carousel-inner,
+.carousel-inner img {
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
+.carousel-item {
+  text-align: center;
+}
+.carousel {
+    height: 500px;
+}
+.carousel-indicators li {
+    width: 10px;
+    height: 10px;
+    border-radius: 100%;
+}
+
+/* Button Carousel */
+.carousel-button .btn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    background-color: blue;
+    color: white;
+    font-size: 16px;
+    padding: 12px 24px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    text-align: center;
+  }
+  
+  .carousel-button .btn:hover {
+    background: #731397;
+  }
+
+/* Landing Page Cards*/
+.card-deck {
+    margin: 5px;
+}
+.card-img-top {
+    height: 250px;
+    background-color: lightblue;
+}
+.card-text {
+    color: white;
+}
+
+.btn-primary {
+    border-color:transparent !important;
+    color: #fff !important;
+    border-radius: 50px;
+    padding: 10px 25px !important;
+    width: 200px;
+    text-align: center;
+    margin:10px 15px;
+}
+
+.btn-primary:hover {
+    background: #731397;
+}
+.pos-fix {
+    position: relative;
+    z-index: 1;
+    top: 350px;
+    left: 0%;
+}
+
+.btn-blue {
+    background-color: blue;
+}
+.btn-blue:hover {
+    background: #731397;
+}
+.btn-white:hover {
+    background: #1282dd;
+}
+.w {
+    width: 200px;
+}
+
+/* this is for dashboard styles */
+/* adds animation to side bar */
+.m-center {
+    margin-top: 10%;
+}
+
+@keyframes sidemove {
+    from {left: -200px;}
+    to {left: 0px;}
+}
+
+@keyframes examFormMove {
+    from {top: -200px;}
+    to {top: -40px;}
+}
+
+#createExamForm {
+    display: none;
+    position: relative;
+    z-index: 1;
+    top: -40px;
+    width: 60%;
+    margin-left: 20%;
+    animation: examFormMove 1s 1;
+}
+
+.dashMenu:hover {
+    background-color: rgb(163, 168, 172);
+}
+
+#sideb {
+    top: 135px;
+    z-index: 2;
+    animation: sidemove 1s 1;
+}
+.dashMenuActive {
+    background-color: rgb(163, 168, 172);
+    color: white;
+}
+.typesHide {
+    display: none;
+}
+
+.typesShow {
+    display: block;
+}
+
+#submitCreateExam {
+    margin-right: 20px;
+}
+.showIf {
+    cursor: pointer;
+}
+
+#username:hover {
+    color: white;
+}
+
+#content {
+    position: relative;
+    z-index: 0;
+}
+
+.examTitle {
+    z-index: 3;
+    top: 100px;
+}
+
+#main-nav {
+    z-index: 3;
+}
+
+
+
+/* this is for the student dashboard */
+@keyframes moveJoinExamForm {
+    from {top: -100px;}
+    to {top: 250px;}
+}
+
+@keyframes moveEditQuestionForm {
+    from {top: -100px;}
+    to {top: 100px;}
+}
+
+#joinExamForm {
+    z-index: 3;
+    top: 250px;
+    left: 0%;
+    width: 100%;
+    border-radius: 5px;
+    animation: moveJoinExamForm 2s 1;
+}
+
+#editQuestionForm {
+    z-index: 3;
+    top: 100px;
+    left: 0%;
+    width: 100%;
+    border-radius: 5px;
+    animation: moveEditQuestionForm 2s 1;
+}
+#cont-join {
+    width: 300px;
+}
+.hide {
+    display: none;
+}
+
+.show {
+    display: block;
+}
+#fixedWidthForm {
+    width: 600px;
+}

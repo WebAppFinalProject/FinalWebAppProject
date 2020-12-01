@@ -1,0 +1,72 @@
+.customBody{
+    position: fixed;
+    background-image: url("/static/img/loginbg.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    width:100%;
+    height:100vh;
+    overflow:auto;
+    
+}
+.customBody1{
+    position: fixed;
+    background-image: url("/static/img/signupbg.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    width:100%;
+    height:100vh;
+    overflow:auto;
+    
+}
+
+.sbutton{
+    color: white;
+    font-size: 20px;
+    border: 1px solid white;
+    background-color: #080808;
+    width: 32%;
+    margin-left: 41%;
+    margin-top: 16px;    
+    box-shadow: 0px 2px 2px 0px white;
+        
+  }
+.btn.btn-primary:hover {
+   box-shadow: 0px 1px 2px 1px #99ccff;
+   background:#0ada9b;
+   color:#fff;
+   transition: background-color 1.15s ease-in-out,border-color 1.15s ease-in-out,box-shadow 1.15s ease-in-out;
+   
+}
+
+.input-group-prepend span{
+    width: 50px;
+    background-color: #10b125;
+    color: black;
+    border:0 !important;
+}
+
+.bg-dirtywhite {
+    background-color: rgba(210, 218, 230, 0.753) ;
+}
+
+.input-custom-height {
+    height: 50px;
+}
+
+.slides {
+    display: none;
+}
+
+#prev{
+    display: none;
+}
+
+@-webkit-keyframes fades {
+    from {opacity: .4}
+    to {opacity: 1}
+}
+  
+@keyframes fades {
+    from {opacity: .4}
+    to {opacity: 1}
+}
