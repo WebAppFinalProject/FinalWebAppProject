@@ -286,7 +286,8 @@ function showExams(exams, data = {teacher: "", student:"hide"}) {
                 <div class="position-absolute examTitle w-100">
                     <h2 class="text-center text-primary">${exam.title}</h2>
                     <h4 class="text-center text-secondary" id="examCode">${exam.code}</h4>
-                    <h6 class="text-center text-secondary  ${data.student}" id="author">Teacher: ${exam.author.firstname+" "+exam.author.lastname}</h6>
+                    <h6 class="text-center text-secondary  ${data.student}" id="author">Teacher: ${exam.author.firstname+" "+exam.author.lastname}<br>
+                    <small class="text-danger">You are given ${exam.timeLimit} minutes to finish this exam</small></h6>
                 </div>
                 <div class="card-body text-white float-right">
                     ${buttons}

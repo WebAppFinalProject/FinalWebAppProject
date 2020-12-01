@@ -543,6 +543,7 @@ $(document).ready(() => {
                 //alert reminders for the students
                 alert("              Reminders:\n Please dont reload the page while taking the exam or else your exam will be void.");
                 showExamView(res.exam);
+                examLimitTimer(120);
             })
             .catch((error) => {
                 console.log(error);
@@ -586,6 +587,9 @@ $(document).ready(() => {
                 console.log(error);
             })
     })
+
+
+    
 
 })
 

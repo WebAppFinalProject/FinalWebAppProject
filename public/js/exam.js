@@ -67,6 +67,7 @@ function showExamView(examDetails) {
         `<div class=" container border bg-info mt-5" id="examCont">
         <div class="container border bg-white mt-5">
             <h2 class="text-center">${examDetails.title}</h2>
+            <h2 class="text-right" id="timer">Timer:</h2>
             <br>
             <h4>Instruction/s: </h4>
             <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ${examDetails.instruction}
