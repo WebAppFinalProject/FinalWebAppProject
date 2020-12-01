@@ -186,5 +186,40 @@ module.exports = {
         } catch (error) {
             res.status(500).json({ message: error, error: true });
         }
+    },
+
+    getExamResultByStudent: async (req, res) =>{
+        const studentId = req.params.studentId;
+        try {
+            const examResults = await ExamResult.find({studentId: studentId})
+                .populate('studentId')
+                .populate('examId');
+
+            if(!examResults) return res.status(400).json({message: "Something went wrong!"});
+
+            res.json({message: "Successfullly retrieved!", results: examResults});
+        } catch (error) {
+            res.status(500).json({ message: error, error: true });
+        }
+    },
+
+    getExamResultsById: async (req, res) =>{
+        const id = req.params.id;
+        try {
+            const examResut = await ExamResult.findById(id)
+                .populate('studentId')
+                .populate({
+                    path: "examId",
+                    populate: {
+                        path: "questions"
+                    }
+                });
+            if(!examResut) return res.status(400).json({message: "Something went wrong!"});
+
+            res.json({message: "Successfully retrieved!", result: examResut});
+        } catch (error) {
+            res.status(500).json({ message: error, error: true });
+        }
     }
+
 }

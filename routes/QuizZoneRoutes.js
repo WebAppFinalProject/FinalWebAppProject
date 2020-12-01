@@ -22,5 +22,7 @@ router.put('/put/exam/:id', AUTH.authorizedRequest, QuizZoneController.updateExa
 //student exam result
 router.post('/add/exam-result',AUTH.authorizedRequest, QuizZoneController.addExamResult);
 router.get('/get/exam-results', AUTH.authorizedRequest, QuizZoneController.getExamResults);
+router.get('/get/exam-result/:studentId', AUTH.authorizedRequest, QuizZoneController.getExamResultByStudent);
+router.get('/get/exam-result-by/:id', AUTH.authorizedRequest, QuizZoneController.getExamResultsById);
 
 module.exports = router;

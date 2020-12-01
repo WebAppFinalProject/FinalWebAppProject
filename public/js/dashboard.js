@@ -213,8 +213,7 @@ $(document).ready(() => {
             "a",
             "b",
             "c",
-            "d",
-            "points"
+            "d"
         ];
         //use validation here
         let errors = AvoidEmpty(ids);
@@ -339,7 +338,6 @@ $(document).ready(() => {
         let ids = [
             "questionIden",
             "correctAnsIden",
-            "points"
         ];
 
         //use validation here
@@ -505,6 +503,21 @@ $(document).ready(() => {
 
     });
 
+    //get the exam history for the students
+    $("body").on('click','.examHistory',()=>{
+        apiRequest(`/app/get/exam-result/${userId}`, 'get')
+            .then((res)=>{
+                $("#content").empty();
+                res.results.forEach(result => {
+                    showStudentExamHistory(result);
+                });
+            })
+            .catch((error)=>{
+                console.log(error)
+            })
+        })
+
+
     //the student take the quiz
     $("body").on('click', '.takeQuiz',async (e) => {
         let examId = e.target.id;
@@ -512,14 +525,15 @@ $(document).ready(() => {
         await apiRequest('/app/get/exam-results', "get")
             .then((res)=>{
                 students = res.result;
+                
             })
             .catch((error)=>{
                 console.log(error);
             })
         
             for(student of students){
-                console.log(student.studentId, userId);
-                if(student.studentId == userId){
+                console.log(student.examId);
+                if(student.studentId == userId && student.examId == examId){
                     alert("You already take this exam.\nPlease view your result in the Exam Result tab.");
                     return;
                 }
@@ -553,13 +567,26 @@ $(document).ready(() => {
            alert("Please answer all questions!");
             return;
         }
-        
         questionIds.forEach(id => {
             studentAnswers[id._id] = $(`input[name="${id._id}"]:checked`).val() || $(`#${id._id}`).val();
             answerkeyWithPoints[id._id] = { correctAns: id.answerKey, points: id.points,question: id.question};
         })
         validateStudentsAns(studentAnswers, answerkeyWithPoints, examId, userId);
     })
+
+
+    //the student wants to view the exam history
+    $("body").on('click','.viewExamHistory',(e)=>{
+        let examResultId =  e.target.id;
+        apiRequest(`/app/get/exam-result-by/${examResultId}`,"get")
+            .then((res)=>{
+                showExamSummary(res.result);
+            })
+            .catch((error)=>{
+                console.log(error);
+            })
+    })
+
 })
 
 

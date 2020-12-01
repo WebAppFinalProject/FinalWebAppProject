@@ -40,12 +40,14 @@ function validateStudentsAns(studentAns, examaswerKeyWithPoints, examId, userId)
         examId: examId,
         studentId: userId,
         studentScore: studentScore,
-        studentAnswer: studentAns
+        studentAnswer: studentAns,
+        totalScore: total
     };
 
     apiRequest(`/app/add/exam-result`,'post',data)
         .then((res)=>{
             console.log(res);
+            showExamOverview(total, studentScore, res.result._id);            
         })
         .catch((error)=>{
             console.log(error);

@@ -265,7 +265,6 @@ function showMultipleChoiceEditForm(questionDetails) {
 
 //this function will show the cards of exam
 function showExams(exams, data = {teacher: "", student:"hide"}) {
-    console.log(exams);
     $("#noExam").hide();
     
     exams.forEach(exam => {
@@ -298,6 +297,7 @@ function showExams(exams, data = {teacher: "", student:"hide"}) {
         );
     });
 }
+
 
 /**
  * This function will update the exam
