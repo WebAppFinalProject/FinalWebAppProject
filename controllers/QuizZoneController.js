@@ -24,7 +24,6 @@ module.exports = {
     // add question
     addQuestion: async (req, res) => {
         const newQuestion = req.body;
-        console.log(newQuestion);
         try {
             const toAddQuestion = new Question(newQuestion);
             const newlyAddedQuestion = await toAddQuestion.save();
@@ -67,7 +66,6 @@ module.exports = {
             const exam = await Exam.findById(examId)
                 .populate('author')
                 .populate('questions');
-            console.log(exam);
             if (!exam) return res.status(400).json({ message: "Something went wrong!" });
 
             res.json({ message: "Successfully retrieved!", exam: exam });
@@ -95,7 +93,6 @@ module.exports = {
     getActiveExamsByStatusAndId: async (req, res) => {
         const status = req.params.status;
         const userId = req.params.id;
-        console.log(status, userId);
         try {
             const exams = await Exam.find({ author: userId, status: status });
             if (!exams) return res.status(400).json({ message: "Something went wrong!" });
@@ -109,7 +106,6 @@ module.exports = {
     getActiveExamByStatusAndCode: async (req, res) => {
         const status = req.params.status;
         const code = req.params.code;
-        console.log(code, status);
         try {
             const exam = await Exam.findOne({ code: code, status: status });
             if (!exam) return res.status(400).json({ message: "Something went wrong!", error: true });
@@ -175,6 +171,18 @@ module.exports = {
 
             res.json({mesage: "Successfully added!", result: newlyAdded});
 
+        } catch (error) {
+            res.status(500).json({ message: error, error: true });
+        }
+    },
+
+    //get exam results
+    getExamResults: async (req, res)=>{
+        try {
+            const examResults = await ExamResult.find();
+            if(!examResults) return res.status(400).json({message: "Something went wrong!"});
+
+            res.json({message: "Successfully retrieve!", result: examResults});
         } catch (error) {
             res.status(500).json({ message: error, error: true });
         }

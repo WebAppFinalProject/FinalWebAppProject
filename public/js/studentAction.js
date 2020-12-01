@@ -11,6 +11,7 @@ function getAndProcessCode(code, status, userId) {
             if (studentsJoined.includes(userId)) {
                 alert("You already joined this exam!");
                 return;
+
             } else {
                 studentsJoined.push(userId);
                 updateExamById(res.exam._id, { students: studentsJoined })
@@ -68,7 +69,7 @@ function studentView() {
     $("#sideb").empty();
     $("#sideb").append(
         `<p class="text-left  p-4 dashMenu dashMenuActive examsBtn"><a href="#">Exams</a></p>
-        <p class="text-left  p-4 dashMenu expiredExamBtn"><a href="#">Expired Exams</a></p>`
+        <p class="text-left  p-4 dashMenu examHistory"><a href="#">Exam History</a></p>`
     );
     $("#create-cont").empty();
     $("#create-cont").append(

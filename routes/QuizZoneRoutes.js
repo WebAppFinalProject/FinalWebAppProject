@@ -21,6 +21,6 @@ router.put('/put/exam/:id', AUTH.authorizedRequest, QuizZoneController.updateExa
 
 //student exam result
 router.post('/add/exam-result',AUTH.authorizedRequest, QuizZoneController.addExamResult);
-
+router.get('/get/exam-results', AUTH.authorizedRequest, QuizZoneController.getExamResults);
 
 module.exports = router;

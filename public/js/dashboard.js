@@ -184,12 +184,8 @@ $(document).ready(() => {
 
     //this method will get the expired exams
     $("#sideb").on('click', '.expiredExamBtn', () => {
-        if (isTeacher) {
-            retrieveExamsByStatusAndId(userId, "deactivated");
-        } else {
-            getJoinedExam(userId, "deactivated");
-        }
-
+        retrieveExamsByStatusAndId(userId, "deactivated");
+    
         $(".examsBtn").removeClass("dashMenuActive");
         $(".activeExamBtn").removeClass("dashMenuActive");
         $(".expiredExamBtn").addClass("dashMenuActive");
@@ -510,9 +506,24 @@ $(document).ready(() => {
     });
 
     //the student take the quiz
-    $("body").on('click', '.takeQuiz', (e) => {
+    $("body").on('click', '.takeQuiz',async (e) => {
         let examId = e.target.id;
-
+        let students = [];
+        await apiRequest('/app/get/exam-results', "get")
+            .then((res)=>{
+                students = res.result;
+            })
+            .catch((error)=>{
+                console.log(error);
+            })
+        
+            for(student of students){
+                console.log(student.studentId, userId);
+                if(student.studentId == userId){
+                    alert("You already take this exam.\nPlease view your result in the Exam Result tab.");
+                    return;
+                }
+            }
         apiRequest(`/app/exam/${examId}`, 'get')
             .then((res) => {
                 //alert reminders for the students
