@@ -25,6 +25,9 @@ module.exports = {
     getSummary(req, res) {
         res.render('summary', {title: "QuizZone|summary", userId:req.user.userId, layout: "layouts/signinSignoutLayout"})
     },
+    getAnalytics(req, res) {
+        res.render('analytics', {title: "QuizZone|analytics", userId:req.user.userId, layout: "layouts/signinSignoutLayout"})
+    },
 
     //temporary settings
     getSettings(req,res){

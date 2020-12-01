@@ -17,13 +17,37 @@
     </div>
 
     <div class="container">
-        <div class="container border bg-info mt-5">
-            <div class="container bg-light mt-5 text-center">
-                <h1 class="p-3">Check your exam result</h1>
-                <h3 class="p-3">Your Score: 20 / 30</h3>
-            </div>
-            <center><button class="btn btn-blue text-dark font-weight-bold mt-4 mb-4" id="submitExam" >View Summary of Exam</button></center>
-            <!-- <p class="text-center font-weight-bold" href="dashboard.ejs">go to dashboard</p> -->
-        </div>        
+        <div class="border mt-5">
+            <h1 class="text-center">Number of Students who got the correct answer </h1>
+            <canvas class="mt-2 ml-2 mr-2 mb-2" id="densityChart" width="500" height="300"></canvas>
+        </div>
+
     </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
+    <script>
+
+
+        var densityCanvas = document.getElementById("densityChart");
+
+        Chart.defaults.global.defaultFontFamily = "Lato";
+        Chart.defaults.global.defaultFontSize = 18;
+        Chart.defaults.global.backgroundColor = "blue";
+        
+
+        var densityData = {
+            label: 'Students',
+            data: [12, 22, 37, 15, 43, 35, 20, 41]
+        };
+
+        var barChart = new Chart(densityCanvas, {
+            type: 'bar',
+            data: {
+                labels: ["Q1", "Q2", "Q3", "Q4", "Q5", "Q6", "Q7", "Q8"],
+                datasets: [densityData]
+            }
+        });
+    </script>
+
+
 </div>
