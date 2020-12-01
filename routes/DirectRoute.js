@@ -12,5 +12,6 @@ router.get('/test',AUTH.Dashboard,Direct.getTest);
 router.get('/settings',AUTH.Dashboard,Direct.getSettings);
 router.get('/exam', AUTH.Dashboard,Direct.getExam);
 router.get('/result', AUTH.Dashboard,Direct.getResult);
+router.get('/summary', AUTH.Dashboard,Direct.getSummary);
 
 module.exports = router;
