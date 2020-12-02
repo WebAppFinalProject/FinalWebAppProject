@@ -536,13 +536,13 @@ $(document).ready(() => {
 
 
     //view the exam result 
-    $("body").on('click','.viewExamResult',(e)=>{
+    $("body").on('click','.viewExamResult', (e)=>{
         let id = e.target.id;
         console.log("test");
         apiRequest(`/app/analytics/${id}`, 'get')
             .then((res)=>{
-                console.log(res);
-                showExamResultGraph(res.exam);
+                // console.log(res);
+                showExamResultGraph(res, id);
             })
             .catch((error)=>{
                 console.log(error);

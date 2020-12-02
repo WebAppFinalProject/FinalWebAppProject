@@ -110,8 +110,8 @@ function viewUnactivatedExamDetails(exam) {
 
 
 //show the exam result 
-function showExamResultGraph(examResult){
-    console.log(examResult);
+function showExamResultGraph(examResult, resId){
+    // let resultExamId = examResult[0]._id;
     $("#content").empty();
     $("#content").append(
         `<div class=" container border bg-info mt-5">
@@ -137,7 +137,7 @@ function showExamResultGraph(examResult){
             <div class="container border bg-white" >
                 <div class="border mt-5">
                     <h3 class="text-center">Number of Students who got the correct answer </h3>
-                    <canvas class="mt-2 ml-2 mr-2 mb-2" id="analytics" width="500" height="300"></canvas>
+                    <canvas class="mt-2 ml-2 mr-2 mb-2" id="analytics" name="${resId}" width="500" height="300"></canvas>
                 </div>
 
             </div>
