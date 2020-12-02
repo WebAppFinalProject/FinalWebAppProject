@@ -510,6 +510,7 @@ $(document).ready(() => {
             .then((res)=>{
                 $("#content").empty();
                 res.results.forEach(result => {
+                    console.log(result)
                     showStudentExamHistory(result);
                 });
             })

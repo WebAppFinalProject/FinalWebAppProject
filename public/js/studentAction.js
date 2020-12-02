@@ -81,7 +81,7 @@ function studentView() {
 //this function will show the exam history for student
 function showStudentExamHistory(examHistory) {
     let exam = examHistory.examId;
-    console.log(exam);
+
     $("#content").append(
         `<div class="col-md-4 mt-5">
         <div class="card bg-dark position-relative">
@@ -91,7 +91,7 @@ function showStudentExamHistory(examHistory) {
                 <h4 class="text-center text-secondary" id="examCode">${exam.code}</h4>
             </div>
             <div class="card-body text-white float-right">
-                <span title="Take Exam"   id="${examHistory._id}" class="btn btn-success float-right viewExamHistory">View Exam History</span>
+                <span title="Exam History"   id="${examHistory._id}" class="btn btn-success float-right viewExamHistory">View Exam History</span>
             </div>
         </div>
     </div>`
