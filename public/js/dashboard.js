@@ -120,7 +120,6 @@ $(document).ready(() => {
             $("#createExamForm").hide();
             let ids = [
                 "questionMultiple",
-                "typeMulti",
                 "correctAnsMulti",
                 "a",
                 "b",
@@ -185,7 +184,7 @@ $(document).ready(() => {
     //this method will get the expired exams
     $("#sideb").on('click', '.expiredExamBtn', () => {
         retrieveExamsByStatusAndId(userId, "deactivated");
-    
+
         $(".examsBtn").removeClass("dashMenuActive");
         $(".activeExamBtn").removeClass("dashMenuActive");
         $(".expiredExamBtn").addClass("dashMenuActive");
@@ -439,11 +438,11 @@ $(document).ready(() => {
     });
 
     //this fucntion will activate the exam
-    $(".container").on('click', '.activateExam',async (e) => {
+    $(".container").on('click', '.activateExam', async (e) => {
         let examId = e.target.name || e.target.id;
         let examCode = $("#examCode").text();
         let currentDate = new Date();
-        
+
         let updates = {
             "status": "activated"
         };
@@ -451,7 +450,7 @@ $(document).ready(() => {
             .then((res) => {
                 console.log(res.exam.examSpan);
                 if (res.exam.examSpan) {
-                    updates["expireDate"] =  new Date(currentDate.setMinutes(currentDate.getMinutes() + res.exam.examSpan));
+                    updates["expireDate"] = new Date(currentDate.setMinutes(currentDate.getMinutes() + res.exam.examSpan));
                 }
             })
             .catch((error) => {
@@ -504,42 +503,52 @@ $(document).ready(() => {
 
     });
 
+
+
     //get the exam history for the students
-    $("body").on('click','.examHistory',()=>{
+    $("body").on('click', '.examHistory', () => {
+
         apiRequest(`/app/get/exam-result/${userId}`, 'get')
-            .then((res)=>{
+            .then((res) => {
                 $("#content").empty();
+                if (res.results.length <= 0) {
+                    $("#content").append(`<div class="container text-center h-100 w-100 m-center m-center" id="noExam">
+                    <span class="align-middle">
+                        <h3 class="text text-secondary" id="noExamMsg">Theres no Exan History yet!</h3>
+                    </span>
+                </div>`)
+                return;
+                }
                 res.results.forEach(result => {
-                    console.log(result)
                     showStudentExamHistory(result);
                 });
             })
-            .catch((error)=>{
+            .catch((error) => {
                 console.log(error)
             })
-        })
+    })
 
 
     //the student take the quiz
-    $("body").on('click', '.takeQuiz',async (e) => {
+    $("body").on('click', '.takeQuiz', async (e) => {
         let examId = e.target.id;
         let students = [];
         await apiRequest('/app/get/exam-results', "get")
-            .then((res)=>{
+            .then((res) => {
                 students = res.result;
-                
+
             })
-            .catch((error)=>{
+            .catch((error) => {
                 console.log(error);
             })
-        
-            for(student of students){
-                console.log(student.examId);
-                if(student.studentId == userId && student.examId == examId){
-                    alert("You already take this exam.\nPlease view your result in the Exam Result tab.");
-                    return;
-                }
+
+        for (student of students) {
+            console.log(student.examId);
+            if (student.studentId == userId && student.examId == examId) {
+                alert("You already take this exam.\nPlease view your result in the Exam Result tab.");
+                return;
             }
+        }
         apiRequest(`/app/exam/${examId}`, 'get')
             .then((res) => {
                 //alert reminders for the students
@@ -565,27 +574,27 @@ $(document).ready(() => {
             .catch((error) => {
                 console.log(error);
             })
-            let studentAnswers = {};
-       if(!validateExamBeforeSubmit(questionIds)){
-           alert("Please answer all questions!");
+        let studentAnswers = {};
+        if (!validateExamBeforeSubmit(questionIds)) {
+            alert("Please answer all questions!");
             return;
         }
         questionIds.forEach(id => {
             studentAnswers[id._id] = $(`input[name="${id._id}"]:checked`).val() || $(`#${id._id}`).val();
-            answerkeyWithPoints[id._id] = { correctAns: id.answerKey, points: id.points,question: id.question};
+            answerkeyWithPoints[id._id] = { correctAns: id.answerKey, points: id.points, question: id.question };
         })
         validateStudentsAns(studentAnswers, answerkeyWithPoints, examId, userId);
     })
 
 
     //the student wants to view the exam history
-    $("body").on('click','.viewExamHistory',(e)=>{
-        let examResultId =  e.target.id;
-        apiRequest(`/app/get/exam-result-by/${examResultId}`,"get")
-            .then((res)=>{
+    $("body").on('click', '.viewExamHistory', (e) => {
+        let examResultId = e.target.id;
+        apiRequest(`/app/get/exam-result-by/${examResultId}`, "get")
+            .then((res) => {
                 showExamSummary(res.result);
             })
-            .catch((error)=>{
+            .catch((error) => {
                 console.log(error);
             })
     })

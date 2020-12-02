@@ -4,11 +4,11 @@
  * Teachers informatiom but not editable
  * @param {*} userInfo 
  */
-function userProfile(userInfo) {
-    //pending
-    apiRequest(`/app/get/exam/${userInfo._id}`,"get")
+async function userProfile(userInfo) {
+    let exams = [];
+    await apiRequest(`/app/get/exam/${userInfo._id}`,"get")
         .then((res)=>{
-            console.log(res);
+            console.log(res);    
         })
         .catch((error)=>{
             console.log(error);
@@ -22,25 +22,29 @@ function userProfile(userInfo) {
         </div>
 
         <div class="container border bg-info mt-3 mb-3">
-            <div class="row m-4">
-                <div class="card ml-2" style="width: 30rem;">
-                    <div class="card-body ">
-                        <h5 class="text-center">
-                            Number of Exams Created
-                        </h5>
+            <div class="row">
+                <div class="col-md-6 p-2">
+                    <div class="card">
+                        <div class="card-body ">
+                            <h5 class="text-center">
+                                Number of Exams Created
+                            </h5>
+                        </div>
                     </div>
                 </div>
-                <div class="card ml-5 " style="width: 30rem;">
-                    <div class="card-body ">
-                        <h5 class="text-center">
-                            Average
-                        </h5>
+                <div class="col-md-6 p-2">
+                    <div class="card">
+                        <div class="card-body ">
+                            <h5 class="text-center">
+                                Average
+                            </h5>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="container border bg-info mt-3 mb-3 ">
-            <h3 class="mt-2 text-center text-white font-weight-bold">List of Exams/s Created</h3>
+            <h3 class="mt-2 text-center text-white font-weight-bold">List of Exam Created</h3>
             <table class="table table-striped table-white bg-white ">
                 <tbody>
                     <tr>
