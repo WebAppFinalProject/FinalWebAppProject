@@ -26,7 +26,7 @@ function validateExamBeforeSubmit(questionIds){
  * @param {*} studentAns 
  * @param {*} examNaswerKey 
  */
-function validateStudentsAns(studentAns, examaswerKeyWithPoints, examId, userId){
+function validateStudentsAns(studentAns, examaswerKeyWithPoints, exam, userInfo){
     let total = 0;
     let studentScore = 0;
 
@@ -36,16 +36,25 @@ function validateStudentsAns(studentAns, examaswerKeyWithPoints, examId, userId)
             studentScore += examaswerKeyWithPoints[id].points;
         }
     }
+
+    publishTo(`exam/${exam.code}`,client,JSON.stringify({
+        name: userInfo.firstname +" "+userInfo.lastname,
+        message: "submit exam",
+        examTitle: exam.title
+    }))
+
     let data = {
-        examId: examId,
-        studentId: userId,
+        examId: exam._id,
+        studentId: userInfo._id,
         studentScore: studentScore,
-        studentAnswer: studentAns
+        studentAnswer: studentAns,
+        totalScore: total
     };
 
     apiRequest(`/app/add/exam-result`,'post',data)
         .then((res)=>{
             console.log(res);
+            showExamOverview(total, studentScore, res.result._id);            
         })
         .catch((error)=>{
             console.log(error);
@@ -65,6 +74,7 @@ function showExamView(examDetails) {
         `<div class=" container border bg-info mt-5" id="examCont">
         <div class="container border bg-white mt-5">
             <h2 class="text-center">${examDetails.title}</h2>
+            <h2 class="text-right" id="timer">Timer:</h2>
             <br>
             <h4>Instruction/s: </h4>
             <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ${examDetails.instruction}

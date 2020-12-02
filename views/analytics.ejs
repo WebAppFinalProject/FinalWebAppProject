@@ -23,31 +23,30 @@
         </div>
 
     </div>
-    </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
-    <script>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
+<script>
 
 
-        var densityCanvas = document.getElementById("densityChart");
+    var densityCanvas = document.getElementById("densityChart");
 
-        Chart.defaults.global.defaultFontFamily = "Lato";
-        Chart.defaults.global.defaultFontSize = 18;
-        Chart.defaults.global.backgroundColor = "blue";
-        
+    Chart.defaults.global.defaultFontFamily = "Lato";
+    Chart.defaults.global.defaultFontSize = 18;
+    Chart.defaults.global.backgroundColor = "blue";
 
-        var densityData = {
-            label: 'Students',
-            data: [12, 22, 37, 15, 43, 35, 20, 41]
-        };
+    var densityData = {
+        label: 'Students',
+        data: [12, 22, 37, 15, 43, 35, 20, 41],
+    };
 
-        var barChart = new Chart(densityCanvas, {
-            type: 'bar',
-            data: {
-                labels: ["Q1", "Q2", "Q3", "Q4", "Q5", "Q6", "Q7", "Q8"],
-                datasets: [densityData]
-            }
-        });
-    </script>
+    var barChart = new Chart(densityCanvas, {
+        type: 'bar',
+        data: {
+            labels: ["Q1", "Q2", "Q3", "Q4", "Q5", "Q6", "Q7", "Q8"],
+            datasets: [densityData]
+        }
+    });
+</script>
 
 
 </div>
