@@ -104,7 +104,7 @@ $(document).ready(() => {
     $("body").on('click', '.deleteQuestion', (e) => {
         let id = e.target.name || e.target.classList[2];
         questionDetails.splice(id, 1);
-        alert("Successfully deleted!");
+        Swal.fire("Successfully deleted!","","success");
         showQuestionTable(questionDetails);
     })
 
@@ -233,7 +233,13 @@ $(document).ready(() => {
                 "points": $("#points").val()
             };
             questionDetails.push(data);
-            alert("question successfully added!");
+            Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'Successfully added!',
+                showConfirmButton: false,
+                timer: 1000
+              })
             resetFields(ids);
         };
     });
@@ -297,7 +303,13 @@ $(document).ready(() => {
             };
 
             questionDetails.push(data);
-            alert("question successfully added!");
+            Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'Successfully added!',
+                showConfirmButton: false,
+                timer: 1000
+              })
             resetFields(ids);
         }
 
@@ -353,7 +365,13 @@ $(document).ready(() => {
             }
 
             questionDetails.push(data);
-            alert("question successfully added!");
+            Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'Successfully added!',
+                showConfirmButton: false,
+                timer: 1000
+              })
             resetFields(ids);
         }
     });
@@ -448,22 +466,25 @@ $(document).ready(() => {
         };
         await apiRequest(`/app/exam/${examId}`, 'get')
             .then((res) => {
+                console.log("I was here!");
                 console.log(res.exam.examSpan);
                 if (res.exam.examSpan) {
+                    console.log(new Date(currentDate.setMinutes(currentDate.getMinutes() + res.exam.examSpan)));
                     updates["expireDate"] = new Date(currentDate.setMinutes(currentDate.getMinutes() + res.exam.examSpan));
                 }
+                updateExamById(examId, updates)
+                    .then((res) => {
+                        Swal.fire(`Give the code to your student\nExamcode: ${examCode}`, '', 'info')
+                        subscribeTo("exam", client);
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    })
             })
             .catch((error) => {
                 console.log(error);
             })
-        await updateExamById(examId, updates)
-            .then((res) => {
-                alert(`Give this exam code to your student\nExam Code: ${examCode}`);
-                console.log(res);
-            })
-            .catch((error) => {
-                console.log(error);
-            })
+
     })
 
     //this fucntion will view the exam
@@ -479,6 +500,11 @@ $(document).ready(() => {
             .catch((error) => {
                 console.log(error);
             });
+    })
+
+    //this function will deactivate the exam
+    $("body").on('click','.deactivateExam',(e)=>{
+        let examID = e.target.id;
     })
 
 
@@ -503,8 +529,6 @@ $(document).ready(() => {
 
     });
 
-
-
     //get the exam history for the students
     $("body").on('click', '.examHistory', () => {
 
@@ -517,7 +541,7 @@ $(document).ready(() => {
                         <h3 class="text text-secondary" id="noExamMsg">Theres no Exan History yet!</h3>
                     </span>
                 </div>`)
-                return;
+                    return;
                 }
                 res.results.forEach(result => {
                     showStudentExamHistory(result);
@@ -552,14 +576,25 @@ $(document).ready(() => {
         apiRequest(`/app/exam/${examId}`, 'get')
             .then((res) => {
                 //alert reminders for the students
-                alert("              Reminders:\n Please dont reload the page while taking the exam or else your exam will be void.");
+                Swal.fire({
+                    title: "Reminders!",
+                    text: "Please don't refresh the page while taking the exam else you need take the exam again!",
+                    icon: 'warning',
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Got it!'
+                  })
+                publishTo(`exam/${res.exam.code}`, client, JSON.stringify({
+                    name: userInfo.firstname +" "+userInfo.lastname,
+                    message: "take quiz",
+                    examTitle: res.exam.title
+                    }));
                 showExamView(res.exam);
-                examLimitTimer(120);
+                examLimitTimer(res.exam.timeLimit);
             })
             .catch((error) => {
                 console.log(error);
             })
-
     });
 
     //student submit the exam
@@ -567,9 +602,11 @@ $(document).ready(() => {
         let examId = e.target.id;
         let questionIds = [];
         let answerkeyWithPoints = [];
+        let exam;
         await apiRequest(`/app/exam/${examId}`, "get")
             .then((res) => {
                 questionIds = res.exam.questions;
+                exam = res.exam;
             })
             .catch((error) => {
                 console.log(error);
@@ -583,7 +620,8 @@ $(document).ready(() => {
             studentAnswers[id._id] = $(`input[name="${id._id}"]:checked`).val() || $(`#${id._id}`).val();
             answerkeyWithPoints[id._id] = { correctAns: id.answerKey, points: id.points, question: id.question };
         })
-        validateStudentsAns(studentAnswers, answerkeyWithPoints, examId, userId);
+        validateStudentsAns(studentAnswers, answerkeyWithPoints, exam, userInfo);
+        
     })
 
 

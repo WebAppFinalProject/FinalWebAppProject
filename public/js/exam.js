@@ -26,7 +26,7 @@ function validateExamBeforeSubmit(questionIds){
  * @param {*} studentAns 
  * @param {*} examNaswerKey 
  */
-function validateStudentsAns(studentAns, examaswerKeyWithPoints, examId, userId){
+function validateStudentsAns(studentAns, examaswerKeyWithPoints, exam, userInfo){
     let total = 0;
     let studentScore = 0;
 
@@ -36,9 +36,16 @@ function validateStudentsAns(studentAns, examaswerKeyWithPoints, examId, userId)
             studentScore += examaswerKeyWithPoints[id].points;
         }
     }
+
+    publishTo(`exam/${exam.code}`,client,JSON.stringify({
+        name: userInfo.firstname +" "+userInfo.lastname,
+        message: "submit exam",
+        examTitle: exam.title
+    }))
+
     let data = {
-        examId: examId,
-        studentId: userId,
+        examId: exam._id,
+        studentId: userInfo._id,
         studentScore: studentScore,
         studentAnswer: studentAns,
         totalScore: total

@@ -28,6 +28,25 @@ async function saveExamAndQuestions(Exam, Questions, userId) {
         })
 }
 
+
+function deactivateExam(examId) {
+    let updates = {
+        "status": "deactivate"
+    };
+    updateExamById(examId, updates)
+        .then((res)=>{
+            console.log(res);
+        })
+        .catch((error)=>{
+            console.log(error);
+        })
+}
+
+
+
+
+//######THIS THE VIEW FUNCTION ###////
+
 /**
  * This function will be called when the
  * teacher wants to view the exam he/she created 
@@ -276,11 +295,12 @@ function showExams(exams, data = {teacher: "", student:"hide"}) {
         if(exam.status=="activated"){
             buttons = `<span title="Students joined the Exam"   id="${exam._id}" class="btn btn-secondary float-right Students Joined ${data.teacher}">Joined students</span>
             <span title="Deactivate Exam" id="${exam._id}" class="btn btn-danger float-right deactivateExam ${data.teacher} mr-2">Deactivate</span>`;
-            timer = `<h6 id="examTimerSpan" class="text-center text-success">Exam will expire on: </h6>`;
+            timer = `<h6 id="examTimerSpan" class="text-center text-success">${(exam.expireDate == null)?"No expireDate": `The Exam will expire on ${exam.expireDate}`}</h6>`;
         }   
         if(exam.status == "deactivated"){
             buttons = `<span title="view Result" id="${exam._id}" class="btn btn-info float-right deactivateExam ${data.teacher} mr-2">View Exam Result</span>`;
         }
+
         $("#content").append(
             `<div class="col-md-4 mt-5">
             <div class="card bg-dark position-relative">

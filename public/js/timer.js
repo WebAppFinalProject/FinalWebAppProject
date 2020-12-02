@@ -24,3 +24,5 @@ function endExamLimitTimer(){
     clearInterval(timer)
 }
 
+
+//check every menutes if the exam is deactivated

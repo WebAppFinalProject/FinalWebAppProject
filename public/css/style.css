@@ -137,7 +137,7 @@ body {
 #sideb {
     top: 135px;
     z-index: 2;
-    animation: sidemove 1s 1;
+    animation: sidemove 0.5s 1;
 }
 .dashMenuActive {
     background-color: rgb(163, 168, 172);
@@ -195,7 +195,7 @@ body {
     left: 0%;
     width: 100%;
     border-radius: 5px;
-    animation: moveJoinExamForm 2s 1;
+    animation: moveJoinExamForm 1s 1;
 }
 
 #editQuestionForm {
@@ -204,7 +204,7 @@ body {
     left: 0%;
     width: 100%;
     border-radius: 5px;
-    animation: moveEditQuestionForm 2s 1;
+    animation: moveEditQuestionForm 1s 1;
 }
 #cont-join {
     width: 300px;
