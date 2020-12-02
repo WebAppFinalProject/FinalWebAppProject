@@ -222,23 +222,20 @@ module.exports = {
         }
     },
 
-
     getExamResultByExamId: async (req, res) => {
-        const examId = req.params.id;
+        let examId = req.params.id;
         try {
-            const examResult = await ExamResult.find({examId: examId})
+            const examResults = await ExamResult.find({examId: examId})
                 .populate({
                     path: "examId",
                     populate: {
-                        path:"questions",
+                        path: "questions"
                     }
                 });
-            if(!examResult) return res.status(500).send("Something went wrong!");
-
-            res.json({message: "Successfully retrieved!", examResult: examResult});
-       } catch (error) {
-
+            res.json(examResults);
+        } catch (error) {
+            res.status(500).json({ message: error, error: true });
         }
+       
     }
-
 }

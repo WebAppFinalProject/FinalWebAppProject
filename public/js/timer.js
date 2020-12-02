@@ -38,6 +38,6 @@ function checkDeactivationDate(examExpireDate, examId){
     })
 }
 
-function endExamLimitTimer(){
+function endExamCheckMinutes(){
     clearInterval(checkingMinute)
 }

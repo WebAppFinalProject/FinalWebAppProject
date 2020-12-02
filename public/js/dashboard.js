@@ -10,6 +10,9 @@ $(document).ready(() => {
     //subscribed to different topic
     subscribeTo("exam", client);
 
+
+
+
     //set the container empty
     $("#noExam").hide();
     $("#content").append(
@@ -37,6 +40,17 @@ $(document).ready(() => {
                     getJoinedExam(userId, "activated");
                 } else if (res.user.position == "teacher") {
                     retrieveExamsByStatusAndId(userId, "unactivated");
+                    apiRequest(`/app/get/exam/${"activated"}/${userId}`, "get")
+                        .then((res)=>{
+                            res.exams.forEach(exam =>{
+                                if(exam.expireDate != null){
+                                    checkDeactivationDate(exam.expireDate, exam._id);
+                                }
+                            })
+                        })
+                        .catch((error)=>{
+                            console.log(error);
+                        })
                     isTeacher = true;
                 }
                 $("#noExam1").hide();
@@ -44,7 +58,6 @@ $(document).ready(() => {
             .catch((error) => {
                 console.log(error);
             })
-
     } else {
         $(".showIf").hide();
     }
@@ -276,7 +289,12 @@ $(document).ready(() => {
                 ]
             };
             questionDetails[questionId] = data;
-            alert("question successfully Edited!");
+            Swal.fire({
+                icon: 'success',
+                title: 'Successfully edited!',
+                showConfirmButton: false,
+                timer: 1000
+              })
             $("#editQuestionForm").toggle();
             showQuestionTable(questionDetails);
             resetFields(ids);
@@ -339,7 +357,12 @@ $(document).ready(() => {
             };
 
             questionDetails[questionId] = data;
-            alert("question successfully edited!");
+            Swal.fire({
+                icon: 'success',
+                title: 'Successfully edited!',
+                showConfirmButton: false,
+                timer: 1000
+              })
             $("#editQuestionForm").toggle();
             showQuestionTable(questionDetails);
             resetFields(ids);
@@ -478,6 +501,7 @@ $(document).ready(() => {
                         Swal.fire(`Give the code to your student\nExamcode: ${examCode}`, '', 'info')
                         subscribeTo("exam", client);
                         retrieveExamsByStatusAndId(userId, "activated");
+                        checkDeactivationDate(res.update.expireDate, examId);
                     })
                     .catch((error) => {
                         console.log(error);
@@ -507,21 +531,23 @@ $(document).ready(() => {
     $("body").on('click','.deactivateExam',(e)=>{
         let examId = e.target.id;
         deactivateExam(examId);
+        endExamCheckMinutes();
     })
+
 
     //view the exam result 
     $("body").on('click','.viewExamResult',(e)=>{
         let id = e.target.id;
-        apiRequest(`/app/exam/${id}`, 'get')
+        console.log("test");
+        apiRequest(`/app/analytics/${id}`, 'get')
             .then((res)=>{
                 console.log(res);
+                showExamResultGraph(res.exam);
             })
             .catch((error)=>{
                 console.log(error);
             })
-        // showExamResultGraph();
     })
-
 
     ////#########STUDENT PART/########### //
     //this is for the student part

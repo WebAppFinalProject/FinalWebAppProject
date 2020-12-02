@@ -26,6 +26,6 @@ router.get('/get/exam-result/:studentId', AUTH.authorizedRequest, QuizZoneContro
 router.get('/get/exam-result-by/:id', AUTH.authorizedRequest, QuizZoneController.getExamResultsById);
 
 //analytics route
-router.get('/get/exam-result/analytics/:id', AUTH.authorizedRequest, QuizZoneController.getExamResultByExamId);
+router.get('/analytics/:id', AUTH.authorizedRequest ,QuizZoneController.getExamResultByExamId)
 
 module.exports = router;

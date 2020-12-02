@@ -41,6 +41,7 @@ function deactivateExam(examId) {
                 text: `${res.update.title} is deactivated!`,
                 timer: 3000
             });
+            retrieveExamsByStatusAndId(examId, "activated");
         })
         .catch((error) => {
             console.log(error);
@@ -109,28 +110,42 @@ function viewUnactivatedExamDetails(exam) {
 
 
 //show the exam result 
-function showExamResultGraph(exam){
+function showExamResultGraph(examResult){
+    console.log(examResult);
     $("#content").empty();
     $("#content").append(
         `<div class=" container border bg-info mt-5">
-        <button class="btn btn-info text-white float-right examsBtn">back</button>
-        <h1 class="text-center mt-3 text-white" id="examTitle">${"Test"}</h1>
+            <button class="btn btn-info text-white float-right examsBtn">back</button>
+            <h1 class="text-center mt-3 text-white" id="examTitle">${"Test"}</h1>
 
-        <h5 class="text-white" id="code">Code: ${"Test"}</h5>
+            <h5 class="text-white" id="code">Code: ${"Test"}</h5>
 
-        <div class="container border bg-white">
-            <h2 class="text-center">Exam Details</h2>
-            <div class="position-center mb-5">
-                <div class="container">
-                    <h5 class="ml-5" id="expirationDate">Expiration Date: </h5>
-                </div>
-                <div class="container">
-                    <h5 class="ml-5" id="timeLimit">Time Limit: ${"Test"} minutes</h5>
-                </div>
-                <div class="container">
-                    <h5 class="ml-5 ">Status: ${"Test"}</h5>
+            <div class="container border bg-white">
+                <h2 class="text-center">Exam Details</h2>
+                <div class="position-center mb-5">
+                    <div class="container">
+                        <h5 class="ml-5" id="expirationDate">Expiration Date: </h5>
+                    </div>
+                    <div class="container">
+                        <h5 class="ml-5" id="timeLimit">Time Limit: ${"Test"} minutes</h5>
+                    </div>
+                    <div class="container">
+                        <h5 class="ml-5 ">Status: ${"Test"}</h5>
+                    </div>
                 </div>
             </div>
+            <div class="container border bg-white" >
+                <div class="border mt-5">
+                    <h3 class="text-center">Number of Students who got the correct answer </h3>
+                    <canvas class="mt-2 ml-2 mr-2 mb-2" id="analytics" width="500" height="300"></canvas>
+                </div>
+
+            </div>
+
+            <div class="container border bg-white" id="questionTable1">
+                
+            </div>
+            <script src="/static/js/analyticsGraph.js"></script>
         </div>`);
 }
 
