@@ -511,8 +511,15 @@ $(document).ready(() => {
 
     //view the exam result 
     $("body").on('click','.viewExamResult',(e)=>{
-        console.log(e.target.id);
-        showExamResultGraph();
+        let id = e.target.id;
+        apiRequest(`/app/exam/${id}`, 'get')
+            .then((res)=>{
+                console.log(res);
+            })
+            .catch((error)=>{
+                console.log(error);
+            })
+        // showExamResultGraph();
     })
 
 

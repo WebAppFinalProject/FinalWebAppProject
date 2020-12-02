@@ -109,7 +109,7 @@ function viewUnactivatedExamDetails(exam) {
 
 
 //show the exam result 
-function showExamResultGraph(){
+function showExamResultGraph(exam){
     $("#content").empty();
     $("#content").append(
         `<div class=" container border bg-info mt-5">

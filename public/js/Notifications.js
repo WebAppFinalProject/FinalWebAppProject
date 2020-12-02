@@ -3,15 +3,17 @@ var broker = 'wss://mqtt.eclipse.org:443/mqtt';
 var client = mqtt.connect(broker);
 
 $(document).ready(() => {
-    let isTeacher;
+    let isTeacher = false;
     let id = $("#userId").val()
 
     apiRequest('/user/getuser/' + id, "get")
         .then((res)=>{
-
+            if(res.user.position == "teacher"){
+                isTeacher = true;
+            }
         })
         .catch((error)=>{
-            
+            console.log(error);
         })
 
     client.on('connect', () => {
@@ -21,13 +23,15 @@ $(document).ready(() => {
     client.on('message',(topic, message)=>{
         let msg = JSON.parse(message.toString());
         console.log(message.toString(), msg);
-        Swal.fire({
-            position: 'top-end',
-            icon: 'info',
-            title: `${msg.name} ${msg.message} in titled ${msg.examTitle} `,
-            showConfirmButton: false,
-            timer: 2500
-          })
+        if(isTeacher){
+            Swal.fire({
+                position: 'top-end',
+                icon: 'info',
+                title: `${msg.name} ${msg.message} in titled ${msg.examTitle} `,
+                showConfirmButton: false,
+                timer: 2500
+              })
+        }
     })
 })
 

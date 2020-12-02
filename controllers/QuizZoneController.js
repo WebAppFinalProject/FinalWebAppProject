@@ -61,7 +61,7 @@ module.exports = {
     },
     getExamById: async (req, res) => {
         const examId = req.params.id;
-       
+
         try {
             const exam = await Exam.findById(examId)
                 .populate('author')
@@ -117,15 +117,15 @@ module.exports = {
     },
 
     //get the exam joined by the student
-    getStudentJoinedExam: async (req, res)=>{
+    getStudentJoinedExam: async (req, res) => {
         const studentId = req.params.studentId;
         const status = req.params.status;
         try {
-            const exams = await Exam.find({students: studentId, status: status})
+            const exams = await Exam.find({ students: studentId, status: status })
                 .populate('author');
-            if(!exams)  res.status(400).json({ message: "Something went wrong!", error: true });
+            if (!exams) res.status(400).json({ message: "Something went wrong!", error: true });
 
-            res.json({message: "Successfully retrieved!", exams: exams});
+            res.json({ message: "Successfully retrieved!", exams: exams });
         } catch (error) {
             res.status(500).json({ message: error, error: true });
         }
@@ -146,15 +146,15 @@ module.exports = {
             res.status(500).json({ message: error, error: true });
         }
     },
-    
+
     //this controller will delete the exam by id
-    deleteExamById: async (req, res) =>{
+    deleteExamById: async (req, res) => {
         const id = req.params.id;
         try {
             const deletedExam = await Exam.findByIdAndDelete(id);
-            if(!deletedExam) return res.status(400).json({message: "Something went wrong!"});
+            if (!deletedExam) return res.status(400).json({ message: "Something went wrong!" });
 
-            res.json({message: "Successfully deleted", exam: deletedExam});
+            res.json({ message: "Successfully deleted", exam: deletedExam });
         } catch (error) {
             res.status(500).json({ message: error, error: true });
         }
@@ -162,14 +162,14 @@ module.exports = {
 
 
     //add new exam result
-    addExamResult: async (req, res)=>{
+    addExamResult: async (req, res) => {
         const newExamResult = req.body;
         try {
             const examResTobAdded = await new ExamResult(newExamResult);
             const newlyAdded = await examResTobAdded.save();
-            if(!newlyAdded) return res.status(400).json({message: "Something went wrong!"});
+            if (!newlyAdded) return res.status(400).json({ message: "Something went wrong!" });
 
-            res.json({mesage: "Successfully added!", result: newlyAdded});
+            res.json({ mesage: "Successfully added!", result: newlyAdded });
 
         } catch (error) {
             res.status(500).json({ message: error, error: true });
@@ -177,33 +177,33 @@ module.exports = {
     },
 
     //get exam results
-    getExamResults: async (req, res)=>{
+    getExamResults: async (req, res) => {
         try {
             const examResults = await ExamResult.find();
-            if(!examResults) return res.status(400).json({message: "Something went wrong!"});
+            if (!examResults) return res.status(400).json({ message: "Something went wrong!" });
 
-            res.json({message: "Successfully retrieve!", result: examResults});
+            res.json({ message: "Successfully retrieve!", result: examResults });
         } catch (error) {
             res.status(500).json({ message: error, error: true });
         }
     },
 
-    getExamResultByStudent: async (req, res) =>{
+    getExamResultByStudent: async (req, res) => {
         const studentId = req.params.studentId;
         try {
-            const examResults = await ExamResult.find({studentId: studentId})
+            const examResults = await ExamResult.find({ studentId: studentId })
                 .populate('studentId')
                 .populate('examId');
 
-            if(!examResults) return res.status(400).json({message: "Something went wrong!"});
+            if (!examResults) return res.status(400).json({ message: "Something went wrong!" });
 
-            res.json({message: "Successfullly retrieved!", results: examResults});
+            res.json({ message: "Successfullly retrieved!", results: examResults });
         } catch (error) {
             res.status(500).json({ message: error, error: true });
         }
     },
 
-    getExamResultsById: async (req, res) =>{
+    getExamResultsById: async (req, res) => {
         const id = req.params.id;
         try {
             const examResut = await ExamResult.findById(id)
@@ -214,11 +214,30 @@ module.exports = {
                         path: "questions"
                     }
                 });
-            if(!examResut) return res.status(400).json({message: "Something went wrong!"});
+            if (!examResut) return res.status(400).json({ message: "Something went wrong!" });
 
-            res.json({message: "Successfully retrieved!", result: examResut});
+            res.json({ message: "Successfully retrieved!", result: examResut });
         } catch (error) {
             res.status(500).json({ message: error, error: true });
+        }
+    },
+
+
+    getExamResultByExamId: async (req, res) => {
+        const examId = req.params.id;
+        try {
+            const examResult = await ExamResult.find({examId: examId})
+                .populate({
+                    path: "examId",
+                    populate: {
+                        path:"questions",
+                    }
+                });
+            if(!examResult) return res.status(500).send("Something went wrong!");
+
+            res.json({message: "Successfully retrieved!", examResult: examResult});
+       } catch (error) {
+
         }
     }
 

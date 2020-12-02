@@ -26,6 +26,18 @@ function endExamLimitTimer(){
 
 
 //check every menutes if the exam is deactivated
-function checkDeactivationDate(examExpireDate){
-    
+var checkingMinute;
+function checkDeactivationDate(examExpireDate, examId){
+    let expireationDate = new Date(examExpireDate);
+    checkingMinute = setInterval(()=>{
+        let currentDate = new Date();
+        if(expireationDate == currentDate){
+            clearInterval(checkDeactivationDate);
+            deactivateExam(examId);
+        }
+    })
+}
+
+function endExamLimitTimer(){
+    clearInterval(checkingMinute)
 }
