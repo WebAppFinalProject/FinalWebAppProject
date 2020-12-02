@@ -1,3 +1,4 @@
+
 $(document).ready(() => {
     //global vars
     let isTeacher = false;
@@ -5,6 +6,9 @@ $(document).ready(() => {
     let userId = "";
     let questionId = "";
     let userInfo = "";
+
+    //subscribed to different topic
+    subscribeTo("exam", client);
 
     //set the container empty
     $("#noExam").hide();
@@ -183,7 +187,7 @@ $(document).ready(() => {
 
     //this method will get the expired exams
     $("#sideb").on('click', '.expiredExamBtn', () => {
-        retrieveExamsByStatusAndId(userId, "deactivated");
+        retrieveExamsByStatusAndId(userId, "deactivate");
 
         $(".examsBtn").removeClass("dashMenuActive");
         $(".activeExamBtn").removeClass("dashMenuActive");
@@ -234,7 +238,6 @@ $(document).ready(() => {
             };
             questionDetails.push(data);
             Swal.fire({
-                position: 'top-end',
                 icon: 'success',
                 title: 'Successfully added!',
                 showConfirmButton: false,
@@ -304,7 +307,6 @@ $(document).ready(() => {
 
             questionDetails.push(data);
             Swal.fire({
-                position: 'top-end',
                 icon: 'success',
                 title: 'Successfully added!',
                 showConfirmButton: false,
@@ -366,7 +368,6 @@ $(document).ready(() => {
 
             questionDetails.push(data);
             Swal.fire({
-                position: 'top-end',
                 icon: 'success',
                 title: 'Successfully added!',
                 showConfirmButton: false,
@@ -476,6 +477,7 @@ $(document).ready(() => {
                     .then((res) => {
                         Swal.fire(`Give the code to your student\nExamcode: ${examCode}`, '', 'info')
                         subscribeTo("exam", client);
+                        retrieveExamsByStatusAndId(userId, "activated");
                     })
                     .catch((error) => {
                         console.log(error);
@@ -484,7 +486,6 @@ $(document).ready(() => {
             .catch((error) => {
                 console.log(error);
             })
-
     })
 
     //this fucntion will view the exam
@@ -504,7 +505,14 @@ $(document).ready(() => {
 
     //this function will deactivate the exam
     $("body").on('click','.deactivateExam',(e)=>{
-        let examID = e.target.id;
+        let examId = e.target.id;
+        deactivateExam(examId);
+    })
+
+    //view the exam result 
+    $("body").on('click','.viewExamResult',(e)=>{
+        console.log(e.target.id);
+        showExamResultGraph();
     })
 
 

@@ -1,10 +1,18 @@
 
 var broker = 'wss://mqtt.eclipse.org:443/mqtt';
 var client = mqtt.connect(broker);
-var test ="this is test! from notification";
-$(document).ready(() => {
 
-    
+$(document).ready(() => {
+    let isTeacher;
+    let id = $("#userId").val()
+
+    apiRequest('/user/getuser/' + id, "get")
+        .then((res)=>{
+
+        })
+        .catch((error)=>{
+            
+        })
 
     client.on('connect', () => {
         console.log("connected to " + broker);
@@ -18,7 +26,7 @@ $(document).ready(() => {
             icon: 'info',
             title: `${msg.name} ${msg.message} in titled ${msg.examTitle} `,
             showConfirmButton: false,
-            timer: 1500
+            timer: 2500
           })
     })
 })

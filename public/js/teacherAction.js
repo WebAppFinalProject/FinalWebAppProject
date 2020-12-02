@@ -34,10 +34,15 @@ function deactivateExam(examId) {
         "status": "deactivate"
     };
     updateExamById(examId, updates)
-        .then((res)=>{
+        .then((res) => {
             console.log(res);
+            Swal.fire({
+                icon: "info",
+                text: `${res.update.title} is deactivated!`,
+                timer: 3000
+            });
         })
-        .catch((error)=>{
+        .catch((error) => {
             console.log(error);
         })
 }
@@ -56,7 +61,7 @@ function viewUnactivatedExamDetails(exam) {
     $("#content").empty();
     $("#content").append(
         `<div class=" container border bg-info mt-5">
-        <button class="btn btn-secondary text-primary examsBtn">back</button>
+        <button class="btn btn-info text-white float-right examsBtn">back</button>
         <h1 class="text-center mt-3 text-white" id="examTitle">${exam.title}</h1>
 
         <h5 class="text-white" id="code">Code: ${exam.code}</h5>
@@ -65,7 +70,7 @@ function viewUnactivatedExamDetails(exam) {
             <h2 class="text-center">Exam Details</h2>
             <div class="position-center mb-5">
                 <div class="container">
-                    <h5 class="ml-5" id="expirationDate">Expiration Date: </h5>
+                    <h5 class="ml-5" id="expirationDate">Exam Span: ${exam.examSpan} </h5>
                 </div>
                 <div class="container">
                     <h5 class="ml-5" id="timeLimit">Time Limit: ${exam.timeLimit} minutes</h5>
@@ -101,6 +106,34 @@ function viewUnactivatedExamDetails(exam) {
     </div>`
     );
 }
+
+
+//show the exam result 
+function showExamResultGraph(){
+    $("#content").empty();
+    $("#content").append(
+        `<div class=" container border bg-info mt-5">
+        <button class="btn btn-info text-white float-right examsBtn">back</button>
+        <h1 class="text-center mt-3 text-white" id="examTitle">${"Test"}</h1>
+
+        <h5 class="text-white" id="code">Code: ${"Test"}</h5>
+
+        <div class="container border bg-white">
+            <h2 class="text-center">Exam Details</h2>
+            <div class="position-center mb-5">
+                <div class="container">
+                    <h5 class="ml-5" id="expirationDate">Expiration Date: </h5>
+                </div>
+                <div class="container">
+                    <h5 class="ml-5" id="timeLimit">Time Limit: ${"Test"} minutes</h5>
+                </div>
+                <div class="container">
+                    <h5 class="ml-5 ">Status: ${"Test"}</h5>
+                </div>
+            </div>
+        </div>`);
+}
+
 
 
 function showMultipleChoiceForm() {
@@ -283,22 +316,24 @@ function showMultipleChoiceEditForm(questionDetails) {
 
 
 //this function will show the cards of exam
-function showExams(exams, data = {teacher: "", student:"hide"}) {
+function showExams(exams, data = { teacher: "", student: "hide" }) {
     $("#noExam").hide();
-    
+
     exams.forEach(exam => {
         let timer = "";
         let buttons = `<button title="Activate Exam" name="${exam._id}" class="btn btn-success activateExam ${data.teacher}"><i class="fas fa-power-off" id="${exam._id}"></i></button>
         <button title="View Exam" name="${exam._id}" class="btn btn-secondary viewExam ${data.teacher}"><i class="fas fa-eye" id="${exam._id}"></i></button>
         <button title="Delete Exam"  name="${exam._id}" class="btn btn-danger deleteExam ${data.teacher}"><i class="fas fa-trash" id="${exam._id}"></i></button>
         <span title="Take Exam"   id="${exam._id}" class="btn btn-success float-right takeQuiz ${data.student}">Take Quiz</span>`;
-        if(exam.status=="activated"){
+        if (exam.status == "activated") {
             buttons = `<span title="Students joined the Exam"   id="${exam._id}" class="btn btn-secondary float-right Students Joined ${data.teacher}">Joined students</span>
             <span title="Deactivate Exam" id="${exam._id}" class="btn btn-danger float-right deactivateExam ${data.teacher} mr-2">Deactivate</span>`;
-            timer = `<h6 id="examTimerSpan" class="text-center text-success">${(exam.expireDate == null)?"No expireDate": `The Exam will expire on ${exam.expireDate}`}</h6>`;
-        }   
-        if(exam.status == "deactivated"){
-            buttons = `<span title="view Result" id="${exam._id}" class="btn btn-info float-right deactivateExam ${data.teacher} mr-2">View Exam Result</span>`;
+            let expireDate = new Date(exam.expireDate);
+            let formatted_date = expireDate.getFullYear() + "-" + (expireDate.getMonth() + 1) + "-" + expireDate.getDate() + " " + expireDate.getHours() + ":" + expireDate.getMinutes() + ":" + expireDate.getSeconds()
+            timer = `<small id="examTimerSpan" class="text-center text-success">${(exam.expireDate == null) ? "No expireDate" : `The Exam will expire on ${formatted_date}`}</small>`;
+        }
+        if (exam.status == "deactivate") {
+            buttons = `<span title="view Result" id="${exam._id}" class="btn btn-info float-right viewExamResult ${data.teacher} mr-2">View Exam Result</span>`;
         }
 
         $("#content").append(
@@ -308,11 +343,13 @@ function showExams(exams, data = {teacher: "", student:"hide"}) {
                 <div class="position-absolute examTitle w-100">
                     <h2 class="text-center text-primary">${exam.title}</h2>
                     <h4 class="text-center text-secondary" id="examCode">${exam.code}</h4>
-                    <h6 class="text-center text-secondary  ${data.student}" id="author">Teacher: ${exam.author.firstname+" "+exam.author.lastname}<br>
-                    <small class="text-danger">You are given ${exam.timeLimit} minutes to finish this exam</small></h6>
-                    ${timer}<br>
+                    <h6 class="text-center text-secondary  ${data.student}" id="author">Teacher: ${exam.author.firstname + " " + exam.author.lastname}<br>
+                    <small class="text-danger">You are given ${exam.timeLimit} minutes to finish this exam <br></small></h6>
+
                 </div>
+                ${timer}
                 <div class="card-body text-white float-right">
+                    
                     ${buttons}
                     <span title="Take Exam"   id="${exam._id}" class="btn btn-success float-right takeQuiz ${data.student}">Take Quiz</span>
                 </div>

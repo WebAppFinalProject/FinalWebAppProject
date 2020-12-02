@@ -26,3 +26,6 @@ function endExamLimitTimer(){
 
 
 //check every menutes if the exam is deactivated
+function checkDeactivationDate(examExpireDate){
+    
+}
