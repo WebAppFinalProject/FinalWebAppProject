@@ -79,58 +79,52 @@ function viewUnactivatedExamDetails(exam) {
                 <div class="container">
                     <h5 class="ml-5 ">Status: ${exam.status}</h5>
                 </div>
+                <span class="btn btn-warning text-white float-right editExam" id="${exam._id}"><i class="fas fa-pen-square" id="${exam._id}"></i>&nbsp;<b id="${exam._id}">Edit Exam</b></span>
             </div>
         </div>
         <br>
         <div class="border bg-white mb-5">
-            <h2 class="text-center">Questions</h2>
-            <div class="accordion" id="accordionExample">
-                <div class="card z-depth-0 bordered">
-                    <div class="card-header" id="headingOne">
-                        <h5 class="mb-0">
-                            <button class="btn btn-link" type="button" data-toggle="collapse"
-                                data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                Question Number 1
-                            </button>
-                        </h5>
-                    </div>
-                    <div id="collapseOne" class="collapse" aria-labelledby="headingOne"
-                        data-parent="#accordionExample">
-                        <div class="card-body">
-                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad
-                            squid. 
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <td ><b>#</b></td>
+                    <td ><b>question</b></td>
+                    <td ><b>type</b></td>
+                </tr>
+            </thead>
+            <tbody id="questionInTable">
+                
+            </tbody>
+        </table>
         </div>
     </div>`
     );
+
+    for(let i=0; i < exam.questions.length;i++){
+        appendQuestion(exam.questions[i], i+1, "questionInTable");
+    }
 }
 
 
 //show the exam result 
 function showExamResultGraph(examResult, resId){
-    // let resultExamId = examResult[0]._id;
+    let exam = examResult[0].examId;
     $("#content").empty();
     $("#content").append(
         `<div class=" container border bg-info mt-5">
             <button class="btn btn-info text-white float-right examsBtn">back</button>
-            <h1 class="text-center mt-3 text-white" id="examTitle">${"Test"}</h1>
+            <h1 class="text-center mt-3 text-white" id="examTitle">${exam.title}</h1>
 
-            <h5 class="text-white" id="code">Code: ${"Test"}</h5>
+            <h5 class="text-white" id="code">Code: ${exam.code}</h5>
 
             <div class="container border bg-white">
                 <h2 class="text-center">Exam Details</h2>
                 <div class="position-center mb-5">
                     <div class="container">
-                        <h5 class="ml-5" id="expirationDate">Expiration Date: </h5>
+                        <h5 class="ml-5" id="timeLimit">Time Limit: ${exam.timeLimit} minutes</h5>
                     </div>
                     <div class="container">
-                        <h5 class="ml-5" id="timeLimit">Time Limit: ${"Test"} minutes</h5>
-                    </div>
-                    <div class="container">
-                        <h5 class="ml-5 ">Status: ${"Test"}</h5>
+                        <h5 class="ml-5 ">Status: ${exam.status}</h5>
                     </div>
                 </div>
             </div>
@@ -141,14 +135,69 @@ function showExamResultGraph(examResult, resId){
                 </div>
 
             </div>
-
-            <div class="container border bg-white" id="questionTable1">
-                
+            <br>
+            <div class="container border bg-white">
+                <h3 class="text-center">Exam Question List</h3>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <td ><b>#</b></td>
+                            <td ><b>question</b></td>
+                            <td ><b>type</b></td>
+                        </tr>
+                    </thead>
+                    <tbody id="questionInTable1">
+                        
+                    </tbody>
+                </table>
             </div>
+
+            <br>
+            <div class="container border bg-white">
+            <h3 class="text-center">Student List</h3>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <td ><b>#</b></td>
+                        <td ><b>name</b></td>
+                    </tr>
+                </thead>
+                <tbody id="studentsInTable1">
+                    
+                </tbody>
+            </table>
+        </div>
+            <br>
+            <br>
+            <br>
+            <br>
             <script src="/static/js/analyticsGraph.js"></script>
         </div>`);
+        
+        for(let i=0; i < examResult[0].examId.questions.length;i++){
+            appendQuestion(examResult[0].examId.questions[i], "Q"+(i +1), "questionInTable1");
+        }
+        for(let i=0; i < examResult.length;i++){
+            appendStudent(examResult[i].studentId, i+1, "studentsInTable1");
+        }
 }
 
+function appendStudent(element, counter, id){
+    $(`#${id}`).append(
+        ` <td>${counter}</td>
+          <td>${element.firstname + " " + element.lastname}</td>`
+    );
+}
+
+function appendQuestion(element, counter, id){
+    $(`#${id}`).append(
+        `<tr>
+        <td>${counter}</td>
+        <td>${element.type}</td>
+        <td>${element.question}</td>
+        </tr>`
+    );
+}
 
 
 function showMultipleChoiceForm() {
@@ -180,7 +229,14 @@ function showIdenForm() {
  */
 function editExam(exam) {
     //plaese specify the needed information here
-
+    $("#content").hide();
+    $("#formTitle").text("Edit Exam");
+    $("#title").val(exam.title);
+    $("#timeLimit").val(exam.timeLimit);
+    $("#examSpan").val(exam.examSpan);
+    $("#instruction").val(exam.instruction);
+    $("#testButton").html(`<button class="btn btn-blue text-white mt-5 ${exam._id}" id="editExamCreated">Edit Exam</button>`);
+    $("#createExamForm").show();
 }
 
 /**
@@ -382,7 +438,25 @@ function showExams(exams, data = { teacher: "", student: "hide" }) {
  * @param {*} data 
  */
 function updateExamById(ExamId, data) {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
+        let questionIds = [];
+        if(data.questions) {
+            for(let question of data.questions){
+                
+                let query = (question._id)?`/app/update/question/${question._id}`:`/app/add/question`;
+                let method = (question._id)?"put":`post`;
+                
+                await apiRequest(query,method, question)
+                .then((res)=>{
+                    questionIds.push(res.questionId);
+                })
+                .catch((error)=>{
+                    console.log(error);
+                })
+            }
+        }
+        console.log(questionIds);
+        data["questions"] = questionIds;
         apiRequest(`/app/put/exam/${ExamId}`, "put", data)
             .then((res) => {
                 resolve(res);
@@ -391,4 +465,11 @@ function updateExamById(ExamId, data) {
                 reject(error);
             })
     })
+}
+
+function updateQuestionById(question, data){
+   
+    return new Promise((resolve, reject)=>{
+       
+    });
 }

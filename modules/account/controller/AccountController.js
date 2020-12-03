@@ -106,7 +106,7 @@ module.exports = {
             res.cookie("token", access_token, { maxAge: 60000 * 60 * 12, httpOnly: true });
             
             //send the token back to the client
-            res.json({url: '/dashboard',message: "Successfully login", token: access_token});
+            res.json({url: '/app',message: "Successfully login", token: access_token});
 
         } catch (error) {
             res.status(500).json({message: error, error: true});

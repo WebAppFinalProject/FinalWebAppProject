@@ -18,8 +18,8 @@ $(document).ready(async () => {
 
         // console.log();
         
-        let labels = convertObjectToArray(checkCorrectAnswer(resultExam, CorrectAnswer));
-        let data =  generateData(examQuestions.length);
+        let data = convertObjectToArray(checkCorrectAnswer(resultExam, CorrectAnswer));
+        let labels =  generateData(examQuestions.length);
         var densityData = {
             label: 'Students',
             data: data,
@@ -29,6 +29,7 @@ $(document).ready(async () => {
 
         };
 
+        console.log(data, labels);
         test(densityCanvas, densityData, labels);
 })
 
@@ -51,7 +52,7 @@ function checkCorrectAnswer(examResult, correctAns){
 function generateData(NumberOfStudents) {
     let arr = [];
     for(let i = 0; i < NumberOfStudents; i++) {
-        arr.push(i+1);
+        arr.push("Q"+(i+1));
     }
     return arr;
 }

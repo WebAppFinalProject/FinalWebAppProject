@@ -36,6 +36,19 @@ module.exports = {
         }
     },
 
+    updateQuestionById: async(req, res)=>{
+        const id = req.params.id;
+        const updates = requestBodyParser(req.body);
+        try {
+            const updatedquestion = await Question.findByIdAndUpdate(id,{$set : updates});
+            if(!updatedquestion) return  res.status(400).json({ message: "Something went wrong!" });
+
+            res.json({message: "Successfully edited!", questionId: updatedquestion._id});
+        } catch (error) {
+            res.status(500).json({ message: error, error: true });
+        }
+    },
+
     //get exam
     getAllExam: async (req, res) => {
         try {
@@ -138,7 +151,8 @@ module.exports = {
         const updates = requestBodyParser(req.body);
 
         try {
-            const updatedExam = await Exam.findByIdAndUpdate(id, { $set: updates }, { new: true });
+            const updatedExam = await Exam.findByIdAndUpdate(id, { $set: updates }, { new: true })
+                .populate('questions');
             if (!updatedExam) return res.status(400).json({ message: "Cannot find the exam!", error: true });
 
             res.json({ message: "Successfully edited exam!", update: updatedExam });
@@ -231,7 +245,8 @@ module.exports = {
                     populate: {
                         path: "questions"
                     }
-                });
+                })
+                .populate('studentId');
             res.json(examResults);
         } catch (error) {
             res.status(500).json({ message: error, error: true });

@@ -445,6 +445,7 @@ $(document).ready(() => {
 
     //submit the exam
     $('#submitCreateExam').click(() => {
+        
         let ids = [
             "title",
             "timeLimit",
@@ -541,13 +542,71 @@ $(document).ready(() => {
         console.log("test");
         apiRequest(`/app/analytics/${id}`, 'get')
             .then((res)=>{
-                // console.log(res);
+                console.log(res);
                 showExamResultGraph(res, id);
             })
             .catch((error)=>{
                 console.log(error);
             })
     })
+
+
+    //this funtion will edit the exam
+    $(document).on('click','.editExam',(e)=>{
+        let examId = e.target.id;
+        apiRequest(`/app/exam/${examId}`, 'get')
+            .then((res)=>{
+                editExam(res.exam);
+                questionDetails = res.exam.questions;
+            })
+            .catch((error)=>{
+                console.log(error);
+            })
+    })
+
+    $(document).on('click',"#editExamCreated",(e)=>{
+        let examId = e.target.classList[4];
+       
+        let ids = [
+            "title",
+            "timeLimit",
+            "instruction",
+        ];
+        if (questionDetails.length <= 0) {
+            alert("No Questions Created!");
+            return;
+        }
+
+        //use validation here
+        let errors = AvoidEmpty(ids);
+        if (isContainsError(errors)) {
+            showErrors(errors);
+        } else {
+            let data = {
+                author: userId,
+                title: $('#title').val(),
+                timeLimit: $("#timeLimit").val(),
+                instruction: $("#instruction").val(),
+                questions: questionDetails
+            }
+            data["examSpan"] = $("#examSpan").val() || null;
+            
+            updateExamById(examId, data)
+                .then((res)=>{
+                    console.log("This is test",res);
+                    ids.push("examSpan");
+                    $("#createExamForm").toggle();
+                    resetFields(ids);
+                    viewUnactivatedExamDetails(res.update);
+                    $("#content").show();
+                })
+                .catch((error)=>{
+                    console.log(error);
+                })
+            
+        }
+    })
+
 
     ////#########STUDENT PART/########### //
     //this is for the student part
