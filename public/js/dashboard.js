@@ -7,8 +7,7 @@ $(document).ready(() => {
     let questionId = "";
     let userInfo = "";
 
-    //subscribed to different topic
-    subscribeTo("exam", client);
+   
 
 
 
@@ -39,6 +38,7 @@ $(document).ready(() => {
                     //retrieve all the joined exam by the stuednt
                     getJoinedExam(userId, "activated");
                 } else if (res.user.position == "teacher") {
+                    subscribeTo(`exam/${userId}`, client);
                     retrieveExamsByStatusAndId(userId, "unactivated");
                     apiRequest(`/app/get/exam/${"activated"}/${userId}`, "get")
                         .then((res)=>{
@@ -684,7 +684,8 @@ $(document).ready(() => {
                     cancelButtonColor: '#d33',
                     confirmButtonText: 'Got it!'
                   })
-                publishTo(`exam/${res.exam.code}`, client, JSON.stringify({
+                  
+                publishTo(`exam/${res.exam.author._id}/${res.exam.code}`, client, JSON.stringify({
                     name: userInfo.firstname +" "+userInfo.lastname,
                     message: "take quiz",
                     examTitle: res.exam.title

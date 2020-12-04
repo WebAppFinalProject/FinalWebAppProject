@@ -36,8 +36,7 @@ function validateStudentsAns(studentAns, examaswerKeyWithPoints, exam, userInfo)
             studentScore += examaswerKeyWithPoints[id].points;
         }
     }
-
-    publishTo(`exam/${exam.code}`,client,JSON.stringify({
+    publishTo(`exam/${exam.author._id}/${exam.code}`,client,JSON.stringify({
         name: userInfo.firstname +" "+userInfo.lastname,
         message: "submit exam",
         examTitle: exam.title
@@ -53,7 +52,6 @@ function validateStudentsAns(studentAns, examaswerKeyWithPoints, exam, userInfo)
 
     apiRequest(`/app/add/exam-result`,'post',data)
         .then((res)=>{
-            console.log(res);
             showExamOverview(total, studentScore, res.result._id);            
         })
         .catch((error)=>{
