@@ -7,7 +7,7 @@ $(document).ready(() => {
     let questionId = "";
     let userInfo = "";
 
-   
+
 
 
 
@@ -41,14 +41,14 @@ $(document).ready(() => {
                     subscribeTo(`exam/${userId}`, client);
                     retrieveExamsByStatusAndId(userId, "unactivated");
                     apiRequest(`/app/get/exam/${"activated"}/${userId}`, "get")
-                        .then((res)=>{
-                            res.exams.forEach(exam =>{
-                                if(exam.expireDate != null){
+                        .then((res) => {
+                            res.exams.forEach(exam => {
+                                if (exam.expireDate != null) {
                                     checkDeactivationDate(exam.expireDate, exam._id);
                                 }
                             })
                         })
-                        .catch((error)=>{
+                        .catch((error) => {
                             console.log(error);
                         })
                     isTeacher = true;
@@ -121,7 +121,7 @@ $(document).ready(() => {
     $("body").on('click', '.deleteQuestion', (e) => {
         let id = e.target.name || e.target.classList[2];
         questionDetails.splice(id, 1);
-        Swal.fire("Successfully deleted!","","success");
+        Swal.fire("Successfully deleted!", "", "success");
         showQuestionTable(questionDetails);
     })
 
@@ -255,7 +255,7 @@ $(document).ready(() => {
                 title: 'Successfully added!',
                 showConfirmButton: false,
                 timer: 1000
-              })
+            })
             resetFields(ids);
         };
     });
@@ -294,7 +294,7 @@ $(document).ready(() => {
                 title: 'Successfully edited!',
                 showConfirmButton: false,
                 timer: 1000
-              })
+            })
             $("#editQuestionForm").toggle();
             showQuestionTable(questionDetails);
             resetFields(ids);
@@ -329,7 +329,7 @@ $(document).ready(() => {
                 title: 'Successfully added!',
                 showConfirmButton: false,
                 timer: 1000
-              })
+            })
             resetFields(ids);
         }
 
@@ -362,7 +362,7 @@ $(document).ready(() => {
                 title: 'Successfully edited!',
                 showConfirmButton: false,
                 timer: 1000
-              })
+            })
             $("#editQuestionForm").toggle();
             showQuestionTable(questionDetails);
             resetFields(ids);
@@ -395,7 +395,7 @@ $(document).ready(() => {
                 title: 'Successfully added!',
                 showConfirmButton: false,
                 timer: 1000
-              })
+            })
             resetFields(ids);
         }
     });
@@ -445,7 +445,7 @@ $(document).ready(() => {
 
     //submit the exam
     $('#submitCreateExam').click(() => {
-        
+
         let ids = [
             "title",
             "timeLimit",
@@ -529,7 +529,7 @@ $(document).ready(() => {
     })
 
     //this function will deactivate the exam
-    $("body").on('click','.deactivateExam',(e)=>{
+    $("body").on('click', '.deactivateExam', (e) => {
         let examId = e.target.id;
         deactivateExam(examId);
         endExamCheckMinutes();
@@ -537,36 +537,36 @@ $(document).ready(() => {
 
 
     //view the exam result 
-    $("body").on('click','.viewExamResult', (e)=>{
+    $("body").on('click', '.viewExamResult', (e) => {
         let id = e.target.id;
         console.log("test");
         apiRequest(`/app/analytics/${id}`, 'get')
-            .then((res)=>{
+            .then((res) => {
                 console.log(res);
                 showExamResultGraph(res, id);
             })
-            .catch((error)=>{
+            .catch((error) => {
                 console.log(error);
             })
     })
 
 
     //this funtion will edit the exam
-    $(document).on('click','.editExam',(e)=>{
+    $(document).on('click', '.editExam', (e) => {
         let examId = e.target.id;
         apiRequest(`/app/exam/${examId}`, 'get')
-            .then((res)=>{
+            .then((res) => {
                 editExam(res.exam);
                 questionDetails = res.exam.questions;
             })
-            .catch((error)=>{
+            .catch((error) => {
                 console.log(error);
             })
     })
 
-    $(document).on('click',"#editExamCreated",(e)=>{
+    $(document).on('click', "#editExamCreated", (e) => {
         let examId = e.target.classList[4];
-       
+
         let ids = [
             "title",
             "timeLimit",
@@ -590,21 +590,51 @@ $(document).ready(() => {
                 questions: questionDetails
             }
             data["examSpan"] = $("#examSpan").val() || null;
-            
+
             updateExamById(examId, data)
-                .then((res)=>{
-                    console.log("This is test",res);
+                .then((res) => {
+                    console.log("This is test", res);
                     ids.push("examSpan");
                     $("#createExamForm").toggle();
                     resetFields(ids);
                     viewUnactivatedExamDetails(res.update);
                     $("#content").show();
                 })
-                .catch((error)=>{
+                .catch((error) => {
                     console.log(error);
                 })
-            
+
         }
+    })
+
+    //view students currently joined the activated exam
+    $(document).on('click', ".StudentsJoined",async (e) => {
+        let examId = e.target.id;
+        let table = `<table class="table table-hover"><thead>
+            <tr>
+                <td>name</td>
+            </tr>           
+        </thead>
+        <tbody>
+        `
+        let tableClose = `</tbody></table>`
+        await apiRequest(`/app/exam/${examId}`, 'get')
+            .then((res) => {
+                if(res.exam.students.length <= 0){
+                    table += "<td><h4>No students taking the exam yet</h4></td>"
+                    return;
+                }
+                console.log(res);
+                for(let student of res.exam.students){
+                    table+=`<td>${student.firstname +" "+ student.lastname}</td>`
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+
+            table += tableClose;
+        Swal.fire({ title: "Students Joined", html: table});
     })
 
 
@@ -683,13 +713,13 @@ $(document).ready(() => {
                     confirmButtonColor: '#3085d6',
                     cancelButtonColor: '#d33',
                     confirmButtonText: 'Got it!'
-                  })
-                  
+                })
+
                 publishTo(`exam/${res.exam.author._id}/${res.exam.code}`, client, JSON.stringify({
-                    name: userInfo.firstname +" "+userInfo.lastname,
+                    name: userInfo.firstname + " " + userInfo.lastname,
                     message: "take quiz",
                     examTitle: res.exam.title
-                    }));
+                }));
                 showExamView(res.exam);
                 examLimitTimer(res.exam.timeLimit);
             })
@@ -722,7 +752,7 @@ $(document).ready(() => {
             answerkeyWithPoints[id._id] = { correctAns: id.answerKey, points: id.points, question: id.question };
         })
         validateStudentsAns(studentAnswers, answerkeyWithPoints, exam, userInfo);
-        
+
     })
 
 

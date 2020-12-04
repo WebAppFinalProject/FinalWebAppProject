@@ -78,7 +78,8 @@ module.exports = {
         try {
             const exam = await Exam.findById(examId)
                 .populate('author')
-                .populate('questions');
+                .populate('questions')
+                .populate('students');
             if (!exam) return res.status(400).json({ message: "Something went wrong!" });
 
             res.json({ message: "Successfully retrieved!", exam: exam });

@@ -27,7 +27,7 @@ module.exports = {
                 if (err) {
                     return res.sendStatus(403);
                 }
-                res.redirect('/dashboard');
+                res.redirect('/app');
             });
         } else {
             next();

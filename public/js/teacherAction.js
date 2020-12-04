@@ -184,8 +184,10 @@ function showExamResultGraph(examResult, resId){
 
 function appendStudent(element, counter, id){
     $(`#${id}`).append(
-        ` <td>${counter}</td>
-          <td>${element.firstname + " " + element.lastname}</td>`
+        ` <tr>
+          <td>${counter}</td>
+          <td>${element.firstname + " " + element.lastname}</td>
+          </tr>`
     );
 }
 
@@ -397,7 +399,7 @@ function showExams(exams, data = { teacher: "", student: "hide" }) {
         <button title="Delete Exam"  name="${exam._id}" class="btn btn-danger deleteExam ${data.teacher}"><i class="fas fa-trash" id="${exam._id}"></i></button>
         <span title="Take Exam"   id="${exam._id}" class="btn btn-success float-right takeQuiz ${data.student}">Take Quiz</span>`;
         if (exam.status == "activated") {
-            buttons = `<span title="Students joined the Exam"   id="${exam._id}" class="btn btn-secondary float-right Students Joined ${data.teacher}">Joined students</span>
+            buttons = `<span title="Students joined the Exam"   id="${exam._id}" class="btn btn-secondary float-right StudentsJoined ${data.teacher}">Joined students</span>
             <span title="Deactivate Exam" id="${exam._id}" class="btn btn-danger float-right deactivateExam ${data.teacher} mr-2">Deactivate</span>`;
             let expireDate = new Date(exam.expireDate);
             let formatted_date = expireDate.getFullYear() + "-" + (expireDate.getMonth() + 1) + "-" + expireDate.getDate() + " " + expireDate.getHours() + ":" + expireDate.getMinutes() + ":" + expireDate.getSeconds()
