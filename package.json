@@ -4,7 +4,9 @@
   "description": "Final project for three subjects",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon app.js"
+    "start": "nodemon app.js",
+    "build": "nodemon app.js"
+    
   },
   "author": "[aparece, asunto, ardiente]",
   "license": "ISC",
