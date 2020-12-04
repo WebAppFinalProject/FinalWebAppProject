@@ -82,6 +82,7 @@ module.exports = {
             res.status(500).json({message: error, error: true});
         }
     },
+    
     //user do login
     //####temporary###//
     userDologin: async(req, res) =>{
@@ -98,13 +99,14 @@ module.exports = {
                 message: "password does'nt match"
             });
 
+
             let access_token = jwt.sign({userId: user._id, name: user.firstname},process.env.ACCESS_TOKEN_SECRET,{ expiresIn: '12h' });
 
             //set cookie
             res.cookie("token", access_token, { maxAge: 60000 * 60 * 12, httpOnly: true });
             
             //send the token back to the client
-            res.json({url: '/dashboard',message: "Successfully login", token: access_token});
+            res.json({url: '/app',message: "Successfully login", token: access_token});
 
         } catch (error) {
             res.status(500).json({message: error, error: true});

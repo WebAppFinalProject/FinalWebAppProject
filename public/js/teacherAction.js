@@ -28,6 +28,31 @@ async function saveExamAndQuestions(Exam, Questions, userId) {
         })
 }
 
+
+function deactivateExam(examId) {
+    let updates = {
+        "status": "deactivate"
+    };
+    updateExamById(examId, updates)
+        .then((res) => {
+            console.log(res);
+            Swal.fire({
+                icon: "info",
+                text: `${res.update.title} is deactivated!`,
+                timer: 3000
+            });
+            retrieveExamsByStatusAndId(examId, "activated");
+        })
+        .catch((error) => {
+            console.log(error);
+        })
+}
+
+
+
+
+//######THIS THE VIEW FUNCTION ###////
+
 /**
  * This function will be called when the
  * teacher wants to view the exam he/she created 
@@ -37,7 +62,7 @@ function viewUnactivatedExamDetails(exam) {
     $("#content").empty();
     $("#content").append(
         `<div class=" container border bg-info mt-5">
-        <button class="btn btn-secondary text-primary examsBtn">back</button>
+        <button class="btn btn-info text-white float-right examsBtn">back</button>
         <h1 class="text-center mt-3 text-white" id="examTitle">${exam.title}</h1>
 
         <h5 class="text-white" id="code">Code: ${exam.code}</h5>
@@ -46,7 +71,7 @@ function viewUnactivatedExamDetails(exam) {
             <h2 class="text-center">Exam Details</h2>
             <div class="position-center mb-5">
                 <div class="container">
-                    <h5 class="ml-5" id="expirationDate">Expiration Date: </h5>
+                    <h5 class="ml-5" id="expirationDate">Exam Span: ${exam.examSpan} </h5>
                 </div>
                 <div class="container">
                     <h5 class="ml-5" id="timeLimit">Time Limit: ${exam.timeLimit} minutes</h5>
@@ -54,32 +79,123 @@ function viewUnactivatedExamDetails(exam) {
                 <div class="container">
                     <h5 class="ml-5 ">Status: ${exam.status}</h5>
                 </div>
+                <span class="btn btn-warning text-white float-right editExam" id="${exam._id}"><i class="fas fa-pen-square" id="${exam._id}"></i>&nbsp;<b id="${exam._id}">Edit Exam</b></span>
             </div>
         </div>
         <br>
         <div class="border bg-white mb-5">
-            <h2 class="text-center">Questions</h2>
-            <div class="accordion" id="accordionExample">
-                <div class="card z-depth-0 bordered">
-                    <div class="card-header" id="headingOne">
-                        <h5 class="mb-0">
-                            <button class="btn btn-link" type="button" data-toggle="collapse"
-                                data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                Question Number 1
-                            </button>
-                        </h5>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <td ><b>#</b></td>
+                    <td ><b>question</b></td>
+                    <td ><b>type</b></td>
+                </tr>
+            </thead>
+            <tbody id="questionInTable">
+                
+            </tbody>
+        </table>
+        </div>
+    </div>`
+    );
+
+    for(let i=0; i < exam.questions.length;i++){
+        appendQuestion(exam.questions[i], i+1, "questionInTable");
+    }
+}
+
+
+//show the exam result 
+function showExamResultGraph(examResult, resId){
+    let exam = examResult[0].examId;
+    $("#content").empty();
+    $("#content").append(
+        `<div class=" container border bg-info mt-5">
+            <button class="btn btn-info text-white float-right examsBtn">back</button>
+            <h1 class="text-center mt-3 text-white" id="examTitle">${exam.title}</h1>
+
+            <h5 class="text-white" id="code">Code: ${exam.code}</h5>
+
+            <div class="container border bg-white">
+                <h2 class="text-center">Exam Details</h2>
+                <div class="position-center mb-5">
+                    <div class="container">
+                        <h5 class="ml-5" id="timeLimit">Time Limit: ${exam.timeLimit} minutes</h5>
                     </div>
-                    <div id="collapseOne" class="collapse" aria-labelledby="headingOne"
-                        data-parent="#accordionExample">
-                        <div class="card-body">
-                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad
-                            squid. 
-                        </div>
+                    <div class="container">
+                        <h5 class="ml-5 ">Status: ${exam.status}</h5>
                     </div>
                 </div>
             </div>
+            <div class="container border bg-white" >
+                <div class="border mt-5">
+                    <h3 class="text-center">Number of Students who got the correct answer </h3>
+                    <canvas class="mt-2 ml-2 mr-2 mb-2" id="analytics" name="${resId}" width="500" height="300"></canvas>
+                </div>
+
+            </div>
+            <br>
+            <div class="container border bg-white">
+                <h3 class="text-center">Exam Question List</h3>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <td ><b>#</b></td>
+                            <td ><b>question</b></td>
+                            <td ><b>type</b></td>
+                        </tr>
+                    </thead>
+                    <tbody id="questionInTable1">
+                        
+                    </tbody>
+                </table>
+            </div>
+
+            <br>
+            <div class="container border bg-white">
+            <h3 class="text-center">Student List</h3>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <td ><b>#</b></td>
+                        <td ><b>name</b></td>
+                    </tr>
+                </thead>
+                <tbody id="studentsInTable1">
+                    
+                </tbody>
+            </table>
         </div>
-    </div>`
+            <br>
+            <br>
+            <br>
+            <br>
+            <script src="/static/js/analyticsGraph.js"></script>
+        </div>`);
+        
+        for(let i=0; i < examResult[0].examId.questions.length;i++){
+            appendQuestion(examResult[0].examId.questions[i], "Q"+(i +1), "questionInTable1");
+        }
+        for(let i=0; i < examResult.length;i++){
+            appendStudent(examResult[i].studentId, i+1, "studentsInTable1");
+        }
+}
+
+function appendStudent(element, counter, id){
+    $(`#${id}`).append(
+        ` <td>${counter}</td>
+          <td>${element.firstname + " " + element.lastname}</td>`
+    );
+}
+
+function appendQuestion(element, counter, id){
+    $(`#${id}`).append(
+        `<tr>
+        <td>${counter}</td>
+        <td>${element.type}</td>
+        <td>${element.question}</td>
+        </tr>`
     );
 }
 
@@ -113,7 +229,14 @@ function showIdenForm() {
  */
 function editExam(exam) {
     //plaese specify the needed information here
-
+    $("#content").hide();
+    $("#formTitle").text("Edit Exam");
+    $("#title").val(exam.title);
+    $("#timeLimit").val(exam.timeLimit);
+    $("#examSpan").val(exam.examSpan);
+    $("#instruction").val(exam.instruction);
+    $("#testButton").html(`<button class="btn btn-blue text-white mt-5 ${exam._id}" id="editExamCreated">Edit Exam</button>`);
+    $("#createExamForm").show();
 }
 
 /**
@@ -264,21 +387,26 @@ function showMultipleChoiceEditForm(questionDetails) {
 
 
 //this function will show the cards of exam
-function showExams(exams, data = {teacher: "", student:"hide"}) {
+function showExams(exams, data = { teacher: "", student: "hide" }) {
     $("#noExam").hide();
-    
+
     exams.forEach(exam => {
+        let timer = "";
         let buttons = `<button title="Activate Exam" name="${exam._id}" class="btn btn-success activateExam ${data.teacher}"><i class="fas fa-power-off" id="${exam._id}"></i></button>
         <button title="View Exam" name="${exam._id}" class="btn btn-secondary viewExam ${data.teacher}"><i class="fas fa-eye" id="${exam._id}"></i></button>
         <button title="Delete Exam"  name="${exam._id}" class="btn btn-danger deleteExam ${data.teacher}"><i class="fas fa-trash" id="${exam._id}"></i></button>
         <span title="Take Exam"   id="${exam._id}" class="btn btn-success float-right takeQuiz ${data.student}">Take Quiz</span>`;
-        if(exam.status=="activated"){
+        if (exam.status == "activated") {
             buttons = `<span title="Students joined the Exam"   id="${exam._id}" class="btn btn-secondary float-right Students Joined ${data.teacher}">Joined students</span>
             <span title="Deactivate Exam" id="${exam._id}" class="btn btn-danger float-right deactivateExam ${data.teacher} mr-2">Deactivate</span>`;
+            let expireDate = new Date(exam.expireDate);
+            let formatted_date = expireDate.getFullYear() + "-" + (expireDate.getMonth() + 1) + "-" + expireDate.getDate() + " " + expireDate.getHours() + ":" + expireDate.getMinutes() + ":" + expireDate.getSeconds()
+            timer = `<small id="examTimerSpan" class="text-center text-success">${(exam.expireDate == null) ? "No expireDate" : `The Exam will expire on ${formatted_date}`}</small>`;
         }
-        if(exam.status == "deactivated"){
-            buttons = `<span title="view Result" id="${exam._id}" class="btn btn-info float-right deactivateExam ${data.teacher} mr-2">View Exam Result</span>`;
+        if (exam.status == "deactivate") {
+            buttons = `<span title="view Result" id="${exam._id}" class="btn btn-info float-right viewExamResult ${data.teacher} mr-2">View Exam Result</span>`;
         }
+
         $("#content").append(
             `<div class="col-md-4 mt-5">
             <div class="card bg-dark position-relative">
@@ -286,9 +414,13 @@ function showExams(exams, data = {teacher: "", student:"hide"}) {
                 <div class="position-absolute examTitle w-100">
                     <h2 class="text-center text-primary">${exam.title}</h2>
                     <h4 class="text-center text-secondary" id="examCode">${exam.code}</h4>
-                    <h6 class="text-center text-secondary  ${data.student}" id="author">Teacher: ${exam.author.firstname+" "+exam.author.lastname}</h6>
+                    <h6 class="text-center text-secondary  ${data.student}" id="author">Teacher: ${exam.author.firstname + " " + exam.author.lastname}<br>
+                    <small class="text-danger">You are given ${exam.timeLimit} minutes to finish this exam <br></small></h6>
+
                 </div>
+                ${timer}
                 <div class="card-body text-white float-right">
+                    
                     ${buttons}
                     <span title="Take Exam"   id="${exam._id}" class="btn btn-success float-right takeQuiz ${data.student}">Take Quiz</span>
                 </div>
@@ -306,7 +438,25 @@ function showExams(exams, data = {teacher: "", student:"hide"}) {
  * @param {*} data 
  */
 function updateExamById(ExamId, data) {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
+        let questionIds = [];
+        if(data.questions) {
+            for(let question of data.questions){
+                
+                let query = (question._id)?`/app/update/question/${question._id}`:`/app/add/question`;
+                let method = (question._id)?"put":`post`;
+                
+                await apiRequest(query,method, question)
+                .then((res)=>{
+                    questionIds.push(res.questionId);
+                })
+                .catch((error)=>{
+                    console.log(error);
+                })
+            }
+        }
+        console.log(questionIds);
+        data["questions"] = questionIds;
         apiRequest(`/app/put/exam/${ExamId}`, "put", data)
             .then((res) => {
                 resolve(res);
@@ -315,4 +465,11 @@ function updateExamById(ExamId, data) {
                 reject(error);
             })
     })
+}
+
+function updateQuestionById(question, data){
+   
+    return new Promise((resolve, reject)=>{
+       
+    });
 }

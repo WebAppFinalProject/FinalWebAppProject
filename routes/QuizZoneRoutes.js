@@ -3,6 +3,8 @@ const QuizZoneController = require('../controllers/QuizZoneController');
 const AUTH = require('../middlewares/Authorization');
 
 router.post('/add/question', AUTH.authorizedRequest,QuizZoneController.addQuestion);
+router.put('/update/question/:id', AUTH.authorizedRequest, QuizZoneController.updateQuestionById);
+
 router.post('/add/exam', AUTH.authorizedRequest, QuizZoneController.addExam);
 
 router.get('/get/exam/:author', AUTH.authorizedRequest,QuizZoneController.getExamsByauthor);
@@ -24,5 +26,8 @@ router.post('/add/exam-result',AUTH.authorizedRequest, QuizZoneController.addExa
 router.get('/get/exam-results', AUTH.authorizedRequest, QuizZoneController.getExamResults);
 router.get('/get/exam-result/:studentId', AUTH.authorizedRequest, QuizZoneController.getExamResultByStudent);
 router.get('/get/exam-result-by/:id', AUTH.authorizedRequest, QuizZoneController.getExamResultsById);
+
+//analytics route
+router.get('/analytics/:id', AUTH.authorizedRequest ,QuizZoneController.getExamResultByExamId)
 
 module.exports = router;
