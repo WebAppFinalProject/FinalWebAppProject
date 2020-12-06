@@ -1,4 +1,24 @@
 
+async function autoSubExam(examId, user) {
+    await apiRequest(`/app/exam/${examId}`, "get")
+            .then((res) => {
+                questionIds = res.exam.questions;
+                exam = res.exam;
+                console.log(questionIds);
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+
+            for(let id of questionIds){
+                studentAnswers[id._id] = $(`input[name="${id._id}"]:checked`).val() || $(`#${id._id}`).val();
+                answerkeyWithPoints[id._id] = { correctAns: id.answerKey, points: id.points, question: id.question };
+            }
+            validateStudentsAns(studentAnswers, answerkeyWithPoints, exam, userInfo);
+}
+
+
+
 
 /**
  * This function validate the exam if the 

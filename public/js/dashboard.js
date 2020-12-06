@@ -721,7 +721,7 @@ $(document).ready(() => {
                     examTitle: res.exam.title
                 }));
                 showExamView(res.exam);
-                examLimitTimer(res.exam.timeLimit);
+                examLimitTimer(res.exam.timeLimit, res.exam, userInfo);
             })
             .catch((error) => {
                 console.log(error);
