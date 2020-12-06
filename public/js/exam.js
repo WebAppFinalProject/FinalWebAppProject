@@ -9,7 +9,8 @@ async function autoSubExam(examId, user) {
             .catch((error) => {
                 console.log(error);
             })
-
+            let studentAnswers = [];
+            let answerkeyWithPoints = [];
             for(let id of questionIds){
                 studentAnswers[id._id] = $(`input[name="${id._id}"]:checked`).val() || $(`#${id._id}`).val();
                 answerkeyWithPoints[id._id] = { correctAns: id.answerKey, points: id.points, question: id.question };
