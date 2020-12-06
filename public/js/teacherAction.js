@@ -195,8 +195,8 @@ function appendQuestion(element, counter, id){
     $(`#${id}`).append(
         `<tr>
         <td>${counter}</td>
-        <td>${element.type}</td>
         <td>${element.question}</td>
+        <td>${element.type}</td>
         </tr>`
     );
 }
