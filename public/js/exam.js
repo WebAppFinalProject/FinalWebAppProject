@@ -15,7 +15,7 @@ async function autoSubExam(examId, user) {
                 studentAnswers[id._id] = $(`input[name="${id._id}"]:checked`).val() || $(`#${id._id}`).val();
                 answerkeyWithPoints[id._id] = { correctAns: id.answerKey, points: id.points, question: id.question };
             }
-            validateStudentsAns(studentAnswers, answerkeyWithPoints, exam, userInfo);
+            validateStudentsAns(studentAnswers, answerkeyWithPoints, exam, user);
 }
 
 
