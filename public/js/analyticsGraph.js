@@ -12,14 +12,13 @@ $(document).ready(async () => {
             console.log(error);
         })
       
-        console.log(resultExam);
         let examQuestions = resultExam[0].examId.questions;
         let CorrectAnswer = getObjectCorrectAnswer(examQuestions);
 
         // console.log();
         
         let data = convertObjectToArray(checkCorrectAnswer(resultExam, CorrectAnswer));
-        let labels =  generateData(examQuestions.length);
+        let labels = generateData(examQuestions.length);
         var densityData = {
             label: 'Students',
             data: data,
