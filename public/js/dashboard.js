@@ -621,12 +621,12 @@ $(document).ready(() => {
         await apiRequest(`/app/exam/${examId}`, 'get')
             .then((res) => {
                 if(res.exam.students.length <= 0){
-                    table += "<td><h4>No students taking the exam yet</h4></td>"
+                    table += "<tr><td><h4>No students taking the exam yet</h4></td></tr>"
                     return;
                 }
                 console.log(res);
                 for(let student of res.exam.students){
-                    table+=`<td>${student.firstname +" "+ student.lastname}</td>`
+                    table+=`<tr><td>${student.firstname +" "+ student.lastname}</td></tr>`
                 }
             })
             .catch((error) => {
@@ -721,7 +721,7 @@ $(document).ready(() => {
                     examTitle: res.exam.title
                 }));
                 showExamView(res.exam);
-                examLimitTimer(res.exam.timeLimit);
+                examLimitTimer(res.exam.timeLimit, res.exam, userInfo);
             })
             .catch((error) => {
                 console.log(error);

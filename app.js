@@ -4,7 +4,11 @@ const expressEjsLayout = require('express-ejs-layouts');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const cors = require('cors');
 
+
+//use cors
+app.use(cors());
 
 //use a logger middleware
 app.use(logger('tiny'));
