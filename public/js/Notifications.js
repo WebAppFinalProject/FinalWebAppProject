@@ -1,5 +1,6 @@
 
-var broker = 'wss://mqtt.eclipse.org:443/mqtt';
+// var broker = 'wss://mqtt.eclipse.org:443/mqtt';
+var broker = 'wss://test.mosquitto.org:8012/mqtt';
 var client = mqtt.connect(broker);
 
 $(document).ready(() => {
